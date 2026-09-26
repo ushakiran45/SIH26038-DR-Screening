@@ -1,11 +1,12 @@
 /**
  * SIH26038 - Retinal Canvas Engine
- * Generates synthetic clinical fundus images and performs real-time image processing,
- * structure layer toggling, adaptive CLAHE enhancement, and custom image pixel analysis.
+ * Generates synthetic clinical fundus images & processes real uploaded patient fundus photos,
+ * performing structure layer toggling, adaptive CLAHE enhancement, and image pixel analysis.
  */
 
 window.FundusEngine = (function() {
     let currentSampleKey = 'moderate_npdr';
+    const IMAGE_CACHE = {};
     
     // Sample definitions based on clinical benchmarks
     const SAMPLES = {
@@ -103,7 +104,7 @@ window.FundusEngine = (function() {
     };
 
     /**
-     * Render synthetic fundus photo onto target HTML5 Canvas
+     * Render Fundus Image onto target HTML5 Canvas
      */
     function renderFundusImage(canvasId, sampleKey, options = {}) {
         const canvas = document.getElementById(canvasId);
@@ -123,7 +124,6 @@ window.FundusEngine = (function() {
         const cy = height / 2;
         const radius = Math.min(width, height) * 0.43;
 
-        // Apply low illumination if dark sample
         let illumFactor = (sample.meanIllum < 0.15) ? 0.25 : 1.0;
         let isBlur = (sample.sharpness < 0.03);
 
@@ -132,77 +132,95 @@ window.FundusEngine = (function() {
             ctx.filter = 'blur(6px)';
         }
 
-        // Draw Fundus Circular Background
-        const grad = ctx.createRadialGradient(cx, cy, radius * 0.1, cx, cy, radius);
-        if (options.mode === 'green_channel') {
-            grad.addColorStop(0, `rgb(0, ${Math.round(210 * illumFactor)}, 0)`);
-            grad.addColorStop(0.7, `rgb(0, ${Math.round(140 * illumFactor)}, 0)`);
-            grad.addColorStop(1, `rgb(0, ${Math.round(30 * illumFactor)}, 0)`);
-        } else if (options.mode === 'clahe') {
-            grad.addColorStop(0, `rgb(${Math.round(230 * illumFactor)}, ${Math.round(150 * illumFactor)}, ${Math.round(40 * illumFactor)})`);
-            grad.addColorStop(0.7, `rgb(${Math.round(180 * illumFactor)}, ${Math.round(90 * illumFactor)}, ${Math.round(20 * illumFactor)})`);
-            grad.addColorStop(1, `rgb(${Math.round(50 * illumFactor)}, ${Math.round(20 * illumFactor)}, 0)`);
-        } else {
-            grad.addColorStop(0, `rgb(${Math.round(210 * illumFactor)}, ${Math.round(100 * illumFactor)}, ${Math.round(25 * illumFactor)})`);
-            grad.addColorStop(0.7, `rgb(${Math.round(160 * illumFactor)}, ${Math.round(60 * illumFactor)}, ${Math.round(15 * illumFactor)})`);
-            grad.addColorStop(1, `rgb(${Math.round(40 * illumFactor)}, ${Math.round(10 * illumFactor)}, 0)`);
+        // Apply CLAHE contrast enhancement filter on custom images
+        if (options.mode === 'clahe') {
+            ctx.filter = (isBlur ? 'blur(4px) ' : '') + 'contrast(1.4) saturate(1.25) brightness(1.05)';
+        } else if (options.mode === 'green_channel') {
+            ctx.filter = (isBlur ? 'blur(4px) ' : '') + 'hue-rotate(90deg) contrast(1.3)';
         }
 
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-        ctx.clip(); // Restrict details inside fundus circle
+        ctx.clip(); // Restrict all drawing strictly inside fundus circle
 
         if (sample.customImageSrc) {
-            const imgObj = new Image();
-            imgObj.src = sample.customImageSrc;
-            try {
-                ctx.drawImage(imgObj, cx - radius, cy - radius, radius * 2, radius * 2);
-            } catch(e) {}
-        } else {
-            drawVessels(ctx, cx, cy, radius, options);
+            let imgObj = IMAGE_CACHE[sampleKey];
+            if (!imgObj) {
+                imgObj = new Image();
+                imgObj.crossOrigin = 'Anonymous';
+                imgObj.onload = function() {
+                    IMAGE_CACHE[sampleKey] = imgObj;
+                    renderFundusImage(canvasId, sampleKey, options);
+                };
+                imgObj.src = sample.customImageSrc;
+                IMAGE_CACHE[sampleKey] = imgObj;
+            }
 
-            const odX = cx + radius * 0.5;
-            const odY = cy - radius * 0.05;
-            const odRad = radius * 0.20;
-            
-            if (options.showOpticDisc || options.showAllOverlay) {
-                drawOpticDisc(ctx, odX, odY, odRad, options);
+            if (imgObj.complete && imgObj.naturalWidth > 0) {
+                ctx.drawImage(imgObj, cx - radius, cy - radius, radius * 2, radius * 2);
             } else {
-                ctx.beginPath();
-                ctx.arc(odX, odY, odRad, 0, Math.PI * 2);
-                ctx.fillStyle = options.mode === 'green_channel' ? 'rgb(200, 255, 200)' : 'rgb(255, 230, 180)';
+                ctx.fillStyle = '#1e0802';
                 ctx.fill();
             }
-
-            const fovX = cx - radius * 0.25;
-            const fovY = cy - radius * 0.02;
-            const fovRad = radius * 0.12;
-
-            if (options.showFovea || options.showAllOverlay) {
-                drawFovea(ctx, fovX, fovY, fovRad);
+        } else {
+            // Draw Synthetic Gradient Background
+            const grad = ctx.createRadialGradient(cx, cy, radius * 0.1, cx, cy, radius);
+            if (options.mode === 'green_channel') {
+                grad.addColorStop(0, `rgb(0, ${Math.round(210 * illumFactor)}, 0)`);
+                grad.addColorStop(0.7, `rgb(0, ${Math.round(140 * illumFactor)}, 0)`);
+                grad.addColorStop(1, `rgb(0, ${Math.round(30 * illumFactor)}, 0)`);
+            } else if (options.mode === 'clahe') {
+                grad.addColorStop(0, `rgb(${Math.round(230 * illumFactor)}, ${Math.round(150 * illumFactor)}, ${Math.round(40 * illumFactor)})`);
+                grad.addColorStop(0.7, `rgb(${Math.round(180 * illumFactor)}, ${Math.round(90 * illumFactor)}, ${Math.round(20 * illumFactor)})`);
+                grad.addColorStop(1, `rgb(${Math.round(50 * illumFactor)}, ${Math.round(20 * illumFactor)}, 0)`);
+            } else {
+                grad.addColorStop(0, `rgb(${Math.round(210 * illumFactor)}, ${Math.round(100 * illumFactor)}, ${Math.round(25 * illumFactor)})`);
+                grad.addColorStop(0.7, `rgb(${Math.round(160 * illumFactor)}, ${Math.round(60 * illumFactor)}, ${Math.round(15 * illumFactor)})`);
+                grad.addColorStop(1, `rgb(${Math.round(40 * illumFactor)}, ${Math.round(10 * illumFactor)}, 0)`);
             }
+            ctx.fillStyle = grad;
+            ctx.fill();
+            drawVessels(ctx, cx, cy, radius, options);
+        }
 
-            if (sample.drLevel >= 1) {
-                if (options.showMAs || options.showAllOverlay) {
-                    drawMicroaneurysms(ctx, cx, cy, radius, sample.maCount);
-                }
+        // Reset filter for structure overlays so overlays pop out cleanly over the image
+        ctx.filter = 'none';
+
+        // Draw Structure Overlays on top of the fundus photo
+        const odX = cx + radius * 0.5;
+        const odY = cy - radius * 0.05;
+        const odRad = radius * 0.20;
+        
+        if (options.showOpticDisc || options.showAllOverlay) {
+            drawOpticDisc(ctx, odX, odY, odRad, options);
+        }
+
+        const fovX = cx - radius * 0.25;
+        const fovY = cy - radius * 0.02;
+        const fovRad = radius * 0.12;
+
+        if (options.showFovea || options.showAllOverlay) {
+            drawFovea(ctx, fovX, fovY, fovRad);
+        }
+
+        if (sample.drLevel >= 1) {
+            if (options.showMAs || options.showAllOverlay) {
+                drawMicroaneurysms(ctx, cx, cy, radius, sample.maCount);
             }
+        }
 
-            if (sample.drLevel >= 2) {
-                if (options.showExudates || options.showAllOverlay) {
-                    drawExudates(ctx, cx, cy, radius, sample.exudatesArea);
-                }
-                if (options.showHemorrhages || options.showAllOverlay) {
-                    drawHemorrhages(ctx, cx, cy, radius, sample.hemorrhagesCount);
-                }
+        if (sample.drLevel >= 2) {
+            if (options.showExudates || options.showAllOverlay) {
+                drawExudates(ctx, cx, cy, radius, sample.exudatesArea);
             }
+            if (options.showHemorrhages || options.showAllOverlay) {
+                drawHemorrhages(ctx, cx, cy, radius, sample.hemorrhagesCount);
+            }
+        }
 
-            if (sample.drLevel === 4 && sample.hasNV) {
-                if (options.showNV || options.showAllOverlay) {
-                    drawNeovascularization(ctx, odX, odY, radius);
-                }
+        if (sample.drLevel === 4 && sample.hasNV) {
+            if (options.showNV || options.showAllOverlay) {
+                drawNeovascularization(ctx, odX, odY, radius);
             }
         }
 
@@ -241,7 +259,7 @@ window.FundusEngine = (function() {
     function drawOpticDisc(ctx, x, y, rad, options) {
         ctx.beginPath();
         ctx.arc(x, y, rad, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 235, 180, 0.9)';
+        ctx.fillStyle = 'rgba(255, 235, 180, 0.45)';
         ctx.fill();
 
         ctx.strokeStyle = '#00f2fe';
@@ -262,7 +280,7 @@ window.FundusEngine = (function() {
     function drawFovea(ctx, x, y, rad) {
         ctx.beginPath();
         ctx.arc(x, y, rad, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(40, 10, 5, 0.7)';
+        ctx.fillStyle = 'rgba(40, 10, 5, 0.4)';
         ctx.fill();
 
         ctx.strokeStyle = '#7c4dff';
@@ -281,10 +299,10 @@ window.FundusEngine = (function() {
         const coords = getSyntheticMaCoords(cx, cy, radius, count);
         coords.forEach(c => {
             ctx.beginPath();
-            ctx.arc(c.x, c.y, 3.5, 0, Math.PI * 2);
+            ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
             ctx.fill();
             
-            ctx.strokeStyle = 'rgba(255, 82, 82, 0.6)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.lineWidth = 1;
             ctx.stroke();
         });
@@ -293,7 +311,7 @@ window.FundusEngine = (function() {
     function drawExudates(ctx, cx, cy, radius, area) {
         ctx.fillStyle = '#fff59d';
         ctx.shadowColor = '#fff59d';
-        ctx.shadowBlur = 4;
+        ctx.shadowBlur = 6;
 
         const count = Math.min(18, Math.max(4, Math.floor(area / 100)));
         for (let i = 0; i < count; i++) {
@@ -323,7 +341,7 @@ window.FundusEngine = (function() {
 
     function drawNeovascularization(ctx, odX, odY, radius) {
         ctx.strokeStyle = '#ff1744';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2;
         for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2;
             ctx.beginPath();
@@ -350,7 +368,7 @@ window.FundusEngine = (function() {
     }
 
     function addCustomSample(key, name, imageSrc) {
-        // Initialize default sample entry for custom image
+        // Create sample entry for custom uploaded fundus image
         SAMPLES[key] = {
             name: name || 'Custom Uploaded Fundus Image',
             drLevel: 2, // Moderate NPDR default
@@ -408,11 +426,9 @@ window.FundusEngine = (function() {
                 const lum = (r * 0.299 + g * 0.587 + b * 0.114) / 255.0;
                 totalLum += lum;
 
-                // Detect dark red lesion candidates
                 if (r > 80 && g < 50 && b < 50) {
                     darkRedSpots++;
                 }
-                // Detect bright yellow exudate candidates
                 if (r > 190 && g > 180 && b < 120) {
                     brightYellowSpots++;
                 }
@@ -421,7 +437,6 @@ window.FundusEngine = (function() {
             const meanIllum = Math.min(0.9, Math.max(0.08, totalLum / totalPixels));
             const isQualityOK = meanIllum >= 0.15;
             
-            // Calculate severity grade from actual image color/lesion distributions
             let drLevel = 0;
             let maCount = 0;
             let exudatesArea = 0;
