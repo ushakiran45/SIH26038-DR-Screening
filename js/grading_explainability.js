@@ -283,13 +283,13 @@ window.GradingExplainability = (function() {
 
                 <div class="report-sig-section">
                     <div style="width: 45%;">
-                        <div class="sig-line">Dr. S. R. Ramanujam, M.S. (Ophthal)</div>
-                        <div style="font-size:0.78rem; color:#64748b;">Tele-Ophthalmologist Sign-off</div>
+                        <div class="sig-line">___________________________</div>
+                        <div style="font-size:0.78rem; color:#64748b; margin-top:0.2rem;">Tele-Ophthalmologist Signature</div>
                         <div style="font-size:0.78rem; color:#64748b;">Validation Time: &lt; 30 Seconds</div>
                     </div>
                     <div style="width: 45%;">
                         <div class="sig-line">PHC Operator ID: PHC-R-884</div>
-                        <div style="font-size:0.78rem; color:#64748b;">Healthcare Worker Verification</div>
+                        <div style="font-size:0.78rem; color:#64748b; margin-top:0.2rem;">Healthcare Worker Verification</div>
                         <div style="font-size:0.78rem; color:#64748b;">Digital Audit Stamp: SIH2026-VERIFIED</div>
                     </div>
                 </div>

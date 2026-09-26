@@ -416,6 +416,7 @@ window.FundusEngine = (function() {
             
             let totalLum = 0;
             let totalPixels = data.length / 4;
+            let redDominantPixels = 0;
             let darkRedSpots = 0;
             let brightYellowSpots = 0;
 
@@ -426,6 +427,11 @@ window.FundusEngine = (function() {
                 const lum = (r * 0.299 + g * 0.587 + b * 0.114) / 255.0;
                 totalLum += lum;
 
+                // Fundus photos are predominantly red/orange/brown
+                if (r > (b * 1.15) && r > 25) {
+                    redDominantPixels++;
+                }
+
                 if (r > 80 && g < 50 && b < 50) {
                     darkRedSpots++;
                 }
@@ -434,7 +440,26 @@ window.FundusEngine = (function() {
                 }
             }
 
+            const redRatio = redDominantPixels / totalPixels;
             const meanIllum = Math.min(0.9, Math.max(0.08, totalLum / totalPixels));
+            const isFundusImage = (redRatio >= 0.22) && (meanIllum >= 0.05);
+
+            if (!isFundusImage) {
+                callback({
+                    isFundusImage: false,
+                    quality: 'UNGRADEABLE (NON-RETINAL PHOTO)',
+                    sharpness: 0.010,
+                    meanIllum: meanIllum,
+                    drLevel: -1,
+                    maCount: 0,
+                    exudatesArea: 0,
+                    hemorrhagesCount: 0,
+                    hasNV: false,
+                    desc: 'REJECTED: The uploaded photo is not a valid ocular fundus retinal image. Please upload a valid posterior pole eye fundus photo.'
+                });
+                return;
+            }
+
             const isQualityOK = meanIllum >= 0.15;
             
             let drLevel = 0;
@@ -480,6 +505,7 @@ window.FundusEngine = (function() {
             ];
 
             callback({
+                isFundusImage: true,
                 quality: isQualityOK ? 'GRADEABLE' : 'UNGRADEABLE',
                 sharpness: isQualityOK ? 0.046 : 0.022,
                 meanIllum: meanIllum,
