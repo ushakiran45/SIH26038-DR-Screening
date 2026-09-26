@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment & IDE
+.vscode/
+.idea/
+.DS_Store
+*.log
+
+# Temporary extract folders
+best_model_extracted/

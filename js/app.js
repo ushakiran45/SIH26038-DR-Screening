@@ -38,6 +38,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // 2b. Custom Image Upload Handler
+    const customFileInput = document.getElementById('custom-file-input');
+    if (customFileInput) {
+        customFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const sampleKey = 'custom_' + Date.now();
+                const imageSrc = evt.target.result;
+
+                window.FundusEngine.addCustomSample(sampleKey, 'Uploaded: ' + file.name, imageSrc);
+                
+                if (sampleSelect) {
+                    const opt = document.createElement('option');
+                    opt.value = sampleKey;
+                    opt.innerText = '📁 Uploaded: ' + file.name + ' — EfficientNet-B3 Analyzed';
+                    opt.selected = true;
+                    sampleSelect.appendChild(opt);
+                }
+
+                currentSampleKey = sampleKey;
+                refreshAllModules();
+
+                // Trigger PyTorch API model prediction if backend server is online
+                fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image_data: imageSrc, sample_key: sampleKey })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.status === 'SUCCESS') {
+                        const sample = window.FundusEngine.SAMPLES[sampleKey];
+                        if (sample) {
+                            sample.drLevel = data.predicted_class;
+                            refreshAllModules();
+                        }
+                    }
+                })
+                .catch(() => {});
+
+                setTimeout(refreshAllModules, 200);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
     // 3. Layer Toggle Chips Handler (Segmentation View)
     const toggleChips = document.querySelectorAll('.toggle-chip');
     toggleChips.forEach(chip => {
@@ -60,8 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (gcOpacity) {
         gcOpacity.addEventListener('input', function() {
-            document.getElementById('gc-opacity-val').innerText = Math.round(this.value * 100) + '%';
-            window.GradingExplainability.setOpacity(parseFloat(this.value));
+            const val = parseFloat(this.value);
+            document.getElementById('gc-opacity-val').innerText = Math.round(val * 100) + '%';
+            window.GradingExplainability.setOpacity(val);
             renderGradCAMCanvas();
         });
     }
@@ -73,9 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 5. Fast-Track Validation Buttons
+    // 5. Fast-Track Validation & Export Diagnostic Report Handlers
     const btnApprove = document.getElementById('btn-approve-grade');
     const btnPrintReport = document.getElementById('btn-print-report');
+    const btnTab4PrintReport = document.getElementById('btn-tab4-print-report');
 
     if (btnApprove) {
         btnApprove.addEventListener('click', function() {
@@ -86,6 +137,36 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnPrintReport) {
         btnPrintReport.addEventListener('click', function() {
             window.GradingExplainability.printReport();
+        });
+    }
+
+    if (btnTab4PrintReport) {
+        btnTab4PrintReport.addEventListener('click', function() {
+            window.GradingExplainability.printReport();
+        });
+    }
+
+    // Report Modal Handlers
+    const modal = document.getElementById('report-modal');
+    const closeX = document.getElementById('modal-close-x');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const printActionBtn = document.getElementById('modal-print-action-btn');
+
+    function closeModal() {
+        if (modal) modal.style.display = 'none';
+    }
+
+    if (closeX) closeX.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+    }
+
+    if (printActionBtn) {
+        printActionBtn.addEventListener('click', function() {
+            window.print();
         });
     }
 

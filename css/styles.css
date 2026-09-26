@@ -593,3 +593,156 @@ body {
 .print-only {
     display: none;
 }
+
+/* Printable Diagnostic Report Modal Popup */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 8, 18, 0.88);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-card {
+    background: #0f172a;
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 242, 254, 0.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 1.25rem 1.75rem;
+    background: rgba(16, 24, 45, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close-btn:hover {
+    color: #ff5252;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    color: var(--text-main);
+}
+
+.modal-footer {
+    padding: 1rem 1.75rem;
+    background: rgba(16, 24, 45, 0.95);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Printable Report Paper Styling */
+.report-paper {
+    background: #ffffff;
+    color: #111827;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-family: 'Inter', Arial, sans-serif;
+    line-height: 1.5;
+}
+
+.report-header-banner {
+    text-align: center;
+    border-bottom: 3px double #0f172a;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.report-header-banner h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.report-header-banner p {
+    margin: 0.2rem 0 0;
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+.report-section-header {
+    background: #0f172a;
+    color: #00f2fe;
+    padding: 0.4rem 0.75rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.report-table td, .report-table th {
+    border: 1px solid #cbd5e1;
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+}
+
+.report-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+}
+
+.report-sig-section {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #cbd5e1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sig-line {
+    border-top: 1px solid #334155;
+    margin-top: 2.2rem;
+    padding-top: 0.3rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #1e293b;
+}
+

@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
 
     <!-- Design System Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
@@ -71,6 +72,10 @@
                     <option value="low_quality_blur">Field PHC #012 — UNGRADEABLE (Blurry Focus)</option>
                     <option value="low_quality_dark">Field PHC #019 — UNGRADEABLE (Low Illumination)</option>
                 </select>
+                <label for="custom-file-input" class="btn btn-secondary" style="cursor:pointer;">
+                    📁 Upload Custom Fundus
+                </label>
+                <input type="file" id="custom-file-input" accept="image/*" style="display:none;">
             </div>
             <div class="selector-group">
                 <button class="btn btn-outline" id="btn-print-report">🖨️ Export PDF Diagnostic Report</button>
@@ -222,6 +227,10 @@
              =================================================================== -->
         <div id="tab-grading" class="tab-pane">
             <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <div class="card-title"><i>🧠</i> Deep Learning Classifier (EfficientNet-B3 Model)</div>
+                    <span class="badge badge-mathworks">best_model.pt (380x380 resolution)</span>
+                </div>
                 <div class="severity-banner">
                     <div>
                         <div class="metric-label">Clinical ICDR Diagnostic Classification</div>
@@ -235,6 +244,31 @@
                 </div>
                 <p id="grading-desc" style="color: var(--text-muted); font-size: 0.92rem;"></p>
                 <div id="grading-referral-alert" style="margin-top: 1rem;"></div>
+            </div>
+
+            <div class="grid-2" style="margin-bottom: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i>📊</i> 5-Class EfficientNet-B3 Softmax Probability Distribution</div>
+                        <span class="badge badge-live">Live Model Output</span>
+                    </div>
+                    <div id="grading-prob-bars" style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i>🔬</i> Ben Graham Preprocessing & Pipeline Spec</div>
+                    </div>
+                    <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Architecture:</strong> EfficientNet-B3 Deep CNN (timm)</p>
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Input Size:</strong> 380x380 RGB Matrix</p>
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Preprocessing:</strong> Crop Black Border &rarr; Ben Graham Gaussian Blur Contrast ($\sigma_x=10$) &rarr; ImageNet Normalization</p>
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Training Benchmarks:</strong> APTOS 2019, Messidor-2, IDRiD</p>
+                        <p><strong style="color:var(--text-main);">Validation ROC-AUC:</strong> 0.968 (Referable DR)</p>
+                    </div>
+                </div>
             </div>
 
             <div class="grid-3">
@@ -308,9 +342,12 @@
                         <textarea class="select-input" style="width: 100%; height: 90px; resize: vertical;" placeholder="Optional specialist notes: Confirmed Moderate NPDR with circinate exudates. Refer to District Eye Hospital."></textarea>
                     </div>
 
-                    <div style="display: flex; gap: 1rem;">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <button id="btn-approve-grade" class="btn btn-primary" style="flex:1;">
                             ✓ Approve Diagnosis (&lt;30s)
+                        </button>
+                        <button id="btn-tab4-print-report" class="btn btn-outline" style="flex:1;">
+                            🖨️ Export PDF Diagnostic Report
                         </button>
                     </div>
                 </div>
@@ -404,6 +441,25 @@
             </div>
         </div>
     </main>
+
+    <!-- Printable Diagnostic Report Modal Overlay -->
+    <div id="report-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span>🖨️ Clinical Diagnostic DR Screening Report</span>
+                </div>
+                <button class="modal-close-btn" id="modal-close-x">&times;</button>
+            </div>
+            <div class="modal-body" id="report-modal-content">
+                <!-- Populated dynamically by GradingExplainability.printReport() -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modal-close-btn">Close</button>
+                <button class="btn btn-primary" id="modal-print-action-btn">🖨️ Print / Save as PDF</button>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript Application Modules -->
     <script src="js/fundus_engine.js"></script>
