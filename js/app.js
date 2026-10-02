@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Module 6: Benchmark
         window.BenchmarkData.renderBenchmarkTable('benchmark-table-container');
 
-        // Module 7: Hybrid QML (SIH26139)
+        // Module 7: Hybrid QML (TNSAT)
         updateQMLTabUI();
     }
 
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.GradingExplainability.renderGradCAM('canvas-gradcam', currentSampleKey, opacity, colormap);
     }
 
-    // Module 7: Hybrid QML (SIH26139) Rendering Logic
+    // Module 7: Hybrid QML (TNSAT) Rendering Logic
     function updateQMLTabUI() {
         const currentSample = window.FundusEngine?.SAMPLES[currentSampleKey];
         const imageSrc = currentSample?.imageSrc || '';

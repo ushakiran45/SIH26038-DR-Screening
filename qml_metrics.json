@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-02 16:45:09",
-  "dataset_size": 72,
+  "timestamp": "2026-10-02 17:11:51",
+  "dataset_size": 100,
   "pca_components": 4,
   "quantum_qubits": 4,
   "quantum_layers": 2,
@@ -8,93 +8,93 @@
   "models": {
     "classical_svm": {
       "name": "Support Vector Machine (SVM Baseline)",
-      "accuracy": 87.5,
-      "precision": 91.02,
-      "recall": 87.5,
-      "f1_score": 87.66,
-      "training_time_sec": 0.008,
-      "inference_time_ms": 0.23,
+      "accuracy": 100.0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0,
+      "training_time_sec": 0.004,
+      "inference_time_ms": 0.16,
       "confusion_matrix": [
         [
-          10,
+          20,
           0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          10,
           0,
           0,
           0
         ],
         [
           0,
+          20,
           0,
-          23,
           0,
           0
         ],
         [
           0,
           0,
-          2,
-          10,
+          20,
+          0,
           0
         ],
         [
           0,
           0,
-          3,
           0,
-          10
+          20,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          20
         ]
       ]
     },
     "hybrid_vqc": {
       "name": "Variational Quantum Circuit (Hybrid QML)",
-      "accuracy": 87.5,
-      "precision": 91.02,
-      "recall": 87.5,
-      "f1_score": 87.66,
-      "training_time_sec": 19.318,
-      "inference_time_ms": 6.73,
+      "accuracy": 100.0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0,
+      "training_time_sec": 25.99,
+      "inference_time_ms": 6.91,
       "confusion_matrix": [
         [
-          10,
+          20,
           0,
-          4,
-          0,
-          0
-        ],
-        [
-          0,
-          10,
           0,
           0,
           0
         ],
         [
           0,
+          20,
           0,
-          23,
           0,
           0
         ],
         [
           0,
           0,
-          2,
-          10,
+          20,
+          0,
           0
         ],
         [
           0,
           0,
-          3,
           0,
-          10
+          20,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          20
         ]
       ]
     }

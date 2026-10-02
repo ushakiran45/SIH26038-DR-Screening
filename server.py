@@ -1,6 +1,6 @@
 """
 ================================================================================
-SIH26038 & SIH26139 - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
+SIH26038 & TNSAT - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
 ================================================================================
 Runs HTTP Server on http://localhost:8000
 Provides live web application hosting, AI inference backend API, 
@@ -81,7 +81,7 @@ class TelemedRequestHandler(SimpleHTTPRequestHandler):
                     "svm_model": "svm_model.pkl",
                     "vqc_model": "vqc_model.pt"
                 },
-                "pipeline_version": "SIH26139-HybridQML-v3.0",
+                "pipeline_version": "TNSAT-HybridQML-v3.0",
                 "accuracy_metrics": {
                     "classical_svm_acc": "87.5%",
                     "hybrid_vqc_acc": "87.5%",
@@ -159,7 +159,7 @@ def main():
     os.chdir(WORKSPACE_DIR)
     server = HTTPServer(("0.0.0.0", PORT), TelemedRequestHandler)
     print("==================================================================")
-    print(f"  SIH26139 AI & QUANTUM ML TELEMEDICINE WORKSTATION ONLINE")
+    print(f"  TNSAT AI & QUANTUM ML TELEMEDICINE WORKSTATION ONLINE")
     print(f"  URL: http://localhost:{PORT}")
     print("  Models Loaded: EfficientNet-B3, PCA (4-D), Classical SVM, Pennylane VQC (4 Qubits)")
     print("==================================================================")

@@ -1,6 +1,6 @@
 """
 ================================================================================
-SIH26139 - HYBRID QUANTUM-CLASSICAL MACHINE LEARNING (QML) DR DIAGNOSTIC PIPELINE
+TNSAT - HYBRID QUANTUM-CLASSICAL MACHINE LEARNING (QML) DR DIAGNOSTIC PIPELINE
 ================================================================================
 Architecture Overview:
   1. Retinal Image -> Image Quality Check & Preprocessing (Ben Graham Contrast)
@@ -351,7 +351,7 @@ def evaluate_and_compare_models():
     Training Time, and Inference Time for BOTH classifiers.
     """
     print("==================================================================")
-    print("  SIH26139: Training & Evaluating Classical SVM vs Hybrid VQC")
+    print("  TNSAT: Training & Evaluating Classical SVM vs Hybrid VQC")
     print("==================================================================")
     
     cnn_model = load_model()
@@ -463,7 +463,7 @@ def get_model_metrics():
 # ------------------------------------------------------------------------------
 def run_qml_inference(image_path_or_matrix):
     """
-    Full SIH26139 Quantum-Classical DR Diagnostic Pipeline:
+    Full TNSAT Quantum-Classical DR Diagnostic Pipeline:
     
     Retinal Image
          ↓

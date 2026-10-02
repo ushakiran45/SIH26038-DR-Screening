@@ -1,6 +1,6 @@
 # Hybrid Quantum Machine Learning Platform for Early Disease Detection
 ## Egreen Quanta | Ministry of Education's Innovation Cell (MIC)
-**Problem Statement ID**: SIH26139 | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
+**Problem Statement ID**: TNSAT | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
 **Problem Creator**: Sarim Moin | **Organization**: Egreen Quanta
 
 ---
@@ -122,7 +122,7 @@ Open your web browser and navigate to:
 ```text
 http://localhost:8000
 ```
-Navigate to **Tab 7: Hybrid Quantum ML (SIH26139)** to interact with live dual predictions, quantum circuit visualizers, and performance dashboards.
+Navigate to **Tab 7: Hybrid Quantum ML (TNSAT)** to interact with live dual predictions, quantum circuit visualizers, and performance dashboards.
 
 #### Option 2: Train & Evaluate QML Models via CLI
 Execute the master Quantum ML pipeline script directly:
@@ -160,5 +160,5 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 
 ---
 
-### 🏆 Team SIH Presentation Pitch Script (SIH26139 - Egreen Quanta / MIC)
-> *"For Problem Statement SIH26139 (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Combined with Grad-CAM feature attribution and quality assessment, our platform provides clinicians with instant dual predictions, quantum state visualizations, and explainable diagnostic reports under 30 seconds."*
+### 🏆 Team SIH Presentation Pitch Script (TNSAT - Egreen Quanta / MIC)
+> *"For Problem Statement TNSAT (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Combined with Grad-CAM feature attribution and quality assessment, our platform provides clinicians with instant dual predictions, quantum state visualizations, and explainable diagnostic reports under 30 seconds."*
