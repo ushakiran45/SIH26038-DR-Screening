@@ -72,9 +72,8 @@ def preprocess_fundus_image(image_path_or_matrix, img_size=IMG_SIZE):
     """
     Master Preprocessing Pipeline:
     1. Load RGB Image
-    2. Crop black borders
-    3. Resize to 380x380
-    4. Apply Ben Graham Gaussian weighted enhancement
+    2. Crop uninformative black borders
+    3. Resize to 380x380 RGB (matching EfficientNet-B3 ImageNet training pipeline)
     """
     if isinstance(image_path_or_matrix, str):
         if not os.path.exists(image_path_or_matrix):
@@ -88,8 +87,7 @@ def preprocess_fundus_image(image_path_or_matrix, img_size=IMG_SIZE):
 
     img_cropped = crop_black_borders(img)
     img_resized = cv2.resize(img_cropped, (img_size, img_size))
-    img_enhanced = ben_graham_preprocess(img_resized)
-    return img_enhanced
+    return img_resized
 
 
 def to_tensor(img_np):

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-02 22:33:52",
+  "timestamp": "2026-10-03 02:06:39",
   "train_size": 15,
   "test_size": 7,
   "evaluation": "held-out stratified test split on real EfficientNet-B3 features",
@@ -10,21 +10,35 @@
   "models": {
     "classical_svm": {
       "name": "Support Vector Machine (SVM Baseline)",
-      "accuracy": 0.0,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1_score": 0.0,
-      "referable_sensitivity": 50.0,
-      "referable_specificity": 33.33,
-      "training_time_sec": 0.005,
-      "inference_time_ms": 0.31,
+      "accuracy": 14.29,
+      "precision": 7.14,
+      "recall": 14.29,
+      "f1_score": 9.52,
+      "referable_sensitivity": 25.0,
+      "referable_specificity": 0.0,
+      "training_time_sec": 0.027,
+      "inference_time_ms": 0.34,
       "confusion_matrix": [
         [
           0,
           0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
           0,
           1,
-          1
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          0
         ],
         [
           1,
@@ -37,50 +51,22 @@
           1,
           0,
           0,
-          1,
-          0
-        ],
-        [
-          1,
           0,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          1,
           0
         ]
       ]
     },
     "hybrid_vqc": {
       "name": "Variational Quantum Circuit (Hybrid QML)",
-      "accuracy": 42.86,
-      "precision": 33.33,
-      "recall": 42.86,
-      "f1_score": 37.14,
+      "accuracy": 28.57,
+      "precision": 11.9,
+      "recall": 28.57,
+      "f1_score": 16.67,
       "referable_sensitivity": 100.0,
-      "referable_specificity": 66.67,
-      "training_time_sec": 6.759,
-      "inference_time_ms": 11.19,
+      "referable_specificity": 0.0,
+      "training_time_sec": 5.317,
+      "inference_time_ms": 10.21,
       "confusion_matrix": [
-        [
-          1,
-          0,
-          0,
-          0,
-          1
-        ],
-        [
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
         [
           0,
           0,
@@ -100,7 +86,21 @@
           0,
           1,
           0,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
           0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1
         ]
       ]
     }
