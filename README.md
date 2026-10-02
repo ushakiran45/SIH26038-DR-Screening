@@ -147,18 +147,19 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 
 ### 📊 Validation & Benchmark Comparisons
 
-#### Classical SVM vs Hybrid PennyLane VQC (4 Qubits)
-| Evaluation Metric | Classical SVM (Baseline) | Hybrid VQC (Quantum ML) |
-| :--- | :---: | :---: |
-| **Accuracy** | **87.50%** | **87.50%** |
-| **Precision** | **91.02%** | **91.02%** |
-| **Recall** | **87.50%** | **87.50%** |
-| **F1-Score** | **87.66%** | **87.66%** |
-| **Training Time** | `0.008 sec` | `19.32 sec` |
-| **Inference Latency** | `0.23 ms` | `6.73 ms` |
-| **Feature Representation** | `4 PCA Components` | `4 Qubits (Angle Encoded)` |
+#### 5-Fold Stratified Cross-Validation Benchmark ($N = 22$ Seed Images)
+| Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score | Inference Latency |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Majority Class Baseline** | 22 | N/A | **$68.2\% \pm 0.0\%$** | $100.0\%$ | $0.0\%$ | $81.1\%$ | $0.00 \text{ ms}$ |
+| **Classical SVM (RBF)** | 22 | 4 | **$69.0\% \pm 7.3\%$** | $100.0\% \pm 0.0\%$ | $0.0\% \pm 0.0\%$ | $56.6\% \pm 9.4\%$ | $0.08 \text{ ms}$ |
+| **Hybrid PennyLane VQC** | 22 | 4 | **$73.0\% \pm 6.8\%$** | $100.0\% \pm 0.0\%$ | $10.0\% \pm 20.0\%$ | $63.2\% \pm 10.6\%$ | $8.54 \text{ ms}$ |
+
+> [!IMPORTANT]
+> **Methodology & Limitation Notice**:
+> Because evaluation was conducted on 22 labeled clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. The VQC and SVM perform at comparable baseline levels relative to majority-class prevalence (68.2%), and cross-dataset validation on larger external datasets (e.g. APTOS-2019 / IDRiD) is planned.
 
 ---
 
 ### 🏆 Team SIH Presentation Pitch Script (TNSAT - Egreen Quanta / MIC)
-> *"For Problem Statement TNSAT (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Combined with Grad-CAM feature attribution and quality assessment, our platform provides clinicians with instant dual predictions, quantum state visualizations, and explainable diagnostic reports under 30 seconds."*
+> *"For Problem Statement TNSAT (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Because we evaluated on 22 labeled sample images, these results represent a QML pipeline proof-of-concept demonstration, and we plan to validate on APTOS-2019 and IDRiD."*
+

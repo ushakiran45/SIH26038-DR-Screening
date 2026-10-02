@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-02 21:05:44",
-  "train_size": 154,
-  "test_size": 66,
+  "timestamp": "2026-10-02 21:22:34",
+  "train_size": 15,
+  "test_size": 7,
   "evaluation": "held-out stratified test split on real EfficientNet-B3 features",
   "pca_components": 4,
   "quantum_qubits": 4,
@@ -10,97 +10,97 @@
   "models": {
     "classical_svm": {
       "name": "Support Vector Machine (SVM Baseline)",
-      "accuracy": 46.97,
-      "precision": 51.4,
-      "recall": 46.97,
-      "f1_score": 46.17,
-      "referable_sensitivity": 73.33,
-      "referable_specificity": 76.19,
-      "training_time_sec": 0.014,
-      "inference_time_ms": 0.16,
+      "accuracy": 28.57,
+      "precision": 8.16,
+      "recall": 28.57,
+      "f1_score": 12.7,
+      "referable_sensitivity": 100.0,
+      "referable_specificity": 0.0,
+      "training_time_sec": 0.008,
+      "inference_time_ms": 0.28,
       "confusion_matrix": [
         [
-          12,
           0,
-          1,
           0,
-          2
-        ],
-        [
-          2,
-          2,
           2,
           0,
           0
         ],
         [
-          7,
           0,
-          5,
-          4,
-          2
-        ],
-        [
+          0,
           1,
           0,
-          7,
-          4,
           0
         ],
         [
-          4,
           0,
-          3,
           0,
-          8
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
         ]
       ]
     },
     "hybrid_vqc": {
       "name": "Variational Quantum Circuit (Hybrid QML)",
-      "accuracy": 36.36,
-      "precision": 35.35,
-      "recall": 36.36,
-      "f1_score": 34.72,
-      "referable_sensitivity": 91.11,
-      "referable_specificity": 23.81,
-      "training_time_sec": 52.281,
-      "inference_time_ms": 6.92,
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "referable_sensitivity": 100.0,
+      "referable_specificity": 0.0,
+      "training_time_sec": 6.61,
+      "inference_time_ms": 9.56,
       "confusion_matrix": [
         [
-          4,
           0,
-          8,
           0,
-          3
-        ],
-        [
           1,
           0,
-          2,
-          2,
           1
         ],
         [
-          4,
-          0,
-          8,
-          4,
-          2
-        ],
-        [
           0,
           0,
-          6,
-          4,
-          2
-        ],
-        [
           0,
-          0,
-          6,
           1,
-          8
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
         ]
       ]
     }
@@ -109,6 +109,11 @@
     "method": "Grad-CAM Heatmap Visualization",
     "attribution_target": "EfficientNet-B3 CNN Feature Extraction Layer",
     "disclaimer": "Grad-CAM visualizes spatial visual attention from the CNN feature extractor. It explains feature representation, not quantum circuit gate parameters."
+  },
+  "dataset_summary": {
+    "sample_source": "N = 22 Independent Clinical Source Images",
+    "majority_class_prevalence": "68.2% Referable DR (15/22 images)",
+    "limitation_note": "Because we evaluated on 22 labeled sample images, these results serve as a QML pipeline proof-of-concept demonstration rather than a standalone clinical evaluation. The VQC and SVM perform at comparable baseline levels relative to majority-class prevalence, and cross-dataset validation on larger datasets (e.g. APTOS-2019 / IDRiD) is planned."
   },
   "disclaimer": "Clinical Decision Support System \u2014 For Research & Screening Verification Only. Not a Standalone Diagnostic."
 }

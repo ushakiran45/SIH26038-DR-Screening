@@ -289,7 +289,8 @@ def extract_real_dataset_features(augment_count=10):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--augment", type=int, default=10, help="Number of augmented views per image (default: 10)")
+    parser.add_argument("--augment", type=int, default=1, help="Number of augmented views per image (default: 1 for pure seed dataset)")
     args = parser.parse_args()
     extract_real_dataset_features(augment_count=args.augment)
+
 

@@ -211,7 +211,21 @@ for train_idx, test_idx in skf.split(X_data, y_data):
 # ------------------------------------------------------------------------------
 # 4. COMPUTE CROSS-VALIDATED SUMMARY STATISTICS (MEAN ± STD)
 # ------------------------------------------------------------------------------
+majority_class_count = max((y_data == 1).sum(), (y_data == 0).sum())
+majority_baseline_acc = float(majority_class_count) / len(y_data) * 100.0
+
 summary_df = pd.DataFrame([
+    {
+        "Model": "Majority Class Baseline (Always Referable)",
+        "N_Samples": len(y_data),
+        "Qubits": "N/A",
+        "Accuracy": f"{majority_baseline_acc:.1f}% ± 0.0%",
+        "Referable_Sensitivity": "100.0% ± 0.0%",
+        "Specificity": "0.0% ± 0.0%",
+        "F1_Score": f"{(majority_baseline_acc/100.0 * 2.0 / (1.0 + majority_baseline_acc/100.0))*100:.1f}% ± 0.0%",
+        "Train_Time_Sec": "0.000s",
+        "Inference_Latency_ms": "0.00ms"
+    },
     {
         "Model": "Classical SVM (RBF)",
         "N_Samples": len(y_data),
@@ -241,16 +255,17 @@ summary_df.to_csv(csv_path, index=False)
 print(f"\n[BENCHMARK] Saved Stratified {args.folds}-Fold Summary CSV to {csv_path}")
 print(summary_df.to_string(index=False))
 
+
 # ------------------------------------------------------------------------------
 # 5. GENERATE COMPARISON BAR CHART (PNG)
 # ------------------------------------------------------------------------------
-plt.figure(figsize=(9, 5), dpi=300)
-models = ["Classical SVM", "Hybrid VQC"]
-acc_means = [np.mean(svm_accs)*100, np.mean(vqc_accs)*100]
-acc_stds = [np.std(svm_accs)*100, np.std(vqc_accs)*100]
+plt.figure(figsize=(10, 5), dpi=300)
+models = ["Majority Baseline", "Classical SVM", "Hybrid VQC"]
+acc_means = [majority_baseline_acc, np.mean(svm_accs)*100, np.mean(vqc_accs)*100]
+acc_stds = [0.0, np.std(svm_accs)*100, np.std(vqc_accs)*100]
 
-sens_means = [np.mean(svm_senss)*100, np.mean(vqc_senss)*100]
-sens_stds = [np.std(svm_senss)*100, np.std(vqc_senss)*100]
+sens_means = [100.0, np.mean(svm_senss)*100, np.mean(vqc_senss)*100]
+sens_stds = [0.0, np.std(svm_senss)*100, np.std(vqc_senss)*100]
 
 x = np.arange(len(models))
 width = 0.35
@@ -258,10 +273,10 @@ width = 0.35
 plt.bar(x - width/2, acc_means, width, yerr=acc_stds, label="Accuracy (%)", color="#ffb300", capsize=5)
 plt.bar(x + width/2, sens_means, width, yerr=sens_stds, label="Referable Sensitivity (%)", color="#00f2fe", capsize=5)
 
-plt.title(f"SIH26139 Stratified {args.folds}-Fold Cross-Validation (N={len(y_data)}, Qubits={args.n_qubits})", fontsize=11, fontweight="bold")
+plt.title(f"SIH26139 Stratified {args.folds}-Fold Cross-Validation (N={len(y_data)} Seed Images, Qubits={args.n_qubits})", fontsize=11, fontweight="bold")
 plt.ylabel("Score (%)", fontsize=10)
 plt.xticks(x, models, fontsize=10, fontweight="bold")
-plt.ylim(0, 105)
+plt.ylim(0, 110)
 plt.grid(axis="y", linestyle="--", alpha=0.3)
 plt.legend(loc="lower right")
 plt.tight_layout()
@@ -270,3 +285,4 @@ png_path = os.path.join(BASE_DIR, f"{args.output_prefix}.png")
 plt.savefig(png_path)
 plt.close()
 print(f"[PLOT] Saved Benchmark Plot to {png_path}")
+
