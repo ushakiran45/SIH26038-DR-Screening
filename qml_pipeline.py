@@ -1,6 +1,6 @@
 """
 ================================================================================
-TNSAT - HYBRID QUANTUM-CLASSICAL MACHINE LEARNING (QML) DR DIAGNOSTIC PIPELINE
+SIH26139 - HYBRID QUANTUM-CLASSICAL MACHINE LEARNING (QML) DR DIAGNOSTIC PIPELINE
 ================================================================================
 Architecture Overview:
   1. Retinal Image -> Image Quality Check & Preprocessing (Ben Graham Contrast)
@@ -486,7 +486,7 @@ def get_model_metrics():
 # ------------------------------------------------------------------------------
 def run_qml_inference(image_path_or_matrix):
     """
-    Full TNSAT Quantum-Classical DR Diagnostic Pipeline:
+    Full SIH26139 Quantum-Classical DR Diagnostic Pipeline:
     
     Retinal Image
          ↓

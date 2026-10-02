@@ -1,6 +1,6 @@
 """
 ================================================================================
-SIH26139 (TNSAT) - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
+SIH26139 - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
 ================================================================================
 Runs HTTP Server on http://localhost:8000
 Provides live web application hosting, AI inference backend API, 
@@ -170,7 +170,7 @@ def main():
     os.chdir(WORKSPACE_DIR)
     server = HTTPServer(("0.0.0.0", PORT), TelemedRequestHandler)
     print("==================================================================")
-    print(f"  TNSAT AI & QUANTUM ML TELEMEDICINE WORKSTATION ONLINE")
+    print(f"  SIH26139 AI & QUANTUM ML TELEMEDICINE WORKSTATION ONLINE")
     print(f"  URL: http://localhost:{PORT}")
     print("  Models Loaded: EfficientNet-B3, PCA (4-D), Classical SVM, Pennylane VQC (4 Qubits)")
     print("==================================================================")
