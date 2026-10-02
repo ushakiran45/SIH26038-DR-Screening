@@ -1,6 +1,6 @@
 # Hybrid Quantum Machine Learning Platform for Early Disease Detection
 ## Egreen Quanta | Ministry of Education's Innovation Cell (MIC)
-**Problem Statement ID**: TNSAT | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
+**Problem Statement ID**: SIH26139 | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
 **Problem Creator**: Sarim Moin | **Organization**: Egreen Quanta
 
 > [!NOTE]
@@ -128,7 +128,7 @@ Open your web browser and navigate to:
 ```text
 http://localhost:8000
 ```
-Navigate to **Tab 7: Hybrid Quantum ML (TNSAT)** to interact with live dual predictions, quantum circuit visualizers, and performance dashboards.
+Navigate to **Tab 7: Hybrid Quantum ML (SIH26139)** to interact with live dual predictions, quantum circuit visualizers, and performance dashboards.
 
 #### Option 2: Train & Evaluate QML Models via CLI
 Execute the master Quantum ML pipeline script directly:
