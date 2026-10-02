@@ -114,12 +114,6 @@ body {
     border: 1px solid transparent;
 }
 
-.badge-mathworks {
-    background: rgba(255, 128, 0, 0.15);
-    color: #ff9800;
-    border-color: rgba(255, 152, 0, 0.3);
-}
-
 .badge-sih {
     background: rgba(0, 242, 254, 0.15);
     color: var(--primary);
@@ -983,6 +977,11 @@ body {
     gap: 0.6rem;
     flex-wrap: wrap;
     margin-top: 0.6rem;
+}
+
+.pca-tag-stack {
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .pca-tag {

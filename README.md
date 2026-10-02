@@ -14,7 +14,7 @@
 #### Background
 Early and accurate detection of diseases significantly improves treatment outcomes and reduces healthcare costs. Classical machine learning models have achieved notable success in medical diagnosis; however, they often face limitations when dealing with high-dimensional, noisy, and complex biomedical data (e.g., genomics, medical imaging, and electronic health records).
 
-Quantum Machine Learning (QML) offers the potential to capture intricate patterns through quantum superposition and entanglement. Due to current hardware constraints, a hybrid quantum-classical approach provides a practical pathway to leverage quantum advantages while remaining executable on existing quantum simulators and near-term quantum devices.
+Quantum Machine Learning (QML) may capture patterns through superposition and entanglement on some tasks. Due to current hardware and sample-size constraints, this repository uses a hybrid quantum-classical approach that runs on a PennyLane simulator. **No quantum advantage is claimed.**
 
 #### Description
 This project focuses on designing and developing a **hybrid quantum machine learning platform for early disease detection** (applied to Diabetic Retinopathy retinal image diagnosis). The platform integrates classical pre-processing and feature engineering with quantum-enhanced learning models (Variational Quantum Classifiers with 4 Qubits and Angle Encoding). 
@@ -27,7 +27,7 @@ The platform supports data ingestion, hybrid model training, prediction, explain
 
 * **Architecture Design**: Design a hybrid quantum-classical machine learning architecture suitable for early disease detection.
 * **Quantum Model Development**: Develop quantum-enhanced classification models processing high-dimensional biomedical image data (1,536D EfficientNet-B3 embeddings compressed to 4 PCA components).
-* **Performance Improvement**: Improve detection accuracy, sensitivity, and specificity compared with classical ML baselines.
+* **Performance Comparison**: Compare detection accuracy, sensitivity, and specificity against a classical SVM baseline on the same features (small-sample proof-of-concept).
 * **Hardware & Simulator Compatibility**: Ensure the platform is scalable, interpretable, and compatible with PennyLane quantum simulators (`default.qubit`) and near-term quantum hardware.
 * **Module Integration**: Incorporate data pre-processing (Ben Graham contrast method), feature selection (PCA), and model explainability modules (Grad-CAM).
 * **Empirical Benchmarking**: Benchmark the hybrid approach against classical models in terms of accuracy, computational efficiency, and generalization performance.
@@ -158,12 +158,12 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 
 ### 📊 Validation & Benchmark Comparisons
 
-#### 5-Fold Stratified Cross-Validation Benchmark ($N = 22$ Seed Images)
+#### 5-Fold Stratified Cross-Validation Benchmark ($N = 22$ seed set)
 | Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score | Inference Latency |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Majority Class Baseline** | 22 | N/A | **$68.2\% \pm 0.0\%$** | $100.0\%$ | $0.0\%$ | $81.1\%$ | $0.00 \text{ ms}$ |
-| **Classical SVM (RBF)** | 22 | 4 | **$77.0\% \pm 2.4\%$** | $100.0\% \pm 0.0\%$ | $20.0\% \pm 24.5\%$ | $69.8\% \pm 6.8\%$ | $0.08 \text{ ms}$ |
-| **Hybrid PennyLane VQC** | 22 | 4 | **$69.0\% \pm 7.3\%$** | $100.0\% \pm 0.0\%$ | $0.0\% \pm 0.0\%$ | $56.6\% \pm 9.4\%$ | $9.48 \text{ ms}$ |
+| **Majority-class baseline (always referable)** | 22 | N/A | **$68.2\%$** | $100\%$ | N/A (always-positive rule) | $81.1\%$ | — |
+| **Classical SVM (RBF)** | 22 | 4 | **$76.0\% \pm 15.9\%$** | $93.3\% \pm 13.3\%$ | $30.0\% \pm 40.0\%$ | $71.3\% \pm 16.9\%$ | $0.07 \text{ ms}$ |
+| **Hybrid PennyLane VQC** | 22 | 4 | **$67.0\% \pm 24.6\%$** | $86.7\% \pm 26.7\%$ | $20.0\% \pm 40.0\%$ | $60.7\% \pm 23.5\%$ | $7.38 \text{ ms}$ |
 
 #### CNN Backbone Evaluation (from `cnn_eval_metrics.json`)
 | Component | $N$ Samples | ROC-AUC | Referable Sensitivity | Referable Specificity |

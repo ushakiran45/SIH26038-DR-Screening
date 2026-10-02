@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hybrid Quantum Machine Learning Platform for Early Disease Detection | SIH26139</title>
-    <meta name="description" content="Hybrid Quantum-Classical Machine Learning Platform (SIH26139 | Egreen Quanta - MIC) integrating EfficientNet-B3 CNN feature extraction, 4-Qubit PennyLane Variational Quantum Circuit (VQC), classical SVM baselines, Grad-CAM visual explainability, and telemedicine resource telemetry.">
+    <meta name="description" content="Working proof-of-concept hybrid quantum-classical ML pipeline (SIH26139 | Egreen Quanta) on a small fundus sample. Decision support research tool, not a diagnostic device.">
     
     <!-- Google Fonts & Chart.js -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="header-badges">
-            <span class="badge badge-mathworks" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; border-color: rgba(0, 242, 254, 0.3);">Egreen Quanta SIH26139</span>
+            <span class="badge badge-sih" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; border-color: rgba(0, 242, 254, 0.3);">Egreen Quanta SIH26139</span>
             <span class="badge badge-sih">MIC | HealthTech</span>
             <span class="badge badge-live">
                 <span class="status-dot"></span> Static Demo Mode: Checkpoints Loaded
@@ -37,6 +37,13 @@
     </header>
 
     <!-- Module Navigation Tabs -->
+    <div class="alert-box-notice" style="margin: 0.75rem 1.25rem 0;">
+        <strong>Working proof-of-concept hybrid pipeline on a small sample (N = 22).</strong>
+        Larger benchmark, hardware run and generalization testing are future work.
+        This is <strong>decision support, not diagnosis</strong> — it does not reliably detect diabetic retinopathy.
+        No quantum advantage is claimed; SVM vs VQC differences on 22 images are noise.
+    </div>
+
     <nav class="nav-tabs">
         <button class="tab-btn active" data-tab="tab-quality">
             <span>🔍</span> 1. Quality Assessment & CLAHE
@@ -54,7 +61,7 @@
             <span>⚡</span> 5. Simulink District Telemetry
         </button>
         <button class="tab-btn" data-tab="tab-benchmark">
-            <span>🏆</span> 6. Benchmark Superiority
+            <span>📋</span> 6. Reference Benchmarks
         </button>
         <button class="tab-btn" data-tab="tab-qml">
             <span>⚛️</span> 7. Hybrid Quantum ML (SIH26139)
@@ -276,20 +283,25 @@
 
             <div class="grid-3">
                 <div class="metric-card">
-                    <span class="metric-label">CNN Referable Sensitivity</span>
-                    <span class="metric-value" id="cnn-eval-sensitivity" style="color:#00e676;">--%</span>
-                    <span class="metric-sub">CNN Backbone Feature Extractor</span>
+                    <span class="metric-label">CNN backbone — Referable Sensitivity</span>
+                    <span class="metric-value" id="cnn-eval-sensitivity">20.0%</span>
+                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-label">CNN Referable Specificity</span>
-                    <span class="metric-value" id="cnn-eval-specificity" style="color:#00e676;">--%</span>
-                    <span class="metric-sub">CNN Backbone Feature Extractor</span>
+                    <span class="metric-label">CNN backbone — Referable Specificity</span>
+                    <span class="metric-value" id="cnn-eval-specificity">100.0%</span>
+                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-label">CNN ROC-AUC Score</span>
-                    <span class="metric-value" id="cnn-eval-auc" style="color:#00f2fe;">0.---</span>
-                    <span class="metric-sub">Empirical Validation Benchmark</span>
+                    <span class="metric-label">CNN backbone — ROC-AUC</span>
+                    <span class="metric-value" id="cnn-eval-auc">0.838</span>
+                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
                 </div>
+            </div>
+            <div class="alert-box-notice" style="margin-top: 1rem;">
+                Backbone sensitivity on 22 images is low (20%) and needs validation on a larger set.
+                These CNN figures are the feature-extractor backbone only, not a clinical DR detector.
+            </div>
             </div>
         </div>
 
@@ -438,7 +450,7 @@
                     <span class="badge badge-sih">Reference Benchmarks</span>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-                    Demonstrating that the integrated EfficientNet-B3 + hybrid QML pipeline outperforms single-technique approaches (ResNet-50 alone, UNet alone, SVM on handcrafted features) across APTOS 2019, IDRiD, Messidor-2, and DRIVE. Figures are from published literature benchmarks shown for architectural context.
+                    Published literature figures for common architectures (shown only as context). They are <strong>not this project's measured results</strong>. This repository is a working proof-of-concept on N = 22 images and does not claim reliable diabetic retinopathy detection or superiority over published models.
                 </p>
                 <div id="benchmark-table-container"></div>
             </div>
@@ -603,7 +615,7 @@
 
             <!-- Example Prediction Label -->
             <div style="text-align: center; margin-bottom: 0.75rem;">
-                <span style="font-size: 0.9rem; color: var(--text-muted); font-style: italic; background: rgba(255,179,0,0.1); border: 1px solid rgba(255,179,0,0.3); border-radius: 6px; padding: 0.3rem 1rem;">Example prediction on one image (Moderate NPDR seed — N=22 corpus)</span>
+                <span style="font-size: 0.95rem; color: var(--text-main); font-weight: 600; background: rgba(255,179,0,0.1); border: 1px solid rgba(255,179,0,0.3); border-radius: 6px; padding: 0.4rem 1rem;">Example prediction on one image</span>
             </div>
             <div class="grid-2" style="margin-bottom: 1.5rem;">
                 <div class="card card-classical-highlight">
@@ -636,49 +648,35 @@
             </div>
 
             <!-- Quantum Circuit Visualizer & PCA Feature Vectors -->
-            <div class="grid-2" style="margin-bottom: 1.5rem;">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><i>⚡</i> Quantum Circuit Architecture Visualizer</div>
-                        <span class="badge badge-live">4 Qubits / 2 Layers</span>
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <div class="card-title"><i>⚡</i> Quantum Circuit Architecture Visualizer</div>
+                    <span class="badge badge-live">4 Qubits / 2 Layers (deployed Ry/Rz ring-CNOT)</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.75rem;">
+                    The dashboard circuit is the deployed 4-qubit Ry/Rz ring-CNOT design. The benchmark script uses a StronglyEntanglingLayers VQC with a single ⟨Z0⟩ output on a binary target.
+                </p>
+                <div class="quantum-circuit-box">
+                    <div class="circuit-meta">
+                        <span><b>Qubits:</b> 4 (q0, q1, q2, q3)</span>
+                        <span><b>Layers:</b> 2 Variational Layers</span>
+                        <span><b>Encoding:</b> Angle Encoding (Ry)</span>
+                        <span><b>Entanglement:</b> Ring CNOT</span>
                     </div>
-                    <div class="quantum-circuit-box">
-                        <div class="circuit-meta">
-                            <span><b>Qubits:</b> 4 (q0, q1, q2, q3)</span>
-                            <span><b>Layers:</b> 2 Variational Layers</span>
-                            <span><b>Encoding:</b> Angle Encoding (Ry)</span>
-                            <span><b>Entanglement:</b> Ring CNOT</span>
-                        </div>
-                        <pre class="quantum-ascii-diagram" id="quantum-ascii-circuit">
+                    <pre class="quantum-ascii-diagram" id="quantum-ascii-circuit">
 q0: ───Ry(θ0)───[Ry(w0)]───[Rz(w1)]───────●───────────────[X]───⟨Z0⟩
 q1: ───Ry(θ1)───[Ry(w2)]───[Rz(w3)]───────┼───────●───────│───⟨Z1⟩
 q2: ───Ry(θ2)───[Ry(w4)]───[Rz(w5)]───────┼───────┼───────●───⟨Z2⟩
 q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]─────[X]─────┼───⟨Z3⟩
-                        </pre>
-                    </div>
-                    <div class="pca-vector-display" style="margin-top: 1rem;">
-                        <span class="control-label">Angle Encoded PCA Features [θ0, θ1, θ2, θ3]:</span>
-                        <div class="pca-tag-group" id="qml-pca-values">
-                            <span class="pca-tag">θ0: -3.115</span>
-                            <span class="pca-tag">θ1: -0.170</span>
-                            <span class="pca-tag">θ2: 0.320</span>
-                            <span class="pca-tag">θ3: -0.673</span>
-                        </div>
-                    </div>
+                    </pre>
                 </div>
-
-                <!-- Grad-CAM & Explainability Panel -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><i>💡</i> Grad-CAM Retinal Explainability</div>
-                        <span class="badge badge-sih">CNN Feature Attribution</span>
-                    </div>
-                    <div class="viewer-box">
-                        <img id="qml-gradcam-img" src="static/gradcam_sample1.png" alt="Grad-CAM Overlay (Illustrative Placeholder)" class="fundus-canvas" style="width: 100%; border-radius: 8px;">
-
-                    </div>
-                    <div class="alert-box-notice" style="margin-top: 1rem;">
-                        <strong>💡 Explainability Note (SIH26139):</strong> Grad-CAM highlights visual lesion regions extracted by the EfficientNet-B3 CNN backbone. Grad-CAM visualizes spatial CNN attention and does not explain quantum circuit gate parameters directly. <em>Illustrative placeholder — the overlay shown is a simulated heatmap, not a real model output from the current checkpoint.</em>
+                <div class="pca-vector-display" style="margin-top: 1rem;">
+                    <span class="control-label">Angle-encoded PCA features (one per line):</span>
+                    <div class="pca-tag-group pca-tag-stack" id="qml-pca-values">
+                        <span class="pca-tag">θ0: -3.115 rad</span>
+                        <span class="pca-tag">θ1: -0.170 rad</span>
+                        <span class="pca-tag">θ2: 0.320 rad</span>
+                        <span class="pca-tag">θ3: -0.673 rad</span>
                     </div>
                 </div>
             </div>
@@ -691,8 +689,11 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                 </div>
 
                 <div class="alert-box-notice" style="margin-bottom: 1.25rem; background: rgba(30, 41, 59, 0.8); border-left: 4px solid #ffb300;">
-                    <strong>⚠️ Evaluation Scope & Methodology Disclosure:</strong>
-                    Because evaluation was conducted on <strong>22 seed clinical fundus images</strong> (68.2% Referable DR prevalence baseline), these metrics serve as a <strong>QML software pipeline proof-of-concept demonstration</strong> rather than a standalone clinical evaluation. Classical SVM and Hybrid VQC demonstrate comparable baseline performance relative to majority-class prevalence (68.2%) — <strong>the difference on 22 images is noise; no quantum advantage is claimed.</strong> Cross-dataset validation on larger datasets (e.g., APTOS-2019 / IDRiD) is planned. <em>&#9877;&#65039; Decision support tool only — not a diagnostic device.</em>
+                    <strong>N = 22 notice.</strong>
+                    Working proof-of-concept hybrid pipeline on a small sample. Larger benchmark, hardware run and generalization testing are future work.
+                    Majority-class (always referable) accuracy on this sample is 68.2%. SVM and VQC accuracies are comparable to that baseline — <strong>the difference on 22 images is noise; no quantum advantage is claimed, and VQC does not beat SVM.</strong>
+                    <em>Decision support, not diagnosis.</em>
+                    Seed folder limitation: several files in <code>Sample_Fundus_Photos</code> are diagrams, cartoons, a bar chart, or textbook illustrations — not all 22 are clinical fundus photographs.
                 </div>
 
                 <div class="table-responsive" style="margin-bottom: 1.5rem;">
@@ -711,27 +712,48 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                         </thead>
                         <tbody id="qml-comparison-table-body">
                             <tr>
-                                <td><b>Classical SVM (Baseline)</b></td>
-                                <td style="color:#00e676; font-weight:700;">87.50%</td>
-                                <td>91.02%</td>
-                                <td>87.50%</td>
-                                <td style="font-weight:700;">87.66%</td>
-                                <td>0.008 sec</td>
-                                <td>0.23 ms</td>
-                                <td>4 PCA Components</td>
+                                <td><b>Majority-class baseline (always referable)</b></td>
+                                <td>68.2%</td>
+                                <td>100%</td>
+                                <td>N/A (always-positive rule)</td>
+                                <td>81.1%</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>N = 22 seed set</td>
                             </tr>
                             <tr>
-                                <td><b>Hybrid VQC (Pennylane QML)</b></td>
-                                <td style="color:#00f2fe; font-weight:700;">87.50%</td>
-                                <td>91.02%</td>
-                                <td>87.50%</td>
-                                <td style="color:#00f2fe; font-weight:700;">87.66%</td>
-                                <td>19.32 sec</td>
-                                <td>6.73 ms</td>
-                                <td>4 Qubits (Angle Encoded)</td>
+                                <td><b>Classical SVM (RBF baseline)</b></td>
+                                <td>76.0% ± 15.9%</td>
+                                <td>93.3% ± 13.3%</td>
+                                <td>30.0% ± 40.0%</td>
+                                <td>71.3% ± 16.9%</td>
+                                <td>0.002 sec</td>
+                                <td>0.07 ms</td>
+                                <td>4 PCA components</td>
+                            </tr>
+                            <tr>
+                                <td><b>Hybrid VQC (PennyLane)</b></td>
+                                <td>67.0% ± 24.6%</td>
+                                <td>86.7% ± 26.7%</td>
+                                <td>20.0% ± 40.0%</td>
+                                <td>60.7% ± 23.5%</td>
+                                <td>5.10 sec</td>
+                                <td>7.38 ms</td>
+                                <td>4 qubits (angle encoded)</td>
+                            </tr>
+                            <tr>
+                                <td><b>CNN backbone</b> (EfficientNet-B3, feature extractor)</td>
+                                <td>—</td>
+                                <td>20.0%</td>
+                                <td>100%</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>AUC 0.838, N = 22</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
             </div>
 
             <!-- Delivery Table -->
@@ -760,7 +782,7 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             <tr><td><b>DEL-07</b></td><td>Visual Explainability (Grad-CAM placeholder)</td><td><span class="badge badge-live">✓ Done</span></td><td>ai_ml_pipeline.py</td></tr>
                             <tr><td><b>DEL-08</b></td><td>5-Fold Cross-Validation Benchmark (N=22)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_metrics.json</td></tr>
                             <tr><td><b>DEL-09</b></td><td>Model Checkpoint Repository</td><td><span class="badge badge-live">✓ Done</span></td><td>best_model.pt, *.pkl, vqc_model.pt</td></tr>
-                            <tr><td><b>DEL-10</b></td><td>Deployment &amp; GitHub Pages</td><td><span class="badge badge-live">✓ Done</span></td><td>github.io/SIH26139-Hybrid-QML</td></tr>
+                            <tr><td><b>DEL-10</b></td><td>Deployment &amp; GitHub Pages</td><td><span class="badge badge-live">✓ Done</span></td><td><a href="https://ushakiran45.github.io/SIH26139-Hybrid-QML/" style="color:#67e8f9;">https://ushakiran45.github.io/SIH26139-Hybrid-QML/</a></td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-01</b></td><td>Cross-dataset benchmark (APTOS-2019 / IDRiD / Messidor-2)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — N&gt;200 independent images</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-02</b></td><td>Physical quantum hardware run (IBM Quantum / pennylane-qiskit)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — hardware gate noise &amp; queue latency</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-03</b></td><td>Qubit scaling (6-qubit, 8-qubit VQC)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — deeper entanglement layers</td></tr>

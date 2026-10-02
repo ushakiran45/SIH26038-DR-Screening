@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.pca_features) {
             const pcaContainer = document.getElementById('qml-pca-values');
             if (pcaContainer) {
-                pcaContainer.innerHTML = data.pca_features.map((val, i) => `<span class="pca-tag">θ${i}: ${val} rad</span>`).join('');
+                pcaContainer.innerHTML = data.pca_features.map((val, i) => `<span class="pca-tag">θ${i}: ${Number(val).toFixed(3)} rad</span>`).join('');
             }
         }
 
@@ -314,58 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // 5. Grad-CAM Overlay
-        if (data.gradcam_image_b64) {
-            const imgEl = document.getElementById('qml-gradcam-img');
-            if (imgEl) imgEl.src = data.gradcam_image_b64;
-        }
-
-        // 6. Benchmark Table (confusion matrices removed - containers deleted)
-        if (data.model_comparison) {
-            renderComparisonTable('qml-comparison-table-body', data.model_comparison);
-            // Confusion matrix containers removed from UI per accuracy/heading corrections
-        }
-
-    }
-
-    function renderComparisonTable(containerId, modelComp) {
-        const el = document.getElementById(containerId);
-        if (!el) return;
-        const svm = modelComp?.classical_svm || {};
-        const vqc = modelComp?.hybrid_vqc || {};
-
-        el.innerHTML = `
-            <tr style="background: rgba(255,255,255,0.02);">
-                <td><b>Majority Baseline (Always Referable)</b></td>
-                <td style="color:#ffb300; font-weight:700;">68.2%</td>
-                <td>100.0%</td>
-                <td>0.0%</td>
-                <td style="font-weight:700;">81.1%</td>
-                <td>0.000 sec</td>
-                <td>0.00 ms</td>
-                <td>N = 22 Seed Images</td>
-            </tr>
-            <tr>
-                <td><b>Classical SVM (RBF Baseline)</b></td>
-                <td style="color:#00e676; font-weight:700;">${svm.accuracy ? svm.accuracy + '%' : '76.0% ± 15.9%'}</td>
-                <td>${svm.referable_sensitivity ? svm.referable_sensitivity + '%' : '93.3%'}</td>
-                <td>${svm.referable_specificity ? svm.referable_specificity + '%' : '30.0%'}</td>
-                <td style="font-weight:700;">${svm.f1_score ? svm.f1_score + '%' : '71.3%'}</td>
-                <td>${svm.training_time_sec ? svm.training_time_sec + ' sec' : '0.002 sec'}</td>
-                <td>${svm.inference_time_ms ? svm.inference_time_ms + ' ms' : '0.07 ms'}</td>
-                <td>4 PCA Components</td>
-            </tr>
-            <tr>
-                <td><b>Hybrid VQC (Pennylane QML)</b></td>
-                <td style="color:#00f2fe; font-weight:700;">${vqc.accuracy ? vqc.accuracy + '%' : '67.0% ± 24.6%'}</td>
-                <td>${vqc.referable_sensitivity ? vqc.referable_sensitivity + '%' : '86.7%'}</td>
-                <td>${vqc.referable_specificity ? vqc.referable_specificity + '%' : '20.0%'}</td>
-                <td style="color:#00f2fe; font-weight:700;">${vqc.f1_score ? vqc.f1_score + '%' : '60.7%'}</td>
-                <td>${vqc.training_time_sec ? vqc.training_time_sec + ' sec' : '5.10 sec'}</td>
-                <td>${vqc.inference_time_ms ? vqc.inference_time_ms + ' ms' : '7.38 ms'}</td>
-                <td>4 Qubits (Angle Encoded)</td>
-            </tr>
-        `;
+        // Comparison table is static 5-fold N=22 figures in index.html (do not overwrite with held-out JSON).
     }
 
     function renderProbBars(containerId, probsObj, barColor) {
@@ -386,30 +335,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }
-        el.innerHTML = html;
-    }
-
-    function renderConfusionMatrix(containerId, cm) {
-        const el = document.getElementById(containerId);
-        if (!el || !cm) return;
-        const is2x2 = cm.length === 2;
-        const classNames = is2x2 ? ["Non-Referable (<L2)", "Referable (≥L2)"] : ["L0", "L1", "L2", "L3", "L4"];
-        let html = '<table class="cm-matrix-table"><thead><tr><th>True \\ Pred</th>';
-        classNames.forEach(c => html += `<th>${c}</th>`);
-        html += '</tr></thead><tbody>';
-
-        const numRows = cm.length;
-        for (let r = 0; r < numRows; r++) {
-            html += `<tr><th>${classNames[r]}</th>`;
-            for (let c = 0; c < numRows; c++) {
-                const val = (cm[r] && cm[r][c] !== undefined) ? cm[r][c] : 0;
-                const isDiag = (r === c);
-                const cellClass = isDiag ? 'cm-cell-diag' : (val > 0 ? 'cm-cell-off' : '');
-                html += `<td class="${cellClass}">${val}</td>`;
-            }
-            html += '</tr>';
-        }
-        html += '</tbody></table>';
         el.innerHTML = html;
     }
 
@@ -451,20 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     "q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]─────[X]─────┼───⟨Z3⟩"
                 ]
             },
-            model_comparison: {
-                classical_svm: {
-                    confusion_matrix: [
-                        [6, 1],
-                        [0, 15]
-                    ]
-                },
-                hybrid_vqc: {
-                    confusion_matrix: [
-                        [5, 2],
-                        [1, 14]
-                    ]
-                }
-            }
+            model_comparison: {}
         });
     }
 
