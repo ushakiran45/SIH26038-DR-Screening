@@ -1,11 +1,11 @@
 function main_pipeline()
-    % MAIN_PIPELINE - Master Driver Script for SIH26038 DR Screening Pipeline
+    % MAIN_PIPELINE - Master Driver Script for SIH26139 DR Screening Pipeline
     % Runs Image Quality Assessment -> Retinal Segmentation -> DR Grading -> Grad-CAM Explainability -> Simulink Telemedicine Simulation
 
     clc;
     fprintf('========================================================================\n');
     fprintf('  EXPLAINABLE AI FOR DIABETIC RETINOPATHY SCREENING IN RURAL INDIA      \n');
-    fprintf('  MathWorks Problem Statement SIH26038 - Automated Retinal Pipeline     \n');
+    fprintf('  Problem Statement SIH26139 - Automated Retinal Pipeline     \n');
     fprintf('========================================================================\n\n');
 
     % Step 1: Create / Load Synthetic Test Image (Representative Moderate NPDR Sample)
