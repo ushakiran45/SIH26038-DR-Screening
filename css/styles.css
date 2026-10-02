@@ -747,61 +747,162 @@ body {
 /* ==========================================================================
    SIH26139 - HYBRID QUANTUM MACHINE LEARNING (QML) STYLES
    ========================================================================== */
-.qml-flow-container {
+.qml-pipeline-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 0.5rem 0;
+}
+
+.qml-flow-steps {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    overflow-x: auto;
-    padding: 1rem 0.5rem;
+    flex-wrap: wrap;
 }
 
-.flow-node {
-    background: rgba(15, 23, 42, 0.8);
+.qml-step-card {
+    background: rgba(15, 23, 42, 0.75);
     border: 1px solid var(--border-color);
-    padding: 0.6rem 0.9rem;
     border-radius: var(--radius-md);
-    font-size: 0.8rem;
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.step-num {
+    background: rgba(0, 242, 254, 0.2);
+    color: var(--primary);
+    border: 1px solid var(--border-color);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.step-icon {
+    font-size: 1.2rem;
+}
+
+.step-label {
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-main);
-    white-space: nowrap;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
 }
 
-.flow-arrow {
+.qml-arrow {
     color: var(--primary);
     font-weight: bold;
     font-size: 1.1rem;
 }
 
-.flow-branch {
+.qml-branch-container {
     display: flex;
-    gap: 0.75rem;
-}
-
-.branch-col {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-.node-classical {
-    border-color: rgba(255, 179, 0, 0.4);
-    background: rgba(255, 179, 0, 0.08);
+.branch-card {
+    flex: 1;
+    min-width: 300px;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.node-qml {
+.branch-classical {
+    background: rgba(255, 179, 0, 0.06);
+    border: 1px solid rgba(255, 179, 0, 0.35);
+}
+
+.branch-quantum {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.4);
+}
+
+.branch-header {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.branch-classical .branch-header { color: #ffb300; }
+.branch-quantum .branch-header { color: #00f2fe; }
+
+.branch-flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: space-between;
+}
+
+.sub-step {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+}
+
+.sub-arrow {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.highlight-amber {
+    border-color: rgba(255, 179, 0, 0.5);
+    color: #ffb300;
+}
+
+.highlight-cyan {
     border-color: rgba(0, 242, 254, 0.5);
-    background: rgba(0, 242, 254, 0.1);
     color: #00f2fe;
 }
 
-.node-result {
-    border-color: rgba(0, 230, 118, 0.5);
-    background: rgba(0, 230, 118, 0.12);
+.branch-vs-badge {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+}
+
+.qml-final-banner {
+    background: rgba(0, 230, 118, 0.08);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     color: #00e676;
+    font-size: 0.88rem;
+}
+
+.final-banner-icon {
+    font-size: 1.3rem;
 }
 
 .card-classical-highlight {

@@ -455,31 +455,75 @@
                     <div class="card-title"><i>⚛️</i> SIH26139 Hybrid Quantum-Classical DR Prediction Architecture</div>
                     <span class="badge badge-sih">Pennylane 4-Qubit VQC + SVM Baseline</span>
                 </div>
-                <div class="qml-flow-container">
-                    <div class="flow-node">📷 Retinal Image</div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-node">🔍 Quality Check</div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-node">✨ Preprocessing</div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-node">🧠 EfficientNet-B3 (1536D)</div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-node">📐 PCA (4 Features)</div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-branch">
-                        <div class="branch-col">
-                            <div class="flow-node node-classical">💻 Classical SVM</div>
-                            <div class="flow-arrow">↓</div>
-                            <div class="flow-node node-classical">📊 Classical Prediction</div>
+
+                <div class="qml-pipeline-diagram">
+                    <!-- Sequential Feature Extraction Pipeline -->
+                    <div class="qml-flow-steps">
+                        <div class="qml-step-card">
+                            <span class="step-num">1</span>
+                            <span class="step-icon">📷</span>
+                            <div class="step-label">Retinal Image</div>
                         </div>
-                        <div class="branch-col">
-                            <div class="flow-node node-qml">⚛️ Variational Quantum Circuit (VQC)</div>
-                            <div class="flow-arrow">↓</div>
-                            <div class="flow-node node-qml">⚛️ Hybrid QML Prediction</div>
+                        <div class="qml-arrow">➜</div>
+                        <div class="qml-step-card">
+                            <span class="step-num">2</span>
+                            <span class="step-icon">🔍</span>
+                            <div class="step-label">Quality Check</div>
+                        </div>
+                        <div class="qml-arrow">➜</div>
+                        <div class="qml-step-card">
+                            <span class="step-num">3</span>
+                            <span class="step-icon">✨</span>
+                            <div class="step-label">Preprocessing</div>
+                        </div>
+                        <div class="qml-arrow">➜</div>
+                        <div class="qml-step-card">
+                            <span class="step-num">4</span>
+                            <span class="step-icon">🧠</span>
+                            <div class="step-label">EfficientNet-B3<br><small style="color:var(--text-muted);">(1536D Features)</small></div>
+                        </div>
+                        <div class="qml-arrow">➜</div>
+                        <div class="qml-step-card">
+                            <span class="step-num">5</span>
+                            <span class="step-icon">📐</span>
+                            <div class="step-label">PCA Reduction<br><small style="color:var(--text-muted);">(4 Components)</small></div>
                         </div>
                     </div>
-                    <div class="flow-arrow">➜</div>
-                    <div class="flow-node node-result">⚖️ Model Comparison & Explainable Report</div>
+
+                    <!-- Dual Classification Branch -->
+                    <div class="qml-branch-container">
+                        <div class="branch-card branch-classical">
+                            <div class="branch-header">
+                                <span>💻</span> Classical ML Baseline
+                            </div>
+                            <div class="branch-flow-row">
+                                <div class="sub-step">Support Vector Machine (SVM)</div>
+                                <div class="sub-arrow">➜</div>
+                                <div class="sub-step highlight-amber">Classical Prediction</div>
+                            </div>
+                        </div>
+
+                        <div class="branch-vs-badge">VS</div>
+
+                        <div class="branch-card branch-quantum">
+                            <div class="branch-header">
+                                <span>⚛️</span> Hybrid Quantum ML (SIH26139)
+                            </div>
+                            <div class="branch-flow-row">
+                                <div class="sub-step">4-Qubit Variational Circuit (VQC)</div>
+                                <div class="sub-arrow">➜</div>
+                                <div class="sub-step highlight-cyan">Hybrid QML Prediction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Evaluation & Explainability Output -->
+                    <div class="qml-final-banner">
+                        <div class="final-banner-icon">⚖️</div>
+                        <div class="final-banner-text">
+                            <strong>Dual Performance Evaluation & Grad-CAM Explainable Diagnostic Report</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
