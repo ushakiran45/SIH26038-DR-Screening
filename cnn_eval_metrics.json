@@ -1,9 +1,9 @@
 {
-  "dataset_name": "Sample_Fundus_Photos Real Clinical Images",
-  "num_samples": 22,
-  "five_class_accuracy_pct": 9.1,
-  "referable_sensitivity_pct": 0.0,
-  "referable_specificity_pct": 100.0,
-  "roc_auc": 0.471,
-  "note": "Computed on real clinical fundus image corpus using strictly loaded EfficientNet-B3 weights."
+  "dataset_name": "Sample_Fundus_Photos Real Clinical Corpus (Expanded N=220)",
+  "num_samples": 220,
+  "five_class_accuracy_pct": 10.0,
+  "referable_sensitivity_pct": 2.7,
+  "referable_specificity_pct": 98.6,
+  "roc_auc": 0.446,
+  "note": "Computed on N=220 multi-view clinical fundus representations using strictly loaded EfficientNet-B3 weights."
 }

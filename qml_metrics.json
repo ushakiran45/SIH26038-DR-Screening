@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-02 20:45:04",
-  "train_size": 15,
-  "test_size": 7,
+  "timestamp": "2026-10-02 21:05:44",
+  "train_size": 154,
+  "test_size": 66,
   "evaluation": "held-out stratified test split on real EfficientNet-B3 features",
   "pca_components": 4,
   "quantum_qubits": 4,
@@ -10,97 +10,97 @@
   "models": {
     "classical_svm": {
       "name": "Support Vector Machine (SVM Baseline)",
-      "accuracy": 28.57,
-      "precision": 11.43,
-      "recall": 28.57,
-      "f1_score": 16.33,
-      "referable_sensitivity": 75.0,
-      "referable_specificity": 0.0,
-      "training_time_sec": 0.004,
-      "inference_time_ms": 0.34,
+      "accuracy": 46.97,
+      "precision": 51.4,
+      "recall": 46.97,
+      "f1_score": 46.17,
+      "referable_sensitivity": 73.33,
+      "referable_specificity": 76.19,
+      "training_time_sec": 0.014,
+      "inference_time_ms": 0.16,
       "confusion_matrix": [
         [
-          0,
+          12,
           0,
           1,
-          1,
-          0
+          0,
+          2
         ],
         [
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
+          2,
+          2,
           2,
           0,
           0
         ],
         [
+          7,
+          0,
+          5,
+          4,
+          2
+        ],
+        [
           1,
           0,
-          0,
-          0,
+          7,
+          4,
           0
         ],
         [
+          4,
           0,
+          3,
           0,
-          1,
-          0,
-          0
+          8
         ]
       ]
     },
     "hybrid_vqc": {
       "name": "Variational Quantum Circuit (Hybrid QML)",
-      "accuracy": 14.29,
-      "precision": 9.52,
-      "recall": 14.29,
-      "f1_score": 11.43,
-      "referable_sensitivity": 100.0,
-      "referable_specificity": 0.0,
-      "training_time_sec": 6.643,
-      "inference_time_ms": 13.47,
+      "accuracy": 36.36,
+      "precision": 35.35,
+      "recall": 36.36,
+      "f1_score": 34.72,
+      "referable_sensitivity": 91.11,
+      "referable_specificity": 23.81,
+      "training_time_sec": 52.281,
+      "inference_time_ms": 6.92,
       "confusion_matrix": [
         [
+          4,
           0,
+          8,
           0,
-          0,
+          3
+        ],
+        [
           1,
+          0,
+          2,
+          2,
           1
         ],
         [
+          4,
           0,
-          0,
-          0,
-          1,
-          0
+          8,
+          4,
+          2
         ],
         [
           0,
           0,
-          1,
-          1,
-          0
+          6,
+          4,
+          2
         ],
         [
           0,
           0,
+          6,
           1,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          1,
-          0,
-          0
+          8
         ]
       ]
     }
