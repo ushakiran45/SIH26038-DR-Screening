@@ -1,13 +1,49 @@
 # Hybrid Quantum Machine Learning Platform for Early Disease Detection
-## Egreen Quanta Problem Statement SIH26139 | Smart India Hackathon
-**Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
+## Egreen Quanta | Ministry of Education's Innovation Cell (MIC)
+**Problem Statement ID**: SIH26139 | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
+**Problem Creator**: Sarim Moin | **Organization**: Egreen Quanta
 
 ---
 
-### 🌟 Project Overview
-An integrated, explainable **Hybrid Quantum Machine Learning (QML) Retinal Diagnostic Platform** engineered for early disease detection (Diabetic Retinopathy screening) in rural Primary Health Centers (PHCs) in India. 
+### 🌟 Problem Background & Description
 
-The platform bridges classical Deep Learning (PyTorch EfficientNet-B3) with Quantum Variational Circuits (PennyLane 4-Qubit VQC) to perform 5-class severity grading, empirical model benchmark comparison, and Grad-CAM feature attribution.
+#### Background
+Early and accurate detection of diseases significantly improves treatment outcomes and reduces healthcare costs. Classical machine learning models have achieved notable success in medical diagnosis; however, they often face limitations when dealing with high-dimensional, noisy, and complex biomedical data (e.g., genomics, medical imaging, and electronic health records).
+
+Quantum Machine Learning (QML) offers the potential to capture intricate patterns through quantum superposition and entanglement. Due to current hardware constraints, a hybrid quantum-classical approach provides a practical pathway to leverage quantum advantages while remaining executable on existing quantum simulators and near-term quantum devices.
+
+#### Description
+This project focuses on designing and developing a **hybrid quantum machine learning platform for early disease detection** (applied to Diabetic Retinopathy retinal image diagnosis). The platform integrates classical pre-processing and feature engineering with quantum-enhanced learning models (Variational Quantum Classifiers with 4 Qubits and Angle Encoding). 
+
+The platform supports data ingestion, hybrid model training, prediction, explainability (Grad-CAM), and empirical performance evaluation against purely classical baselines (SVM).
+
+---
+
+### 🎯 Key Objectives
+
+* **Architecture Design**: Design a hybrid quantum-classical machine learning architecture suitable for early disease detection.
+* **Quantum Model Development**: Develop quantum-enhanced classification models processing high-dimensional biomedical image data (1,536D EfficientNet-B3 embeddings compressed to 4 PCA components).
+* **Performance Improvement**: Improve detection accuracy, sensitivity, and specificity compared with classical ML baselines.
+* **Hardware & Simulator Compatibility**: Ensure the platform is scalable, interpretable, and compatible with PennyLane quantum simulators (`default.qubit`) and near-term quantum hardware.
+* **Module Integration**: Incorporate data pre-processing (Ben Graham contrast method), feature selection (PCA), and model explainability modules (Grad-CAM).
+* **Empirical Benchmarking**: Benchmark the hybrid approach against classical models in terms of accuracy, computational efficiency, and generalization performance.
+
+---
+
+### 📦 Delivery Table (Expected Deliverables)
+
+| Deliverable ID | Module / Requirement | Implementation & Technical Architecture | Code / Checkpoint Location |
+| :--- | :--- | :--- | :--- |
+| **DEL-01** | **Data Ingestion & Pre-processing** | Ben Graham Gaussian Contrast Normalization ($\sigma_x = 10$) + Tenengrad Sharpness & Illumination Quality Assessment | [ai_ml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/ai_ml_pipeline.py) |
+| **DEL-02** | **CNN Feature Extraction & PCA Selection** | Pre-classifier EfficientNet-B3 1,536D embedding vector extraction + 4-Component PCA reduction scaled to $[-\pi, \pi]$ | [qml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/qml_pipeline.py) (`PCAFeatureReducer`) |
+| **DEL-03** | **Quantum Feature Encoding** | Angle Encoding ($R_y(\theta_i)$ rotations) mapping 4 PCA features to 4 Qubits | [qml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/qml_pipeline.py) (`vqc_quantum_circuit`) |
+| **DEL-04** | **Variational Quantum Classifier (VQC)** | PennyLane 4-Qubit Parameterized Quantum Circuit with 2 variational layers ($R_y, R_z$), Ring CNOT entanglement, & Pauli-Z expectation measurements | [qml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/qml_pipeline.py) (`HybridVQCClassifier`) |
+| **DEL-05** | **Classical ML Baseline Model** | Support Vector Machine (`SVC` with RBF kernel & probability calibration) trained on identical 4 PCA features | [qml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/qml_pipeline.py) (`ClassicalSVMClassifier`) |
+| **DEL-06** | **Hybrid Training & Prediction Workflow** | PyTorch + PennyLane hybrid Adam optimization & dual prediction inference pipeline | [server.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/server.py) (`/api/qml/predict`) |
+| **DEL-07** | **Visual Explainability Module** | Grad-CAM Class Activation Maps highlighting retinal lesion visual attention, with explicit attribution notice for CNN feature representation | [index.html](file:///c:/Users/USHA/OneDrive/Desktop/SIH/index.html), [ai_ml_pipeline.py](file:///c:/Users/USHA/OneDrive/Desktop/SIH/ai_ml_pipeline.py) |
+| **DEL-08** | **Empirical Benchmarking Dashboard** | Comparative evaluation of Accuracy, Precision, Recall, F1-Score, Training Time, Inference Latency, & 5x5 Confusion Matrices | [qml_metrics.json](file:///c:/Users/USHA/OneDrive/Desktop/SIH/qml_metrics.json), [index.html](file:///c:/Users/USHA/OneDrive/Desktop/SIH/index.html) |
+| **DEL-09** | **Model Checkpoint Repository** | Saved weight files for CNN (`best_model.pt`), PCA (`pca_model.pkl`), Classical SVM (`svm_model.pkl`), and Quantum VQC (`vqc_model.pt`) | [best_model.pt](file:///c:/Users/USHA/OneDrive/Desktop/SIH/best_model.pt), `pca_model.pkl`, `svm_model.pkl`, `vqc_model.pt` |
+| **DEL-10** | **Deployment & Containerization** | Live GitHub Pages web deployment, Dockerfile container configuration, Procfile, requirements.txt, & Render.yaml cloud blueprints | [Dockerfile](file:///c:/Users/USHA/OneDrive/Desktop/SIH/Dockerfile), [render.yaml](file:///c:/Users/USHA/OneDrive/Desktop/SIH/render.yaml), GitHub Pages |
 
 ---
 
@@ -35,41 +71,6 @@ The platform bridges classical Deep Learning (PyTorch EfficientNet-B3) with Quan
                                 ↓
              Explainable Grad-CAM Diagnostic Report
 ```
-
----
-
-### 🎯 Key Technical & Quantum ML Features
-
-1. **Adaptive Image Quality Assessment (IQA)**:
-   - Tenengrad gradient focus sharpness metric ($>3.50$ threshold).
-   - Mean illumination uniformity check ($15\% - 85\%$ optimal range).
-   - Real-time operator recapture feedback for blurry or sub-optimal fundus acquisitions.
-
-2. **Pre-Classification CNN Feature Extraction (`best_model.pt`)**:
-   - Uses pre-trained **EfficientNet-B3** backbone.
-   - Extracts a high-dimensional **1,536-feature embedding vector** for every retinal image prior to the classification head.
-
-3. **PCA Dimensionality Reduction & Angle Encoding**:
-   - Reduces 1,536-dimensional CNN vectors down to **4 principal components**.
-   - Normalizes feature values to $[-\pi, \pi]$ for quantum rotation angle encoding ($[\theta_0, \theta_1, \theta_2, \theta_3]$).
-   - Saved checkpoint: `pca_model.pkl`.
-
-4. **Classical ML Baseline (Support Vector Machine)**:
-   - RBF-kernel SVM classifier trained on the 4 PCA features across 5 DR classes.
-   - Saved checkpoint: `svm_model.pkl`.
-
-5. **Variational Quantum Circuit (VQC)**:
-   - Built with **PennyLane 0.45** and **PyTorch autograd**.
-   - **4 Qubits** ($q_0, q_1, q_2, q_3$) using Angle Encoding ($R_y(\theta_i)$).
-   - **2 Variational Layers** of parameterized single-qubit rotations ($R_y(w), R_z(w)$).
-   - **Ring CNOT Entanglement** topology ($CNOT(0,1), CNOT(1,2), CNOT(2,3), CNOT(3,0)$).
-   - **Measurement**: Pauli-Z expectation values $\langle Z_0, Z_1, Z_2, Z_3 \rangle$.
-   - **Hybrid Classification Head**: Classical linear mapping to 5 DR classes + Softmax probability distribution.
-   - Saved checkpoint: `vqc_model.pt`.
-
-6. **Grad-CAM Visual Explainability**:
-   - Class Activation Map heatmaps generated from the EfficientNet-B3 feature extraction layer.
-   - *Attribution Disclaimer*: Grad-CAM visualizes spatial attention from the CNN feature extractor to highlight lesion regions. It explains visual feature representations rather than quantum gate parameters directly.
 
 ---
 
@@ -110,7 +111,7 @@ SIH/
 
 ---
 
-### 🚀 How to Run & Deploy the Project
+### 🚀 How to Run & Deploy
 
 #### Option 1: Web Application & Local API Server (Recommended for Presentation)
 Start the local Python server:
@@ -159,5 +160,5 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 
 ---
 
-### 🏆 Team SIH Presentation Pitch Script (SIH26139 - Egreen Quanta)
-> *"For Problem Statement SIH26139, Egreen Quanta presents a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Combined with Grad-CAM feature attribution and quality assessment, our platform provides clinicians with instant dual predictions, quantum state visualizations, and explainable diagnostic reports under 30 seconds."*
+### 🏆 Team SIH Presentation Pitch Script (SIH26139 - Egreen Quanta / MIC)
+> *"For Problem Statement SIH26139 (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Combined with Grad-CAM feature attribution and quality assessment, our platform provides clinicians with instant dual predictions, quantum state visualizations, and explainable diagnostic reports under 30 seconds."*
