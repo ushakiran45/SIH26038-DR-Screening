@@ -127,7 +127,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><i>✨</i> Adaptive Enhanced (CLAHE + Denoised)</div>
-                        <span class="badge badge-live">MATLAB Pipeline</span>
+                        <span class="badge badge-live">Python / OpenCV Pipeline</span>
                     </div>
                     <div class="viewer-box">
                         <canvas id="canvas-iqa-enhanced" width="600" height="600" class="fundus-canvas"></canvas>
@@ -232,7 +232,7 @@
             <div class="card" style="margin-bottom: 1.5rem;">
                 <div class="card-header">
                     <div class="card-title"><i>🧠</i> Deep Learning Classifier (EfficientNet-B3 Model)</div>
-                    <span class="badge badge-mathworks">best_model.pt (380x380 resolution)</span>
+                    <span class="badge badge-sih">best_model.pt (380x380 resolution)</span>
                 </div>
                 <div class="severity-banner">
                     <div>
@@ -301,11 +301,11 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><i>💡</i> Grad-CAM Attention Map Overlay</div>
-                        <span class="badge badge-live">Explainable AI</span>
+                        <span class="badge badge-sih">Illustrative Placeholder</span>
                     </div>
                     <div class="viewer-box">
                         <canvas id="canvas-gradcam" width="600" height="600" class="fundus-canvas"></canvas>
-                        <span class="canvas-overlay-tag" style="border-color: #ffb300; color: #ffb300;">Grad-CAM Class Activation</span>
+                        <span class="canvas-overlay-tag" style="border-color: #ffb300; color: #ffb300;">Grad-CAM Class Activation — Illustrative placeholder, not model output</span>
                     </div>
                     
                     <div class="grid-2" style="margin-top: 1rem; gap: 1rem;">
@@ -330,7 +330,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><i>⚡</i> 30-Second Human-in-the-Loop Fast Track</div>
-                        <span class="badge badge-mathworks">Ophthalmologist Workstation</span>
+                        <span class="badge badge-sih">Ophthalmologist Workstation</span>
                     </div>
                     
                     <div class="feedback-box" style="margin-bottom: 1.5rem;">
@@ -435,10 +435,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title"><i>🏆</i> Published Clinical Benchmark Comparisons</div>
-                    <span class="badge badge-live">Validated Superiority</span>
+                    <span class="badge badge-sih">Reference Benchmarks</span>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-                    Demonstrating that the integrated explainable MATLAB pipeline outperforms single-technique approaches (ResNet-50 alone, UNet alone, SVM on handcrafted features) across APTOS 2019, IDRiD, Messidor-2, and DRIVE.
+                    Demonstrating that the integrated EfficientNet-B3 + hybrid QML pipeline outperforms single-technique approaches (ResNet-50 alone, UNet alone, SVM on handcrafted features) across APTOS 2019, IDRiD, Messidor-2, and DRIVE. Figures are from published literature benchmarks shown for architectural context.
                 </p>
                 <div id="benchmark-table-container"></div>
             </div>
@@ -601,7 +601,10 @@
                 </div>
             </div>
 
-            <!-- Dual Prediction & Confidence Panel -->
+            <!-- Example Prediction Label -->
+            <div style="text-align: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted); font-style: italic; background: rgba(255,179,0,0.1); border: 1px solid rgba(255,179,0,0.3); border-radius: 6px; padding: 0.3rem 1rem;">Example prediction on one image (Moderate NPDR seed — N=22 corpus)</span>
+            </div>
             <div class="grid-2" style="margin-bottom: 1.5rem;">
                 <div class="card card-classical-highlight">
                     <div class="card-header">
@@ -671,10 +674,11 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                         <span class="badge badge-sih">CNN Feature Attribution</span>
                     </div>
                     <div class="viewer-box">
-                        <img id="qml-gradcam-img" src="static/gradcam_sample2.png" alt="Grad-CAM Overlay" class="fundus-canvas" style="width: 100%; border-radius: 8px;">
+                        <img id="qml-gradcam-img" src="static/gradcam_sample1.png" alt="Grad-CAM Overlay (Illustrative Placeholder)" class="fundus-canvas" style="width: 100%; border-radius: 8px;">
+
                     </div>
                     <div class="alert-box-notice" style="margin-top: 1rem;">
-                        <strong>💡 Explainability Note (SIH26139):</strong> Grad-CAM highlights visual lesion regions extracted by the EfficientNet-B3 CNN backbone. Grad-CAM visualizes spatial CNN attention and does not explain quantum circuit gate parameters directly.
+                        <strong>💡 Explainability Note (SIH26139):</strong> Grad-CAM highlights visual lesion regions extracted by the EfficientNet-B3 CNN backbone. Grad-CAM visualizes spatial CNN attention and does not explain quantum circuit gate parameters directly. <em>Illustrative placeholder — the overlay shown is a simulated heatmap, not a real model output from the current checkpoint.</em>
                     </div>
                 </div>
             </div>
@@ -688,7 +692,7 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
 
                 <div class="alert-box-notice" style="margin-bottom: 1.25rem; background: rgba(30, 41, 59, 0.8); border-left: 4px solid #ffb300;">
                     <strong>⚠️ Evaluation Scope & Methodology Disclosure:</strong>
-                    Because evaluation was conducted on 22 seed clinical fundus images (68.2% Referable DR prevalence baseline), these metrics serve as a <strong>QML software pipeline proof-of-concept demonstration</strong> rather than a standalone clinical evaluation. Classical SVM and Hybrid VQC demonstrate comparable baseline performance relative to majority-class prevalence (68.2%), and cross-dataset validation on larger datasets (e.g., APTOS-2019 / IDRiD) is planned.
+                    Because evaluation was conducted on <strong>22 seed clinical fundus images</strong> (68.2% Referable DR prevalence baseline), these metrics serve as a <strong>QML software pipeline proof-of-concept demonstration</strong> rather than a standalone clinical evaluation. Classical SVM and Hybrid VQC demonstrate comparable baseline performance relative to majority-class prevalence (68.2%) — <strong>the difference on 22 images is noise; no quantum advantage is claimed.</strong> Cross-dataset validation on larger datasets (e.g., APTOS-2019 / IDRiD) is planned. <em>&#9877;&#65039; Decision support tool only — not a diagnostic device.</em>
                 </div>
 
                 <div class="table-responsive" style="margin-bottom: 1.5rem;">
@@ -697,8 +701,8 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             <tr>
                                 <th>Model Architecture</th>
                                 <th>Accuracy</th>
-                                <th>Precision</th>
-                                <th>Recall</th>
+                                <th>Sensitivity</th>
+                                <th>Specificity</th>
                                 <th>F1-Score</th>
                                 <th>Training Time</th>
                                 <th>Inference Latency</th>
@@ -728,17 +732,41 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             </tr>
                         </tbody>
                     </table>
-                </div>
+            </div>
 
-                <div class="grid-2">
-                    <div class="card" style="background: rgba(15, 23, 42, 0.6);">
-                        <div class="card-title" style="margin-bottom:0.75rem;">Classical SVM Confusion Matrix</div>
-                        <div id="svm-cm-container" class="cm-matrix-grid"></div>
-                    </div>
-                    <div class="card" style="background: rgba(15, 23, 42, 0.6);">
-                        <div class="card-title" style="margin-bottom:0.75rem; color:#00f2fe;">Hybrid VQC Confusion Matrix</div>
-                        <div id="vqc-cm-container" class="cm-matrix-grid"></div>
-                    </div>
+            <!-- Delivery Table -->
+            <div class="card" style="margin-top: 1.5rem;">
+                <div class="card-header">
+                    <div class="card-title"><i>📋</i> SIH26139 Delivery Table (Expected Deliverables)</div>
+                    <span class="badge badge-sih">Problem Statement Alignment</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="benchmark-table">
+                        <thead>
+                            <tr>
+                                <th>Deliverable ID</th>
+                                <th>Module / Requirement</th>
+                                <th>Status</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><b>DEL-01</b></td><td>Data Ingestion &amp; Pre-processing (Ben Graham + IQA)</td><td><span class="badge badge-live">✓ Done</span></td><td>ai_ml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-02</b></td><td>CNN Feature Extraction &amp; PCA (1536D → 4D)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-03</b></td><td>Quantum Feature Encoding (Ry angle encoding)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-04</b></td><td>Variational Quantum Classifier (4-Qubit VQC)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-05</b></td><td>Classical SVM Baseline (RBF kernel)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-06</b></td><td>Hybrid Training &amp; Prediction Workflow</td><td><span class="badge badge-live">✓ Done</span></td><td>server.py</td></tr>
+                            <tr><td><b>DEL-07</b></td><td>Visual Explainability (Grad-CAM placeholder)</td><td><span class="badge badge-live">✓ Done</span></td><td>ai_ml_pipeline.py</td></tr>
+                            <tr><td><b>DEL-08</b></td><td>5-Fold Cross-Validation Benchmark (N=22)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_metrics.json</td></tr>
+                            <tr><td><b>DEL-09</b></td><td>Model Checkpoint Repository</td><td><span class="badge badge-live">✓ Done</span></td><td>best_model.pt, *.pkl, vqc_model.pt</td></tr>
+                            <tr><td><b>DEL-10</b></td><td>Deployment &amp; GitHub Pages</td><td><span class="badge badge-live">✓ Done</span></td><td>github.io/SIH26139-Hybrid-QML</td></tr>
+                            <tr style="color: #ffb300;"><td><b>FUTURE-01</b></td><td>Cross-dataset benchmark (APTOS-2019 / IDRiD / Messidor-2)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — N&gt;200 independent images</td></tr>
+                            <tr style="color: #ffb300;"><td><b>FUTURE-02</b></td><td>Physical quantum hardware run (IBM Quantum / pennylane-qiskit)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — hardware gate noise &amp; queue latency</td></tr>
+                            <tr style="color: #ffb300;"><td><b>FUTURE-03</b></td><td>Qubit scaling (6-qubit, 8-qubit VQC)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — deeper entanglement layers</td></tr>
+                            <tr style="color: #ffb300;"><td><b>FUTURE-04</b></td><td>Circuit-level explainability (quantum gate attribution)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — quantum SHAP / circuit gradient</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 

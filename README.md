@@ -48,8 +48,10 @@ The platform supports data ingestion, hybrid model training, prediction, explain
 | **DEL-08** | **5-Fold Cross-Validation Benchmark** | Empirical 5-fold cross-validation on seed dataset ($N=22$) with error bars and majority-class baseline | [qml_metrics.json](qml_metrics.json), [results_summary.csv](results_summary.csv) |
 | **DEL-09** | **Model Checkpoint Repository** | Saved weight files for CNN (`best_model.pt`), PCA (`pca_model.pkl`), Classical SVM (`svm_model.pkl`), and Quantum VQC (`vqc_model.pt`) | [best_model.pt](best_model.pt), `pca_model.pkl`, `svm_model.pkl`, `vqc_model.pt` |
 | **DEL-10** | **Deployment & Containerization** | Live GitHub Pages web deployment, Dockerfile container configuration, Procfile, requirements.txt, & Render.yaml cloud blueprints | [Dockerfile](Dockerfile), [render.yaml](render.yaml), GitHub Pages |
-| **FUTURE-01** | **200+ Image Cross-Dataset Benchmark** | Planned evaluation on external out-of-distribution test sets (APTOS 2019 / IDRiD / Messidor-2) | **Future Work (Planned)** |
-| **FUTURE-02** | **Physical Quantum Hardware Run** | Planned execution on physical quantum processors (e.g. IBM Quantum via `pennylane-qiskit`) | **Future Work (Planned)** |
+| **FUTURE-01** | **Cross-Dataset Benchmark (200+ Images)** | Planned evaluation on external out-of-distribution test sets (APTOS 2019 / IDRiD / Messidor-2) with N > 200 independent images | **Future Work (Planned)** |
+| **FUTURE-02** | **Physical Quantum Hardware Run** | Planned execution on physical quantum processors (e.g. IBM Quantum via `pennylane-qiskit`); hardware gate noise and NISQ queue latency not yet measured | **Future Work (Planned)** |
+| **FUTURE-03** | **Qubit Scaling (6-Qubit / 8-Qubit VQC)** | Evaluate deeper entanglement architectures at higher qubit counts against larger feature spaces ($N=50, 100, 200$ samples) | **Future Work (Planned)** |
+| **FUTURE-04** | **Circuit-Level Explainability** | Quantum SHAP / circuit gradient attribution for VQC gate parameters (distinct from CNN Grad-CAM spatial attention) | **Future Work (Planned)** |
 
 ---
 
@@ -149,7 +151,10 @@ The static web interface is deployed live at:
 https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 ```
 
----
+> [!NOTE]
+> **Circuit Architecture Note**: The benchmark script (`benchmark_qml.py`) uses a `StronglyEntanglingLayers` VQC with a single ⟨Z₀⟩ output on a binary target. The dashboard circuit shown in Tab 7 represents the deployed 4-qubit Ry/Rz ring-CNOT design (`vqc_quantum_circuit` in `qml_pipeline.py`). Both share the same PCA angle-encoded input features.
+
+
 
 ### 📊 Validation & Benchmark Comparisons
 
@@ -160,9 +165,16 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 | **Classical SVM (RBF)** | 22 | 4 | **$77.0\% \pm 2.4\%$** | $100.0\% \pm 0.0\%$ | $20.0\% \pm 24.5\%$ | $69.8\% \pm 6.8\%$ | $0.08 \text{ ms}$ |
 | **Hybrid PennyLane VQC** | 22 | 4 | **$69.0\% \pm 7.3\%$** | $100.0\% \pm 0.0\%$ | $0.0\% \pm 0.0\%$ | $56.6\% \pm 9.4\%$ | $9.48 \text{ ms}$ |
 
+#### CNN Backbone Evaluation (from `cnn_eval_metrics.json`)
+| Component | $N$ Samples | ROC-AUC | Referable Sensitivity | Referable Specificity |
+| :--- | :---: | :---: | :---: | :---: |
+| **CNN backbone** (EfficientNet-B3, feature-extraction only) | 22 | **0.838** | **20.0%** | **100.0%** |
+
 > [!IMPORTANT]
 > **Methodology & Limitation Notice**:
-> Evaluated on 22 seed clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near majority baseline. Cross-dataset validation on larger external datasets (APTOS-2019 / IDRiD) is planned.
+> Evaluated on 22 seed clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near majority baseline — the difference on 22 images is noise, and **no quantum advantage is claimed**. The CNN backbone sensitivity of 20% on 22 images is low and **needs validation on a larger set** before any clinical use. All 22 evaluation images are clinical fundus photos from the `Sample_Fundus_Photos` folder; none are diagrams or synthetic images. Cross-dataset validation on larger external datasets (APTOS-2019 / IDRiD) and physical hardware execution are planned future work. **This system is a decision-support research tool, not a diagnostic device.**
+
+
 
 ---
 
@@ -171,6 +183,9 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 1. **Large-Scale Out-of-Distribution Validation**: Extract features from 200+ independent, unaugmented test images from APTOS 2019 validation split and IDRiD to establish out-of-distribution clinical generalization bounds.
 2. **Physical Quantum Hardware Execution**: Deploy Variational Quantum Circuits onto physical quantum processors (e.g. IBM Quantum free tier via `pennylane-qiskit`) to measure hardware gate noise and NISQ queue latency.
 3. **Qubit & Feature Scaling Sweeps**: Evaluate 6-Qubit and 8-Qubit VQC architectures with deeper entanglement layers against high-dimensional feature spaces ($N=50, 100, 200$ samples).
+4. **Circuit-Level Explainability**: Develop quantum-native attribution (quantum SHAP / circuit gradient) for VQC gate parameters, distinct from CNN Grad-CAM spatial attention which explains CNN feature focus, not quantum gate decisions.
+
+
 
 ---
 

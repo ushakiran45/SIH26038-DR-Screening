@@ -320,12 +320,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (imgEl) imgEl.src = data.gradcam_image_b64;
         }
 
-        // 6. Benchmark Table & Confusion Matrices
+        // 6. Benchmark Table (confusion matrices removed - containers deleted)
         if (data.model_comparison) {
             renderComparisonTable('qml-comparison-table-body', data.model_comparison);
-            renderConfusionMatrix('svm-cm-container', data.model_comparison.classical_svm.confusion_matrix);
-            renderConfusionMatrix('vqc-cm-container', data.model_comparison.hybrid_vqc.confusion_matrix);
+            // Confusion matrix containers removed from UI per accuracy/heading corrections
         }
+
     }
 
     function renderComparisonTable(containerId, modelComp) {
