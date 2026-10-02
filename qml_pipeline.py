@@ -43,6 +43,8 @@ SVM_MODEL_PATH = os.path.join(BASE_DIR, "svm_model.pkl")
 VQC_MODEL_PATH = os.path.join(BASE_DIR, "vqc_model.pt")
 METRICS_JSON_PATH = os.path.join(BASE_DIR, "qml_metrics.json")
 CNN_WEIGHTS_PATH = os.path.join(BASE_DIR, "best_model.pt")
+FEATURES_PATH = os.path.join(BASE_DIR, "features.npy")
+LABELS_PATH = os.path.join(BASE_DIR, "labels.npy")
 
 N_PCA_COMPONENTS = 4
 N_QUBITS = 4
@@ -311,64 +313,59 @@ class HybridVQCClassifier(nn.Module):
 # ------------------------------------------------------------------------------
 # 5. DATASET SYNTHESIS & BENCHMARK EVALUATION ENGINE
 # ------------------------------------------------------------------------------
-def generate_clinical_training_dataset(model, pca_reducer):
+def generate_clinical_training_dataset(pca_reducer, test_size=0.3, seed=42):
     """
-    Build a representative benchmark dataset combining real clinical feature representations
-    and class-specific feature distributions across all 5 DR classes.
+    Load real EfficientNet-B3 feature vectors (from features.npy) and ground truth labels (from labels.npy).
+    Fits PCA ONLY on the training split to eliminate data leakage.
+    Returns: X_train_angles, y_train, X_test_angles, y_test
     """
-    np.random.seed(42)
-    n_samples_per_class = 20
-    X_features_list = []
-    y_labels_list = []
+    from sklearn.model_selection import train_test_split
+    if not (os.path.exists(FEATURES_PATH) and os.path.exists(LABELS_PATH)):
+        # If npy files do not exist yet, extract them directly
+        from extract_features import extract_real_dataset_features
+        extract_real_dataset_features()
 
-    # Generate 1536-dim feature vectors with class-distinguishable cluster distributions
-    for c_idx in range(NUM_CLASSES):
-        # Create a unique 1536-dim centroid for class c_idx
-        centroid = np.zeros(1536, dtype=np.float32)
-        centroid[c_idx * 200 : (c_idx + 1) * 200] = 1.5 + (c_idx * 0.4)
-        centroid[:50] = (c_idx + 1) * 0.5
+    X_features = np.load(FEATURES_PATH)
+    y_labels = np.load(LABELS_PATH).astype(int)
 
-        for _ in range(n_samples_per_class):
-            noise = np.random.normal(0.0, 0.35, 1536).astype(np.float32)
-            sample_feat = centroid + noise
-            X_features_list.append(sample_feat)
-            y_labels_list.append(c_idx)
+    # Perform stratified train/test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_features, y_labels, test_size=test_size, random_state=seed, stratify=y_labels
+    )
 
-    X_features = np.array(X_features_list, dtype=np.float32)
-    y_labels = np.array(y_labels_list, dtype=int)
-
-    # Fit PCA on 1536D features -> 4D angle features
-    X_pca_angles = pca_reducer.fit_transform(X_features)
+    # Fit PCA ONLY on training data
+    X_train_angles = pca_reducer.fit_transform(X_train)
     pca_reducer.save()
 
-    return X_pca_angles, y_labels
+    # Transform test data using fitted PCA
+    X_test_angles = pca_reducer._scale_to_angles(pca_reducer.pca.transform(X_test))
+
+    return X_train_angles, y_train, X_test_angles, y_test
 
 
 def evaluate_and_compare_models():
     """
-    Train & evaluate both Classical SVM and Hybrid VQC models.
+    Train & evaluate Classical SVM vs Hybrid VQC models on held-out test split.
     Computes Accuracy, Precision, Recall, F1-Score, Confusion Matrix, 
     Training Time, and Inference Time for BOTH classifiers.
     """
     print("==================================================================")
-    print("  TNSAT: Training & Evaluating Classical SVM vs Hybrid VQC")
+    print("  SIH26139: Training & Evaluating Classical SVM vs Hybrid VQC")
     print("==================================================================")
     
-    cnn_model = load_model()
     pca_reducer = PCAFeatureReducer()
-    
-    X_pca, y_true = generate_clinical_training_dataset(cnn_model, pca_reducer)
+    X_train, y_train, X_test, y_true = generate_clinical_training_dataset(pca_reducer)
 
     # 1. Train Classical SVM Classifier
     svm_clf = ClassicalSVMClassifier()
-    svm_train_time = svm_clf.train(X_pca, y_true)
+    svm_train_time = svm_clf.train(X_train, y_train)
     svm_clf.save()
 
-    # Predict SVM on dataset
+    # Predict SVM on held-out test dataset
     svm_preds = []
     svm_inf_times = []
     svm_probs_list = []
-    for x in X_pca:
+    for x in X_test:
         pred_c, probs, inf_t = svm_clf.predict(x)
         svm_preds.append(pred_c)
         svm_inf_times.append(inf_t)
@@ -380,16 +377,26 @@ def evaluate_and_compare_models():
     svm_cm = confusion_matrix(y_true, svm_preds, labels=list(range(5))).tolist()
     svm_avg_inf_time = float(np.mean(svm_inf_times))
 
+    # Binary Referable DR Metrics (Level >= 2) for SVM
+    ref_true = y_true >= 2
+    ref_pred_svm = svm_preds >= 2
+    tp_svm = int((ref_true & ref_pred_svm).sum())
+    tn_svm = int((~ref_true & ~ref_pred_svm).sum())
+    fp_svm = int((~ref_true & ref_pred_svm).sum())
+    fn_svm = int((ref_true & ~ref_pred_svm).sum())
+    svm_sens = tp_svm / max(tp_svm + fn_svm, 1)
+    svm_spec = tn_svm / max(tn_svm + fp_svm, 1)
+
     # 2. Train Hybrid VQC Classifier
     vqc_model = HybridVQCClassifier()
-    vqc_train_time = vqc_model.train_hybrid(X_pca, y_true, epochs=20, lr=0.03)
+    vqc_train_time = vqc_model.train_hybrid(X_train, y_train, epochs=25, lr=0.03)
     vqc_model.save()
 
-    # Predict VQC on dataset
+    # Predict VQC on held-out test dataset
     vqc_preds = []
     vqc_inf_times = []
     vqc_probs_list = []
-    for x in X_pca:
+    for x in X_test:
         pred_c, probs, inf_t = vqc_model.predict_single(x)
         vqc_preds.append(pred_c)
         vqc_inf_times.append(inf_t)
@@ -401,9 +408,20 @@ def evaluate_and_compare_models():
     vqc_cm = confusion_matrix(y_true, vqc_preds, labels=list(range(5))).tolist()
     vqc_avg_inf_time = float(np.mean(vqc_inf_times))
 
+    # Binary Referable DR Metrics (Level >= 2) for VQC
+    ref_pred_vqc = vqc_preds >= 2
+    tp_vqc = int((ref_true & ref_pred_vqc).sum())
+    tn_vqc = int((~ref_true & ~ref_pred_vqc).sum())
+    fp_vqc = int((~ref_true & ref_pred_vqc).sum())
+    fn_vqc = int((ref_true & ~ref_pred_vqc).sum())
+    vqc_sens = tp_vqc / max(tp_vqc + fn_vqc, 1)
+    vqc_spec = tn_vqc / max(tn_vqc + fp_vqc, 1)
+
     comparison_results = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "dataset_size": len(y_true),
+        "train_size": int(len(y_train)),
+        "test_size": int(len(y_true)),
+        "evaluation": "held-out stratified test split on real EfficientNet-B3 features",
         "pca_components": N_PCA_COMPONENTS,
         "quantum_qubits": N_QUBITS,
         "quantum_layers": N_VQC_LAYERS,
@@ -415,6 +433,8 @@ def evaluate_and_compare_models():
                 "precision": round(float(svm_prec) * 100, 2),
                 "recall": round(float(svm_rec) * 100, 2),
                 "f1_score": round(float(svm_f1) * 100, 2),
+                "referable_sensitivity": round(float(svm_sens) * 100, 2),
+                "referable_specificity": round(float(svm_spec) * 100, 2),
                 "training_time_sec": round(float(svm_train_time), 3),
                 "inference_time_ms": round(float(svm_avg_inf_time), 2),
                 "confusion_matrix": svm_cm
@@ -425,6 +445,8 @@ def evaluate_and_compare_models():
                 "precision": round(float(vqc_prec) * 100, 2),
                 "recall": round(float(vqc_rec) * 100, 2),
                 "f1_score": round(float(vqc_f1) * 100, 2),
+                "referable_sensitivity": round(float(vqc_sens) * 100, 2),
+                "referable_specificity": round(float(vqc_spec) * 100, 2),
                 "training_time_sec": round(float(vqc_train_time), 3),
                 "inference_time_ms": round(float(vqc_avg_inf_time), 2),
                 "confusion_matrix": vqc_cm
@@ -434,7 +456,8 @@ def evaluate_and_compare_models():
             "method": "Grad-CAM Heatmap Visualization",
             "attribution_target": "EfficientNet-B3 CNN Feature Extraction Layer",
             "disclaimer": "Grad-CAM visualizes spatial visual attention from the CNN feature extractor. It explains feature representation, not quantum circuit gate parameters."
-        }
+        },
+        "disclaimer": "Clinical Decision Support System — For Research & Screening Verification Only. Not a Standalone Diagnostic."
     }
 
     with open(METRICS_JSON_PATH, "w") as f:

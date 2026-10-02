@@ -71,23 +71,34 @@ class TelemedRequestHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
+            
+            cnn_weights_exist = os.path.exists(os.path.join(WORKSPACE_DIR, "best_model.pt"))
+            pca_exist = os.path.exists(os.path.join(WORKSPACE_DIR, "pca_model.pkl"))
+            svm_exist = os.path.exists(os.path.join(WORKSPACE_DIR, "svm_model.pkl"))
+            vqc_exist = os.path.exists(os.path.join(WORKSPACE_DIR, "vqc_model.pt"))
+            
+            # Load real metrics if available
+            qml_metrics = get_model_metrics() if AI_PIPELINE_AVAILABLE else {}
+            models_eval = qml_metrics.get("models", {})
+            
             status = {
                 "status": "ONLINE",
-                "model_loaded": True,
+                "cnn_model_loaded": cnn_weights_exist,
+                "qml_pipeline_ready": pca_exist and svm_exist and vqc_exist,
                 "model_name": "EfficientNet-B3 + Pennylane VQC (4 Qubits)",
-                "weights_file": "best_model.pt",
-                "qml_checkpoints": {
-                    "pca_model": "pca_model.pkl",
-                    "svm_model": "svm_model.pkl",
-                    "vqc_model": "vqc_model.pt"
+                "checkpoints": {
+                    "best_model_pt": cnn_weights_exist,
+                    "pca_model_pkl": pca_exist,
+                    "svm_model_pkl": svm_exist,
+                    "vqc_model_pt": vqc_exist
                 },
-                "pipeline_version": "TNSAT-HybridQML-v3.0",
-                "accuracy_metrics": {
-                    "classical_svm_acc": "87.5%",
-                    "hybrid_vqc_acc": "87.5%",
-                    "referable_sensitivity": "98.6%",
-                    "specificity": "97.4%"
-                }
+                "pipeline_version": "SIH26139-HybridQML-v4.0",
+                "empirical_metrics": {
+                    "classical_svm_acc": f"{models_eval.get('classical_svm', {}).get('accuracy', 'N/A')}%",
+                    "hybrid_vqc_acc": f"{models_eval.get('hybrid_vqc', {}).get('accuracy', 'N/A')}%",
+                    "vqc_referable_sensitivity": f"{models_eval.get('hybrid_vqc', {}).get('referable_sensitivity', 'N/A')}%"
+                },
+                "disclaimer": "Clinical Decision Support System — For Research & Screening Verification Only. Not a Standalone Diagnostic."
             }
             self.wfile.write(json.dumps(status).encode("utf-8"))
             return

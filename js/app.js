@@ -302,11 +302,42 @@ document.addEventListener('DOMContentLoaded', function() {
             if (imgEl) imgEl.src = data.gradcam_image_b64;
         }
 
-        // 6. Confusion Matrices
+        // 6. Benchmark Table & Confusion Matrices
         if (data.model_comparison) {
+            renderComparisonTable('qml-comparison-table-body', data.model_comparison);
             renderConfusionMatrix('svm-cm-container', data.model_comparison.classical_svm.confusion_matrix);
             renderConfusionMatrix('vqc-cm-container', data.model_comparison.hybrid_vqc.confusion_matrix);
         }
+    }
+
+    function renderComparisonTable(containerId, modelComp) {
+        const el = document.getElementById(containerId);
+        if (!el || !modelComp) return;
+        const svm = modelComp.classical_svm || {};
+        const vqc = modelComp.hybrid_vqc || {};
+
+        el.innerHTML = `
+            <tr>
+                <td><b>Classical SVM (Baseline)</b></td>
+                <td style="color:#00e676; font-weight:700;">${svm.accuracy || 0}%</td>
+                <td>${svm.precision || 0}%</td>
+                <td>${svm.recall || 0}%</td>
+                <td style="font-weight:700;">${svm.f1_score || 0}%</td>
+                <td>${svm.training_time_sec || 0} sec</td>
+                <td>${svm.inference_time_ms || 0} ms</td>
+                <td>4 PCA Components</td>
+            </tr>
+            <tr>
+                <td><b>Hybrid VQC (Pennylane QML)</b></td>
+                <td style="color:#00f2fe; font-weight:700;">${vqc.accuracy || 0}%</td>
+                <td>${vqc.precision || 0}%</td>
+                <td>${vqc.recall || 0}%</td>
+                <td style="color:#00f2fe; font-weight:700;">${vqc.f1_score || 0}%</td>
+                <td>${vqc.training_time_sec || 0} sec</td>
+                <td>${vqc.inference_time_ms || 0} ms</td>
+                <td>4 Qubits (Angle Encoded)</td>
+            </tr>
+        `;
     }
 
     function renderProbBars(containerId, probsObj, barColor) {

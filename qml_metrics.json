@@ -1,6 +1,8 @@
 {
-  "timestamp": "2026-10-02 17:11:51",
-  "dataset_size": 100,
+  "timestamp": "2026-10-02 20:45:04",
+  "train_size": 15,
+  "test_size": 7,
+  "evaluation": "held-out stratified test split on real EfficientNet-B3 features",
   "pca_components": 4,
   "quantum_qubits": 4,
   "quantum_layers": 2,
@@ -8,15 +10,38 @@
   "models": {
     "classical_svm": {
       "name": "Support Vector Machine (SVM Baseline)",
-      "accuracy": 100.0,
-      "precision": 100.0,
-      "recall": 100.0,
-      "f1_score": 100.0,
+      "accuracy": 28.57,
+      "precision": 11.43,
+      "recall": 28.57,
+      "f1_score": 16.33,
+      "referable_sensitivity": 75.0,
+      "referable_specificity": 0.0,
       "training_time_sec": 0.004,
-      "inference_time_ms": 0.16,
+      "inference_time_ms": 0.34,
       "confusion_matrix": [
         [
-          20,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          1,
           0,
           0,
           0,
@@ -24,77 +49,58 @@
         ],
         [
           0,
-          20,
           0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          20,
+          1,
           0,
           0
-        ],
-        [
-          0,
-          0,
-          0,
-          20,
-          0
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          20
         ]
       ]
     },
     "hybrid_vqc": {
       "name": "Variational Quantum Circuit (Hybrid QML)",
-      "accuracy": 100.0,
-      "precision": 100.0,
-      "recall": 100.0,
-      "f1_score": 100.0,
-      "training_time_sec": 25.99,
-      "inference_time_ms": 6.91,
+      "accuracy": 14.29,
+      "precision": 9.52,
+      "recall": 14.29,
+      "f1_score": 11.43,
+      "referable_sensitivity": 100.0,
+      "referable_specificity": 0.0,
+      "training_time_sec": 6.643,
+      "inference_time_ms": 13.47,
       "confusion_matrix": [
         [
-          20,
           0,
           0,
           0,
-          0
-        ],
-        [
-          0,
-          20,
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          20,
-          0,
-          0
+          1,
+          1
         ],
         [
           0,
           0,
           0,
-          20,
+          1,
           0
         ],
         [
           0,
           0,
+          1,
+          1,
+          0
+        ],
+        [
           0,
           0,
-          20
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0
         ]
       ]
     }
@@ -103,5 +109,6 @@
     "method": "Grad-CAM Heatmap Visualization",
     "attribution_target": "EfficientNet-B3 CNN Feature Extraction Layer",
     "disclaimer": "Grad-CAM visualizes spatial visual attention from the CNN feature extractor. It explains feature representation, not quantum circuit gate parameters."
-  }
+  },
+  "disclaimer": "Clinical Decision Support System \u2014 For Research & Screening Verification Only. Not a Standalone Diagnostic."
 }
