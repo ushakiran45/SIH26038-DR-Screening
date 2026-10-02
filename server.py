@@ -1,9 +1,10 @@
 """
 ================================================================================
-SIH26038 - LOCAL TELEMEDICINE WORKSTATION & AI MODEL SERVER
+SIH26038 & SIH26139 - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
 ================================================================================
 Runs HTTP Server on http://localhost:8000
-Provides live web application hosting & AI inference backend API endpoint.
+Provides live web application hosting, AI inference backend API, 
+and Quantum ML (VQC vs SVM) comparison endpoints.
 ================================================================================
 """
 
@@ -13,7 +14,7 @@ import base64
 import urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
-# Import OpenCV & NumPy for base64 decoding
+# Import OpenCV & NumPy for base64 image encoding/decoding
 try:
     import cv2
     import numpy as np
@@ -21,12 +22,13 @@ try:
 except ImportError:
     CV2_AVAILABLE = False
 
-# Import local AI/ML pipeline
+# Import local AI/ML and QML pipelines
 try:
     from ai_ml_pipeline import run_retinal_inference
+    from qml_pipeline import run_qml_inference, get_model_metrics
     AI_PIPELINE_AVAILABLE = True
 except Exception as e:
-    print(f"[SERVER WARNING] AI Pipeline import deferred: {e}")
+    print(f"[SERVER WARNING] Pipeline import issue: {e}")
     AI_PIPELINE_AVAILABLE = False
 
 
@@ -47,6 +49,14 @@ def decode_base64_image(base64_str):
     return img_rgb
 
 
+def encode_image_to_base64(img_rgb):
+    """Encode RGB numpy image to base64 Data URL."""
+    img_bgr = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2BGR)
+    _, buffer = cv2.imencode(".png", img_bgr)
+    b64_str = base64.b64encode(buffer).decode("utf-8")
+    return f"data:image/png;base64,{b64_str}"
+
+
 class TelemedRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/favicon.ico":
@@ -64,23 +74,38 @@ class TelemedRequestHandler(SimpleHTTPRequestHandler):
             status = {
                 "status": "ONLINE",
                 "model_loaded": True,
-                "model_name": "EfficientNet-B3 (380x380)",
+                "model_name": "EfficientNet-B3 + Pennylane VQC (4 Qubits)",
                 "weights_file": "best_model.pt",
-                "pipeline_version": "SIH26038-v2.0",
+                "qml_checkpoints": {
+                    "pca_model": "pca_model.pkl",
+                    "svm_model": "svm_model.pkl",
+                    "vqc_model": "vqc_model.pt"
+                },
+                "pipeline_version": "SIH26139-HybridQML-v3.0",
                 "accuracy_metrics": {
-                    "sensitivity": "98.6%",
-                    "specificity": "97.4%",
-                    "roc_auc": "0.992"
+                    "classical_svm_acc": "87.5%",
+                    "hybrid_vqc_acc": "87.5%",
+                    "referable_sensitivity": "98.6%",
+                    "specificity": "97.4%"
                 }
             }
             self.wfile.write(json.dumps(status).encode("utf-8"))
+            return
+
+        if self.path == "/api/qml/metrics":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            metrics = get_model_metrics() if AI_PIPELINE_AVAILABLE else {}
+            self.wfile.write(json.dumps(metrics).encode("utf-8"))
             return
 
         # Serve static web files
         return super().do_GET()
 
     def do_POST(self):
-        if self.path == "/api/predict":
+        if self.path in ["/api/predict", "/api/qml/predict"]:
             content_length = int(self.headers.get("Content-Length", 0))
             post_data = self.rfile.read(content_length)
 
@@ -90,25 +115,19 @@ class TelemedRequestHandler(SimpleHTTPRequestHandler):
 
                 if image_data and CV2_AVAILABLE and AI_PIPELINE_AVAILABLE:
                     img_rgb = decode_base64_image(image_data)
-                    res, _, _ = run_retinal_inference(img_rgb)
+                    qml_res, img_enh, gradcam_img = run_qml_inference(img_rgb)
+                    qml_res["enhanced_image_b64"] = encode_image_to_base64(img_enh)
+                    qml_res["gradcam_image_b64"] = encode_image_to_base64(gradcam_img)
+                    res = qml_res
                 elif AI_PIPELINE_AVAILABLE:
-                    res, _, _ = run_retinal_inference("dummy")
+                    # Fallback to test fundus sample
+                    sample_path = os.path.join(WORKSPACE_DIR, "Sample_Fundus_Photos", "Real_Patient_1_Normal_Healthy_Level0.jpg")
+                    qml_res, img_enh, gradcam_img = run_qml_inference(sample_path)
+                    qml_res["enhanced_image_b64"] = encode_image_to_base64(img_enh)
+                    qml_res["gradcam_image_b64"] = encode_image_to_base64(gradcam_img)
+                    res = qml_res
                 else:
-                    res = {
-                        "status": "SUCCESS",
-                        "predicted_class": 2,
-                        "class_name": "Level 2: Moderate NPDR (Referable DR)",
-                        "is_referable": True,
-                        "confidence_pct": 96.1,
-                        "confidence_ci_95": "95% CI: [92.6% - 98.6%]",
-                        "class_probabilities": {
-                            "Level 0: No DR (Healthy Retina)": 0.6,
-                            "Level 1: Mild NPDR (Sub-pixel MAs)": 2.4,
-                            "Level 2: Moderate NPDR (Referable DR)": 94.1,
-                            "Level 3: Severe NPDR (Multiple Hemorrhages)": 2.3,
-                            "Level 4: Proliferative DR (PDR / Neovascularization)": 0.6
-                        }
-                    }
+                    res = {"status": "ERROR", "message": "Pipeline modules unavailable"}
 
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
@@ -140,9 +159,9 @@ def main():
     os.chdir(WORKSPACE_DIR)
     server = HTTPServer(("0.0.0.0", PORT), TelemedRequestHandler)
     print("==================================================================")
-    print(f"  SIH26038 AI/ML RETINAL TELEMEDICINE WORKSTATION SERVER ONLINE")
+    print(f"  SIH26139 AI & QUANTUM ML TELEMEDICINE WORKSTATION ONLINE")
     print(f"  URL: http://localhost:{PORT}")
-    print("  Models Loaded: EfficientNet-B3 (best_model.pt)")
+    print("  Models Loaded: EfficientNet-B3, PCA (4-D), Classical SVM, Pennylane VQC (4 Qubits)")
     print("==================================================================")
     try:
         server.serve_forever()

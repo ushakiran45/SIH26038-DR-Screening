@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-10-02 16:45:09",
+  "dataset_size": 72,
+  "pca_components": 4,
+  "quantum_qubits": 4,
+  "quantum_layers": 2,
+  "quantum_encoding": "Angle Encoding (Ry rotations)",
+  "models": {
+    "classical_svm": {
+      "name": "Support Vector Machine (SVM Baseline)",
+      "accuracy": 87.5,
+      "precision": 91.02,
+      "recall": 87.5,
+      "f1_score": 87.66,
+      "training_time_sec": 0.008,
+      "inference_time_ms": 0.23,
+      "confusion_matrix": [
+        [
+          10,
+          0,
+          4,
+          0,
+          0
+        ],
+        [
+          0,
+          10,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          23,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          10,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          10
+        ]
+      ]
+    },
+    "hybrid_vqc": {
+      "name": "Variational Quantum Circuit (Hybrid QML)",
+      "accuracy": 87.5,
+      "precision": 91.02,
+      "recall": 87.5,
+      "f1_score": 87.66,
+      "training_time_sec": 19.318,
+      "inference_time_ms": 6.73,
+      "confusion_matrix": [
+        [
+          10,
+          0,
+          4,
+          0,
+          0
+        ],
+        [
+          0,
+          10,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          23,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          10,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          10
+        ]
+      ]
+    }
+  },
+  "explainability": {
+    "method": "Grad-CAM Heatmap Visualization",
+    "attribution_target": "EfficientNet-B3 CNN Feature Extraction Layer",
+    "disclaimer": "Grad-CAM visualizes spatial visual attention from the CNN feature extractor. It explains feature representation, not quantum circuit gate parameters."
+  }
+}

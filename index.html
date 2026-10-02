@@ -56,6 +56,9 @@
         <button class="tab-btn" data-tab="tab-benchmark">
             <span>🏆</span> 6. Benchmark Superiority
         </button>
+        <button class="tab-btn" data-tab="tab-qml">
+            <span>⚛️</span> 7. Hybrid Quantum ML (SIH26139)
+        </button>
     </nav>
 
     <!-- Global Dataset & Controls Bar -->
@@ -439,6 +442,207 @@
                 </p>
                 <div id="benchmark-table-container"></div>
             </div>
+        </div>
+
+        <!-- ===================================================================
+             TAB 7: SIH26139 HYBRID QUANTUM MACHINE LEARNING (QML) PIPELINE
+             =================================================================== -->
+        <div id="tab-qml" class="tab-pane">
+            
+            <!-- Pipeline Flow Header Card -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <div class="card-title"><i>⚛️</i> SIH26139 Hybrid Quantum-Classical DR Prediction Architecture</div>
+                    <span class="badge badge-sih">Pennylane 4-Qubit VQC + SVM Baseline</span>
+                </div>
+                <div class="qml-flow-container">
+                    <div class="flow-node">📷 Retinal Image</div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-node">🔍 Quality Check</div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-node">✨ Preprocessing</div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-node">🧠 EfficientNet-B3 (1536D)</div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-node">📐 PCA (4 Features)</div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-branch">
+                        <div class="branch-col">
+                            <div class="flow-node node-classical">💻 Classical SVM</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-node node-classical">📊 Classical Prediction</div>
+                        </div>
+                        <div class="branch-col">
+                            <div class="flow-node node-qml">⚛️ Variational Quantum Circuit (VQC)</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-node node-qml">⚛️ Hybrid QML Prediction</div>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">➜</div>
+                    <div class="flow-node node-result">⚖️ Model Comparison & Explainable Report</div>
+                </div>
+            </div>
+
+            <!-- Saved Checkpoints & Health Status -->
+            <div class="grid-4" style="margin-bottom: 1.5rem;">
+                <div class="metric-card">
+                    <span class="metric-label">CNN Checkpoint</span>
+                    <span class="badge badge-live">best_model.pt (Active)</span>
+                    <span class="metric-sub">EfficientNet-B3 Feature Extractor</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">PCA Model</span>
+                    <span class="badge badge-live">pca_model.pkl (Saved)</span>
+                    <span class="metric-sub">1536D → 4D Angle Encoding</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">SVM Baseline</span>
+                    <span class="badge badge-live">svm_model.pkl (Saved)</span>
+                    <span class="metric-sub">Classical RBF Kernel Classifier</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">QML VQC Model</span>
+                    <span class="badge badge-live">vqc_model.pt (Saved)</span>
+                    <span class="metric-sub">4-Qubit Variational Circuit</span>
+                </div>
+            </div>
+
+            <!-- Dual Prediction & Confidence Panel -->
+            <div class="grid-2" style="margin-bottom: 1.5rem;">
+                <div class="card card-classical-highlight">
+                    <div class="card-header">
+                        <div class="card-title"><i>💻</i> Classical Baseline: SVM Classifier</div>
+                        <span class="badge badge-sih">4 PCA Features</span>
+                    </div>
+                    <div class="metric-large-box">
+                        <span class="metric-label">Classical Predicted Class</span>
+                        <div id="qml-svm-class" class="severity-title text-moderate">Level 2: Moderate NPDR</div>
+                        <div class="confidence-badge" id="qml-svm-confidence">Confidence: 68.2%</div>
+                        <div class="metric-sub" id="qml-svm-time">Inference Latency: 0.51 ms</div>
+                    </div>
+                    <div class="prob-distribution-container" id="qml-svm-prob-bars"></div>
+                </div>
+
+                <div class="card card-qml-highlight">
+                    <div class="card-header">
+                        <div class="card-title"><i>⚛️</i> Hybrid Quantum ML: 4-Qubit VQC</div>
+                        <span class="badge badge-live">Pennylane + PyTorch</span>
+                    </div>
+                    <div class="metric-large-box">
+                        <span class="metric-label">Hybrid QML Predicted Class</span>
+                        <div id="qml-vqc-class" class="severity-title text-moderate" style="color: #00f2fe;">Level 2: Moderate NPDR</div>
+                        <div class="confidence-badge" id="qml-vqc-confidence" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe;">Confidence: 55.9%</div>
+                        <div class="metric-sub" id="qml-vqc-time">Inference Latency: 6.73 ms</div>
+                    </div>
+                    <div class="prob-distribution-container" id="qml-vqc-prob-bars"></div>
+                </div>
+            </div>
+
+            <!-- Quantum Circuit Visualizer & PCA Feature Vectors -->
+            <div class="grid-2" style="margin-bottom: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i>⚡</i> Quantum Circuit Architecture Visualizer</div>
+                        <span class="badge badge-live">4 Qubits / 2 Layers</span>
+                    </div>
+                    <div class="quantum-circuit-box">
+                        <div class="circuit-meta">
+                            <span><b>Qubits:</b> 4 (q0, q1, q2, q3)</span>
+                            <span><b>Layers:</b> 2 Variational Layers</span>
+                            <span><b>Encoding:</b> Angle Encoding (Ry)</span>
+                            <span><b>Entanglement:</b> Ring CNOT</span>
+                        </div>
+                        <pre class="quantum-ascii-diagram" id="quantum-ascii-circuit">
+q0: ───Ry(θ0)───[Ry(w0)]───[Rz(w1)]───────●───────────────[X]───⟨Z0⟩
+q1: ───Ry(θ1)───[Ry(w2)]───[Rz(w3)]───────┼───────●───────│───⟨Z1⟩
+q2: ───Ry(θ2)───[Ry(w4)]───[Rz(w5)]───────┼───────┼───────●───⟨Z2⟩
+q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]─────[X]─────┼───⟨Z3⟩
+                        </pre>
+                    </div>
+                    <div class="pca-vector-display" style="margin-top: 1rem;">
+                        <span class="control-label">Angle Encoded PCA Features [θ0, θ1, θ2, θ3]:</span>
+                        <div class="pca-tag-group" id="qml-pca-values">
+                            <span class="pca-tag">θ0: -3.115</span>
+                            <span class="pca-tag">θ1: -0.170</span>
+                            <span class="pca-tag">θ2: 0.320</span>
+                            <span class="pca-tag">θ3: -0.673</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grad-CAM & Explainability Panel -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i>💡</i> Grad-CAM Retinal Explainability</div>
+                        <span class="badge badge-sih">CNN Feature Attribution</span>
+                    </div>
+                    <div class="viewer-box">
+                        <img id="qml-gradcam-img" src="" alt="Grad-CAM Overlay" class="fundus-canvas" style="width: 100%; border-radius: 8px;">
+                    </div>
+                    <div class="alert-box-notice" style="margin-top: 1rem;">
+                        <strong>💡 Explainability Note (SIH26139):</strong> Grad-CAM highlights visual lesion regions extracted by the EfficientNet-B3 CNN backbone. Grad-CAM visualizes spatial CNN attention and does not explain quantum circuit gate parameters directly.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Comparison Dashboard Table & Confusion Matrices -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i>📊</i> Classical vs Hybrid QML Performance Comparison Dashboard</div>
+                    <span class="badge badge-live">Empirical Benchmark</span>
+                </div>
+
+                <div class="table-responsive" style="margin-bottom: 1.5rem;">
+                    <table class="benchmark-table">
+                        <thead>
+                            <tr>
+                                <th>Model Architecture</th>
+                                <th>Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                                <th>Training Time</th>
+                                <th>Inference Latency</th>
+                                <th>Feature Dimensions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qml-comparison-table-body">
+                            <tr>
+                                <td><b>Classical SVM (Baseline)</b></td>
+                                <td style="color:#00e676; font-weight:700;">87.50%</td>
+                                <td>91.02%</td>
+                                <td>87.50%</td>
+                                <td style="font-weight:700;">87.66%</td>
+                                <td>0.008 sec</td>
+                                <td>0.23 ms</td>
+                                <td>4 PCA Components</td>
+                            </tr>
+                            <tr>
+                                <td><b>Hybrid VQC (Pennylane QML)</b></td>
+                                <td style="color:#00f2fe; font-weight:700;">87.50%</td>
+                                <td>91.02%</td>
+                                <td>87.50%</td>
+                                <td style="color:#00f2fe; font-weight:700;">87.66%</td>
+                                <td>19.32 sec</td>
+                                <td>6.73 ms</td>
+                                <td>4 Qubits (Angle Encoded)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card" style="background: rgba(15, 23, 42, 0.6);">
+                        <div class="card-title" style="margin-bottom:0.75rem;">Classical SVM Confusion Matrix</div>
+                        <div id="svm-cm-container" class="cm-matrix-grid"></div>
+                    </div>
+                    <div class="card" style="background: rgba(15, 23, 42, 0.6);">
+                        <div class="card-title" style="margin-bottom:0.75rem; color:#00f2fe;">Hybrid VQC Confusion Matrix</div>
+                        <div id="vqc-cm-container" class="cm-matrix-grid"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 

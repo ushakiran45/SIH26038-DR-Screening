@@ -744,5 +744,155 @@ body {
     font-weight: 700;
     font-size: 0.85rem;
     color: #1e293b;
+/* ==========================================================================
+   SIH26139 - HYBRID QUANTUM MACHINE LEARNING (QML) STYLES
+   ========================================================================== */
+.qml-flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 1rem 0.5rem;
 }
+
+.flow-node {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.flow-arrow {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.flow-branch {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.branch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.node-classical {
+    border-color: rgba(255, 179, 0, 0.4);
+    background: rgba(255, 179, 0, 0.08);
+}
+
+.node-qml {
+    border-color: rgba(0, 242, 254, 0.5);
+    background: rgba(0, 242, 254, 0.1);
+    color: #00f2fe;
+}
+
+.node-result {
+    border-color: rgba(0, 230, 118, 0.5);
+    background: rgba(0, 230, 118, 0.12);
+    color: #00e676;
+}
+
+.card-classical-highlight {
+    border-top: 3px solid #ffb300;
+}
+
+.card-qml-highlight {
+    border-top: 3px solid #00f2fe;
+}
+
+.quantum-circuit-box {
+    background: #090d16;
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    font-family: var(--font-mono);
+}
+
+.circuit-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.quantum-ascii-diagram {
+    color: #00f2fe;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+.pca-tag-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.pca-tag {
+    background: rgba(124, 77, 255, 0.15);
+    border: 1px solid rgba(124, 77, 255, 0.4);
+    color: #a78bfa;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+.alert-box-notice {
+    background: rgba(255, 179, 0, 0.1);
+    border-left: 4px solid var(--warning);
+    padding: 0.85rem 1rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 0.82rem;
+    color: #ffecb3;
+    line-height: 1.5;
+}
+
+.cm-matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+.cm-matrix-table th, .cm-matrix-table td {
+    padding: 0.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cm-matrix-table th {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+}
+
+.cm-cell-diag {
+    background: rgba(0, 230, 118, 0.25);
+    color: #00e676;
+    font-weight: bold;
+}
+
+.cm-cell-off {
+    background: rgba(255, 82, 82, 0.15);
+    color: #ff8a80;
+}
+
 
