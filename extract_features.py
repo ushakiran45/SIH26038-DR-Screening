@@ -128,10 +128,13 @@ def extract_real_dataset_features():
     except Exception:
         auc = 0.950
 
+    ref_acc = (ref_true == ref_pred).mean()
+
     cnn_metrics = {
         "dataset_name": "Sample_Fundus_Photos Real Clinical Images",
         "num_samples": int(len(y_labels)),
         "five_class_accuracy_pct": round(float(acc) * 100, 1),
+        "referable_binary_accuracy_pct": round(float(ref_acc) * 100, 1),
         "referable_sensitivity_pct": round(float(sensitivity) * 100, 1),
         "referable_specificity_pct": round(float(specificity) * 100, 1),
         "roc_auc": round(float(auc), 3),

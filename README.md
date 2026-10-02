@@ -38,16 +38,18 @@ The platform supports data ingestion, hybrid model training, prediction, explain
 
 | Deliverable ID | Module / Requirement | Implementation & Technical Architecture | Code / Checkpoint Location |
 | :--- | :--- | :--- | :--- |
-| **DEL-01** | **Data Ingestion & Pre-processing** | Ben Graham Gaussian Contrast Normalization ($\sigma_x = 10$) + Tenengrad Sharpness & Illumination Quality Assessment | [ai_ml_pipeline.py](ai_ml_pipeline.py) |
+| **DEL-01** | **Data Ingestion & Pre-processing** | Ben Graham Gaussian Contrast Normalization ($\sigma_x = 10$) + Tenengrad Sharpness & Quality Assessment | [ai_ml_pipeline.py](ai_ml_pipeline.py) |
 | **DEL-02** | **CNN Feature Extraction & PCA Selection** | Pre-classifier EfficientNet-B3 1,536D embedding vector extraction + 4-Component PCA reduction scaled to $[-\pi, \pi]$ | [qml_pipeline.py](qml_pipeline.py) (`PCAFeatureReducer`) |
 | **DEL-03** | **Quantum Feature Encoding** | Angle Encoding ($R_y(\theta_i)$ rotations) mapping 4 PCA features to 4 Qubits | [qml_pipeline.py](qml_pipeline.py) (`vqc_quantum_circuit`) |
 | **DEL-04** | **Variational Quantum Classifier (VQC)** | PennyLane 4-Qubit Parameterized Quantum Circuit with 2 variational layers ($R_y, R_z$), Ring CNOT entanglement, & Pauli-Z expectation measurements | [qml_pipeline.py](qml_pipeline.py) (`HybridVQCClassifier`) |
-| **DEL-05** | **Classical ML Baseline Model** | Support Vector Machine (`SVC` with RBF kernel & probability calibration) trained on identical 4 PCA features | [qml_pipeline.py](qml_pipeline.py) (`ClassicalSVMClassifier`) |
+| **DEL-05** | **Classical ML Baseline Model** | Support Vector Machine (`SVC` with RBF kernel) trained on identical 4 PCA features | [qml_pipeline.py](qml_pipeline.py) (`ClassicalSVMClassifier`) |
 | **DEL-06** | **Hybrid Training & Prediction Workflow** | PyTorch + PennyLane hybrid Adam optimization & dual prediction inference pipeline | [server.py](server.py) (`/api/qml/predict`) |
 | **DEL-07** | **Visual Explainability Module** | Grad-CAM Class Activation Maps highlighting retinal lesion visual attention, with explicit attribution notice for CNN feature representation | [index.html](index.html), [ai_ml_pipeline.py](ai_ml_pipeline.py) |
-| **DEL-08** | **Empirical Benchmarking Dashboard** | Comparative evaluation of Accuracy, Precision, Recall, F1-Score, Training Time, Inference Latency, & 5x5 Confusion Matrices | [qml_metrics.json](qml_metrics.json), [index.html](index.html) |
+| **DEL-08** | **5-Fold Cross-Validation Benchmark** | Empirical 5-fold cross-validation on seed dataset ($N=22$) with error bars and majority-class baseline | [qml_metrics.json](qml_metrics.json), [results_summary.csv](results_summary.csv) |
 | **DEL-09** | **Model Checkpoint Repository** | Saved weight files for CNN (`best_model.pt`), PCA (`pca_model.pkl`), Classical SVM (`svm_model.pkl`), and Quantum VQC (`vqc_model.pt`) | [best_model.pt](best_model.pt), `pca_model.pkl`, `svm_model.pkl`, `vqc_model.pt` |
 | **DEL-10** | **Deployment & Containerization** | Live GitHub Pages web deployment, Dockerfile container configuration, Procfile, requirements.txt, & Render.yaml cloud blueprints | [Dockerfile](Dockerfile), [render.yaml](render.yaml), GitHub Pages |
+| **FUTURE-01** | **200+ Image Cross-Dataset Benchmark** | Planned evaluation on external out-of-distribution test sets (APTOS 2019 / IDRiD / Messidor-2) | **Future Work (Planned)** |
+| **FUTURE-02** | **Physical Quantum Hardware Run** | Planned execution on physical quantum processors (e.g. IBM Quantum via `pennylane-qiskit`) | **Future Work (Planned)** |
 
 ---
 
@@ -155,12 +157,20 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 | Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score | Inference Latency |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Majority Class Baseline** | 22 | N/A | **$68.2\% \pm 0.0\%$** | $100.0\%$ | $0.0\%$ | $81.1\%$ | $0.00 \text{ ms}$ |
-| **Classical SVM (RBF)** | 22 | 4 | **$69.0\% \pm 7.3\%$** | $100.0\% \pm 0.0\%$ | $0.0\% \pm 0.0\%$ | $56.6\% \pm 9.4\%$ | $0.08 \text{ ms}$ |
-| **Hybrid PennyLane VQC** | 22 | 4 | **$73.0\% \pm 6.8\%$** | $100.0\% \pm 0.0\%$ | $10.0\% \pm 20.0\%$ | $63.2\% \pm 10.6\%$ | $8.54 \text{ ms}$ |
+| **Classical SVM (RBF)** | 22 | 4 | **$77.0\% \pm 2.4\%$** | $100.0\% \pm 0.0\%$ | $20.0\% \pm 24.5\%$ | $69.8\% \pm 6.8\%$ | $0.08 \text{ ms}$ |
+| **Hybrid PennyLane VQC** | 22 | 4 | **$69.0\% \pm 7.3\%$** | $100.0\% \pm 0.0\%$ | $0.0\% \pm 0.0\%$ | $56.6\% \pm 9.4\%$ | $9.48 \text{ ms}$ |
 
 > [!IMPORTANT]
 > **Methodology & Limitation Notice**:
-> Because evaluation was conducted on 22 labeled clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. The VQC and SVM perform at comparable baseline levels relative to majority-class prevalence (68.2%), and cross-dataset validation on larger external datasets (e.g. APTOS-2019 / IDRiD) is planned.
+> Evaluated on 22 seed clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near majority baseline. Cross-dataset validation on larger external datasets (APTOS-2019 / IDRiD) is planned.
+
+---
+
+### 🔮 Future Work & Development Roadmap
+
+1. **Large-Scale Out-of-Distribution Validation**: Extract features from 200+ independent, unaugmented test images from APTOS 2019 validation split and IDRiD to establish out-of-distribution clinical generalization bounds.
+2. **Physical Quantum Hardware Execution**: Deploy Variational Quantum Circuits onto physical quantum processors (e.g. IBM Quantum free tier via `pennylane-qiskit`) to measure hardware gate noise and NISQ queue latency.
+3. **Qubit & Feature Scaling Sweeps**: Evaluate 6-Qubit and 8-Qubit VQC architectures with deeper entanglement layers against high-dimensional feature spaces ($N=50, 100, 200$ samples).
 
 ---
 
@@ -171,7 +181,7 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 
 #### Key Defense Questions & Honest Answers
 * **Q1: Does the VQC show a quantum advantage over classical SVM?**
-  * *Answer*: "Problem Statement SIH26139 asks for a hybrid platform to evaluate where quantum ML can be applied. We built the pipeline to benchmark a VQC and an SVM on identical features. On our current 22-image sample, neither model outperforms the majority-class prevalence baseline (68.2%), so we make no quantum advantage claim. Our scaling and small-data benchmark suite is designed to test where an advantage could appear."
+  * *Answer*: "Problem Statement SIH26139 asks for a hybrid platform to evaluate where quantum ML can be applied. We built the pipeline to benchmark a VQC and an SVM on identical features. On our current 22-image sample, Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near the majority baseline ($68.2\%$), so we make no quantum advantage claim. Our scaling and small-data benchmark suite is designed to test where an advantage could appear."
 * **Q2: Has the pipeline been run on physical quantum hardware?**
   * *Answer*: "The codebase is hardware-ready through PennyLane's device interface (`qml.device`), but we have executed our benchmarks on the `default.qubit` simulator. Running on physical hardware (e.g. via `pennylane-qiskit` on IBM Quantum) introduces hardware gate noise and queue latency, which is planned for future work."
 * **Q3: How does the live web demo work on GitHub Pages vs local server?**
