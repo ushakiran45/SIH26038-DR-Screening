@@ -3,6 +3,10 @@
 **Problem Statement ID**: TNSAT | **Technology Bucket**: MedTech / BioTech / HealthTech | **Category**: Software
 **Problem Creator**: Sarim Moin | **Organization**: Egreen Quanta
 
+> [!NOTE]
+> **Repository & Problem Statement ID Clarification**:
+> This project implements official **Problem Statement SIH26139 (Egreen Quanta - MIC)** titled *"Hybrid Quantum Machine Learning Platform for Early Disease Detection"*. The GitHub repository URL (`SIH26038-DR-Screening`) reflects the original workspace directory name under which the project was instantiated. All technical documentation, benchmarks, and deliverables correspond to SIH26139.
+
 ---
 
 ### 🌟 Problem Background & Description
@@ -160,6 +164,17 @@ https://ushakiran45.github.io/SIH26038-DR-Screening/
 
 ---
 
-### 🏆 Team SIH Presentation Pitch Script (TNSAT - Egreen Quanta / MIC)
-> *"For Problem Statement TNSAT (Egreen Quanta - MIC), we present a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical SVM baseline. Because we evaluated on 22 labeled sample images, these results represent a QML pipeline proof-of-concept demonstration, and we plan to validate on APTOS-2019 and IDRiD."*
+### 🏆 Presentation Pitch & Q&A Defense Guide (SIH26139 | Egreen Quanta - MIC)
+
+> **Pitch Statement**:
+> *"For Problem Statement SIH26139 (Egreen Quanta - MIC), we developed a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical RBF SVM baseline. Evaluated on 22 seed clinical images, our current benchmark serves as a software architecture proof-of-concept demonstration, and we plan cross-dataset validation on APTOS-2019 and IDRiD."*
+
+#### Key Defense Questions & Honest Answers
+* **Q1: Does the VQC show a quantum advantage over classical SVM?**
+  * *Answer*: "Problem Statement SIH26139 asks for a hybrid platform to evaluate where quantum ML can be applied. We built the pipeline to benchmark a VQC and an SVM on identical features. On our current 22-image sample, neither model outperforms the majority-class prevalence baseline (68.2%), so we make no quantum advantage claim. Our scaling and small-data benchmark suite is designed to test where an advantage could appear."
+* **Q2: Has the pipeline been run on physical quantum hardware?**
+  * *Answer*: "The codebase is hardware-ready through PennyLane's device interface (`qml.device`), but we have executed our benchmarks on the `default.qubit` simulator. Running on physical hardware (e.g. via `pennylane-qiskit` on IBM Quantum) introduces hardware gate noise and queue latency, which is planned for future work."
+* **Q3: How does the live web demo work on GitHub Pages vs local server?**
+  * *Answer*: "The interactive web workstation runs statically on GitHub Pages using pre-computed checkpoint outputs. When executing `python server.py` locally on port 8000, the frontend dynamically connects to live REST endpoints (`/api/qml/predict` and `/api/health`)."
+
 
