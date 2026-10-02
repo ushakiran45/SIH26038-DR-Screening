@@ -4,8 +4,8 @@
 **Problem Creator**: Sarim Moin | **Organization**: Egreen Quanta
 
 > [!NOTE]
-> **Repository & Problem Statement ID Clarification**:
-> This project implements official **Problem Statement SIH26139 (Egreen Quanta - MIC)** titled *"Hybrid Quantum Machine Learning Platform for Early Disease Detection"*. The GitHub repository URL (`SIH26038-DR-Screening`) reflects the original workspace directory name under which the project was instantiated. All technical documentation, benchmarks, and deliverables correspond to SIH26139.
+> **Problem Statement Alignment**:
+> This repository implements official **Problem Statement SIH26139 (Egreen Quanta - MIC)** titled *"Hybrid Quantum Machine Learning Platform for Early Disease Detection"*. All technical documentation, benchmarks, models, and web deployment components correspond to SIH26139.
 
 ---
 
@@ -146,7 +146,7 @@ docker run -p 8000:8000 sih26139-qml
 #### Option 4: GitHub Pages Live Web Deployment
 The static web interface is deployed live at:
 ```text
-https://ushakiran45.github.io/SIH26038-DR-Screening/
+https://ushakiran45.github.io/SIH26139-QML-Disease-Detection/
 ```
 
 ---
