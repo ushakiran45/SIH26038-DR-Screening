@@ -1,6 +1,6 @@
 /**
- * SIH26038 - Retinal Canvas Engine
- * Generates synthetic clinical fundus images & processes real uploaded patient fundus photos,
+ * SIH26139 - Retinal Canvas Engine
+ * Renders sample clinical fundus images & processes real uploaded patient fundus photos,
  * performing structure layer toggling, adaptive CLAHE enhancement, and image pixel analysis.
  */
 

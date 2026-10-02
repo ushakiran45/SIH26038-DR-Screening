@@ -1,11 +1,29 @@
 /**
- * SIH26038 - Main Application Orchestrator
+ * SIH26139 - Main Application Orchestrator
  * Handles tab transitions, sample dataset selection, event listeners,
  * UI updates, and synchronization across modules.
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing SIH26038 Explainable AI DR Workstation...');
+    console.log('Initializing SIH26139 Hybrid Quantum ML Workstation...');
+
+    // Fetch CNN evaluation metrics dynamically
+    fetch('cnn_eval_metrics.json')
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                const sensEl = document.getElementById('cnn-eval-sensitivity');
+                const specEl = document.getElementById('cnn-eval-specificity');
+                const aucEl = document.getElementById('cnn-eval-auc');
+                const dsNameEl = document.getElementById('cnn-dataset-name');
+
+                if (sensEl && data.referable_sensitivity_pct !== undefined) sensEl.textContent = data.referable_sensitivity_pct.toFixed(1) + '%';
+                if (specEl && data.referable_specificity_pct !== undefined) specEl.textContent = data.referable_specificity_pct.toFixed(1) + '%';
+                if (aucEl && data.roc_auc !== undefined) aucEl.textContent = data.roc_auc.toFixed(3);
+                if (dsNameEl && data.dataset_name) dsNameEl.textContent = data.dataset_name;
+            }
+        })
+        .catch(err => console.log('Notice loading cnn_eval_metrics.json:', err));
 
     let currentSampleKey = 'moderate_npdr';
 

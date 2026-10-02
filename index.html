@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explainable AI for Diabetic Retinopathy Screening in Rural India | SIH26038</title>
-    <meta name="description" content="MATLAB-based retinal image analysis pipeline & explainable AI screening system for rural PHCs in India. Features CLAHE enhancement, retinal structure segmentation, Grad-CAM attention maps, and Simulink telemedicine telemetry.">
+    <title>Hybrid Quantum Machine Learning Platform for Early Disease Detection | SIH26139</title>
+    <meta name="description" content="Hybrid Quantum-Classical Machine Learning Platform (SIH26139 | Egreen Quanta - MIC) integrating EfficientNet-B3 CNN feature extraction, 4-Qubit PennyLane Variational Quantum Circuit (VQC), classical SVM baselines, Grad-CAM visual explainability, and telemedicine resource telemetry.">
     
     <!-- Google Fonts & Chart.js -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,7 +242,7 @@
                     <div style="text-align: right;">
                         <div class="metric-label">Calibrated AI Confidence</div>
                         <div id="grading-conf" class="metric-value">96.1%</div>
-                        <div id="grading-ci" class="metric-sub">95% CI: [92.6% - 98.6%]</div>
+                        <div id="grading-ci" class="metric-sub">Empirical Softmax Distribution</div>
                     </div>
                 </div>
                 <p id="grading-desc" style="color: var(--text-muted); font-size: 0.92rem;"></p>
@@ -262,33 +262,33 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title"><i>🔬</i> Ben Graham Preprocessing & Pipeline Spec</div>
+                        <div class="card-title"><i>🔬</i> Ben Graham Preprocessing & CNN Spec</div>
                     </div>
                     <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
-                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Architecture:</strong> EfficientNet-B3 Deep CNN (timm)</p>
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Architecture:</strong> EfficientNet-B3 Deep CNN (timm backbone)</p>
                         <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Input Size:</strong> 380x380 RGB Matrix</p>
                         <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Preprocessing:</strong> Crop Black Border &rarr; Ben Graham Gaussian Blur Contrast ($\sigma_x=10$) &rarr; ImageNet Normalization</p>
-                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Training Benchmarks:</strong> APTOS 2019, Messidor-2, IDRiD</p>
-                        <p><strong style="color:var(--text-main);">Validation ROC-AUC:</strong> 0.968 (Referable DR)</p>
+                        <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Feature Embedding:</strong> 1,536-Dimensional Feature Representation</p>
+                        <p><strong style="color:var(--text-main);">CNN Evaluation Dataset:</strong> <span id="cnn-dataset-name">Sample_Fundus_Photos Clinical Corpus</span></p>
                     </div>
                 </div>
             </div>
 
             <div class="grid-3">
                 <div class="metric-card">
-                    <span class="metric-label">Referable Sensitivity (&gt;90% Target)</span>
-                    <span class="metric-value" style="color:#00e676;">94.8%</span>
-                    <span class="metric-sub">✓ Target Exceeded (+4.8%)</span>
+                    <span class="metric-label">CNN Referable Sensitivity</span>
+                    <span class="metric-value" id="cnn-eval-sensitivity" style="color:#00e676;">--%</span>
+                    <span class="metric-sub">CNN Backbone Feature Extractor</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-label">Referable Specificity (&gt;85% Target)</span>
-                    <span class="metric-value" style="color:#00e676;">92.1%</span>
-                    <span class="metric-sub">✓ Target Exceeded (+7.1%)</span>
+                    <span class="metric-label">CNN Referable Specificity</span>
+                    <span class="metric-value" id="cnn-eval-specificity" style="color:#00e676;">--%</span>
+                    <span class="metric-sub">CNN Backbone Feature Extractor</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-label">ROC-AUC Score</span>
-                    <span class="metric-value" style="color:#00f2fe;">0.968</span>
-                    <span class="metric-sub">Messidor-2 & APTOS Benchmarks</span>
+                    <span class="metric-label">CNN ROC-AUC Score</span>
+                    <span class="metric-value" id="cnn-eval-auc" style="color:#00f2fe;">0.---</span>
+                    <span class="metric-sub">Empirical Validation Benchmark</span>
                 </div>
             </div>
         </div>

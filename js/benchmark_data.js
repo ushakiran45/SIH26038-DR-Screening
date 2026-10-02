@@ -1,5 +1,5 @@
 /**
- * SIH26038 - Benchmark Comparison Dataset & Pipeline Validation Suite
+ * SIH26139 - Benchmark Comparison Dataset & Pipeline Validation Suite
  * Provides published metrics comparing the integrated MATLAB & EfficientNet-B3
  * Explainable AI pipeline against single-technique baselines across benchmark datasets.
  */
@@ -9,7 +9,7 @@ window.BenchmarkData = (function() {
     const BENCHMARKS = [
         {
             dataset: 'APTOS 2019 Blindness Detection',
-            method: 'SIH26038 EfficientNet-B3 + Grad-CAM Pipeline',
+            method: 'SIH26139 EfficientNet-B3 + Grad-CAM Pipeline',
             referableSens: '98.6%',
             referableSpec: '97.4%',
             aucROC: '0.992',
@@ -29,7 +29,7 @@ window.BenchmarkData = (function() {
         },
         {
             dataset: 'IDRiD (Indian Retinopathy Image Dataset)',
-            method: 'SIH26038 EfficientNet-B3 + Grad-CAM Pipeline',
+            method: 'SIH26139 EfficientNet-B3 + Grad-CAM Pipeline',
             referableSens: '98.2%',
             referableSpec: '96.8%',
             aucROC: '0.989',
@@ -49,7 +49,7 @@ window.BenchmarkData = (function() {
         },
         {
             dataset: 'Messidor-2 Clinical Benchmark',
-            method: 'SIH26038 EfficientNet-B3 + Grad-CAM Pipeline',
+            method: 'SIH26139 EfficientNet-B3 + Grad-CAM Pipeline',
             referableSens: '98.8%',
             referableSpec: '97.6%',
             aucROC: '0.994',
@@ -69,7 +69,7 @@ window.BenchmarkData = (function() {
         },
         {
             dataset: 'DRIVE (Vessel Extraction Benchmark)',
-            method: 'SIH26038 Integrated Structure Pipeline',
+            method: 'SIH26139 Integrated Structure Pipeline',
             referableSens: 'N/A (Vessel Acc: 97.8%)',
             referableSpec: 'N/A (Vessel Spec: 98.4%)',
             aucROC: '0.991',
@@ -100,7 +100,7 @@ window.BenchmarkData = (function() {
         `;
 
         BENCHMARKS.forEach(item => {
-            const isOurPipeline = item.method.includes('SIH26038');
+            const isOurPipeline = item.method.includes('SIH26139');
             html += `
                 <tr class="${isOurPipeline ? 'table-highlight' : ''}">
                     <td><strong>${item.dataset}</strong></td>

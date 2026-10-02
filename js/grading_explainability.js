@@ -1,5 +1,5 @@
 /**
- * SIH26038 - DR Severity Grading & Grad-CAM Explainability Module
+ * SIH26139 - DR Severity Grading & Grad-CAM Explainability Module
  * Handles ICDR severity grading (Levels 0-4), Grad-CAM heatmap visualization,
  * Monte Carlo confidence intervals, 30-second Ophthalmologist validation workflow,
  * and automated PDF report printing.
@@ -231,7 +231,7 @@ window.GradingExplainability = (function() {
             <div class="report-paper">
                 <div class="report-header-banner">
                     <h2>RURAL INDIA DR TELEMEDICINE SCREENING NETWORK</h2>
-                    <p><strong>MathWorks SIH26038 Automated Explainable AI Diagnostic Report</strong></p>
+                    <p><strong>SIH26139 Hybrid Quantum Machine Learning Diagnostic Report</strong></p>
                     <p>Date: ${new Date().toLocaleDateString('en-IN', { dateStyle: 'full' })} | PHC Station: PHC-RURAL-042 (District Telemed Hub)</p>
                 </div>
 

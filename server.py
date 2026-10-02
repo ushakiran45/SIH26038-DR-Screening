@@ -1,6 +1,6 @@
 """
 ================================================================================
-SIH26038 & TNSAT - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
+SIH26139 (TNSAT) - HYBRID QUANTUM-CLASSICAL RETINAL TELEMEDICINE SERVER
 ================================================================================
 Runs HTTP Server on http://localhost:8000
 Provides live web application hosting, AI inference backend API, 

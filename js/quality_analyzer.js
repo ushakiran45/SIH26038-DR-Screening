@@ -1,5 +1,5 @@
 /**
- * SIH26038 - Image Quality Assessment & Adaptive Enhancement Module
+ * SIH26139 - Image Quality Assessment & Adaptive Enhancement Module
  * Computes Tenengrad sharpness, illumination uniformity, SNR, FOV area,
  * and generates actionable recapture feedback for rural PHC operators.
  */
