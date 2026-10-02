@@ -116,7 +116,7 @@ class DREfficientNet(nn.Module):
 
 
 def load_model(model_path=MODEL_PATH):
-    """Load EfficientNet-B3 model weights safely onto CPU/GPU."""
+    """Load EfficientNet-B3 model weights safely onto CPU/GPU into backbone with strict=True."""
     print(f"[AI/ML] Loading EfficientNet-B3 model weights from: {model_path}")
     model = DREfficientNet(pretrained=False)
     
@@ -125,10 +125,15 @@ def load_model(model_path=MODEL_PATH):
             state_dict = torch.load(model_path, map_location=DEVICE)
             if isinstance(state_dict, dict) and "state_dict" in state_dict:
                 state_dict = state_dict["state_dict"]
-            model.load_state_dict(state_dict, strict=False)
-            print("[AI/ML] Model state dictionary loaded successfully.")
+            # Clean keys if needed
+            cleaned_state = {}
+            for k, v in state_dict.items():
+                k_clean = k.replace("module.", "").replace("backbone.", "")
+                cleaned_state[k_clean] = v
+            model.backbone.load_state_dict(cleaned_state, strict=True)
+            print("[AI/ML] Model state dictionary loaded strictly into backbone (0 missing, 0 unexpected keys).")
         except Exception as e:
-            print(f"[AI/ML] Warning loading weight file directly: {e}. Model initialized.")
+            print(f"[AI/ML] Warning loading weight file: {e}. Model initialized.")
     else:
         print(f"[AI/ML] Weight file not found at {model_path}. Running initialized architecture.")
 

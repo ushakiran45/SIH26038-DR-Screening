@@ -1,4 +1,4 @@
 Model,N_Samples,Qubits,Accuracy,Referable_Sensitivity,Specificity,F1_Score,Train_Time_Sec,Inference_Latency_ms
 Majority Class Baseline (Always Referable),22,N/A,68.2% ± 0.0%,100.0% ± 0.0%,0.0% ± 0.0%,81.1% ± 0.0%,0.000s,0.00ms
-Classical SVM (RBF),22,4,69.0% ± 7.3%,100.0% ± 0.0%,0.0% ± 0.0%,56.6% ± 9.4%,0.002s,0.08ms
-Hybrid PennyLane VQC,22,4,73.0% ± 6.8%,100.0% ± 0.0%,10.0% ± 20.0%,63.2% ± 10.6%,6.332s,8.54ms
+Classical SVM (RBF),22,4,77.0% ± 2.4%,100.0% ± 0.0%,20.0% ± 24.5%,69.8% ± 6.8%,0.002s,0.08ms
+Hybrid PennyLane VQC,22,4,69.0% ± 7.3%,100.0% ± 0.0%,0.0% ± 0.0%,56.6% ± 9.4%,6.219s,9.48ms
