@@ -146,7 +146,7 @@ docker run -p 8000:8000 sih26139-qml
 #### Option 4: GitHub Pages Live Web Deployment
 The static web interface is deployed live at:
 ```text
-https://ushakiran45.github.io/SIH26139-QML-Disease-Detection/
+https://ushakiran45.github.io/SIH26038-DR-Screening/
 ```
 
 ---
