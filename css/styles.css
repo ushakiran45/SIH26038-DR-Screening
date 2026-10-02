@@ -745,7 +745,7 @@ body {
     font-size: 0.85rem;
     color: #1e293b;
 /* ==========================================================================
-   TNSAT - HYBRID QUANTUM MACHINE LEARNING (QML) STYLES
+   TNSAT - HYBRID QUANTUM MACHINE LEARNING (QML) PREMIUM STYLES
    ========================================================================== */
 .qml-pipeline-diagram {
     display: flex;
@@ -758,89 +758,116 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.6rem;
     flex-wrap: wrap;
 }
 
 .qml-step-card {
-    background: rgba(15, 23, 42, 0.75);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 0.9rem;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.75) 100%);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
     flex: 1;
-    min-width: 140px;
+    min-width: 150px;
     justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.qml-step-card:hover {
+    border-color: #00f2fe;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 242, 254, 0.25);
 }
 
 .step-num {
-    background: rgba(0, 242, 254, 0.2);
-    color: var(--primary);
-    border: 1px solid var(--border-color);
-    width: 22px;
-    height: 22px;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    color: #070b15;
+    font-weight: 800;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
 }
 
 .step-icon {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
 .step-label {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-main);
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
 .qml-arrow {
-    color: var(--primary);
+    color: #00f2fe;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+    animation: pulseArrow 2s infinite ease-in-out;
+}
+
+@keyframes pulseArrow {
+    0%, 100% { opacity: 0.6; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(3px); }
 }
 
 .qml-branch-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 1.25rem;
     flex-wrap: wrap;
 }
 
 .branch-card {
     flex: 1;
-    min-width: 300px;
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    min-width: 320px;
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
 .branch-classical {
-    background: rgba(255, 179, 0, 0.06);
-    border: 1px solid rgba(255, 179, 0, 0.35);
+    background: linear-gradient(135deg, rgba(255, 179, 0, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(255, 179, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 179, 0, 0.08);
+}
+
+.branch-classical:hover {
+    border-color: #ffb300;
+    box-shadow: 0 0 25px rgba(255, 179, 0, 0.2);
 }
 
 .branch-quantum {
-    background: rgba(0, 242, 254, 0.08);
-    border: 1px solid rgba(0, 242, 254, 0.4);
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(0, 242, 254, 0.5);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.12);
+}
+
+.branch-quantum:hover {
+    border-color: #00f2fe;
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.25);
 }
 
 .branch-header {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .branch-classical .branch-header { color: #ffb300; }
@@ -849,16 +876,16 @@ body {
 .branch-flow-row {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     justify-content: space-between;
 }
 
 .sub-step {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem 0.8rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.6rem 0.9rem;
     border-radius: var(--radius-sm);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 600;
     text-align: center;
     flex: 1;
@@ -866,134 +893,152 @@ body {
 
 .sub-arrow {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .highlight-amber {
     border-color: rgba(255, 179, 0, 0.5);
     color: #ffb300;
+    background: rgba(255, 179, 0, 0.12);
 }
 
 .highlight-cyan {
     border-color: rgba(0, 242, 254, 0.5);
     color: #00f2fe;
+    background: rgba(0, 242, 254, 0.12);
 }
 
 .branch-vs-badge {
-    background: rgba(15, 23, 42, 0.9);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border: 1px solid var(--border-color);
-    color: var(--text-muted);
+    color: var(--primary);
     font-weight: 800;
-    font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
     border-radius: 50px;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+    letter-spacing: 1px;
 }
 
 .qml-final-banner {
-    background: rgba(0, 230, 118, 0.08);
-    border: 1px solid rgba(0, 230, 118, 0.35);
-    border-radius: var(--radius-md);
-    padding: 0.85rem 1.25rem;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid rgba(0, 230, 118, 0.4);
+    border-radius: 12px;
+    padding: 0.95rem 1.35rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.85rem;
     color: #00e676;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 230, 118, 0.1);
 }
 
 .final-banner-icon {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
 }
 
 .card-classical-highlight {
-    border-top: 3px solid #ffb300;
+    border-top: 4px solid #ffb300;
 }
 
 .card-qml-highlight {
-    border-top: 3px solid #00f2fe;
+    border-top: 4px solid #00f2fe;
 }
 
 .quantum-circuit-box {
-    background: #090d16;
-    border: 1px solid rgba(0, 242, 254, 0.3);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    font-family: var(--font-mono);
+    background: #060913;
+    border: 1px solid rgba(0, 242, 254, 0.35);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 242, 254, 0.1);
 }
 
 .circuit-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    font-size: 0.78rem;
+    gap: 1.25rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.85rem;
 }
 
 .quantum-ascii-diagram {
     color: #00f2fe;
-    font-size: 0.85rem;
-    line-height: 1.6;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    letter-spacing: 0.5px;
     overflow-x: auto;
     white-space: pre;
+    background: rgba(0, 242, 254, 0.03);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px dashed rgba(0, 242, 254, 0.2);
 }
 
 .pca-tag-group {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
     flex-wrap: wrap;
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
 }
 
 .pca-tag {
-    background: rgba(124, 77, 255, 0.15);
-    border: 1px solid rgba(124, 77, 255, 0.4);
-    color: #a78bfa;
-    padding: 0.3rem 0.6rem;
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.2) 0%, rgba(124, 77, 255, 0.08) 100%);
+    border: 1px solid rgba(124, 77, 255, 0.5);
+    color: #c4b5fd;
+    padding: 0.35rem 0.75rem;
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(124, 77, 255, 0.15);
 }
 
 .alert-box-notice {
-    background: rgba(255, 179, 0, 0.1);
+    background: linear-gradient(135deg, rgba(255, 179, 0, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%);
     border-left: 4px solid var(--warning);
-    padding: 0.85rem 1rem;
+    padding: 0.95rem 1.15rem;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     color: #ffecb3;
-    line-height: 1.5;
+    line-height: 1.55;
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.05);
 }
 
 .cm-matrix-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 4px;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     text-align: center;
 }
 
-.cm-matrix-table th, .cm-matrix-table td {
-    padding: 0.4rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
 .cm-matrix-table th {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(30, 41, 59, 0.6);
     color: var(--text-muted);
+    padding: 0.5rem;
+    border-radius: 4px;
 }
 
 .cm-cell-diag {
-    background: rgba(0, 230, 118, 0.25);
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.3) 0%, rgba(0, 230, 118, 0.15) 100%);
     color: #00e676;
-    font-weight: bold;
+    font-weight: 800;
+    border: 1px solid rgba(0, 230, 118, 0.5);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
 }
 
 .cm-cell-off {
-    background: rgba(255, 82, 82, 0.15);
+    background: rgba(255, 82, 82, 0.12);
     color: #ff8a80;
+    border: 1px solid rgba(255, 82, 82, 0.25);
+    border-radius: 6px;
 }
+
 
 
