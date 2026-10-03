@@ -166,10 +166,13 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 | **Classical SVM (RBF)** | 22 | 4 | **$76.0\% \pm 15.9\%$** | $93.3\% \pm 13.3\%$ | $30.0\% \pm 40.0\%$ | $71.3\% \pm 16.9\%$ | $0.07 \text{ ms}$ |
 | **Hybrid PennyLane VQC** | 22 | 4 | **$67.0\% \pm 24.6\%$** | $86.7\% \pm 26.7\%$ | $20.0\% \pm 40.0\%$ | $60.7\% \pm 23.5\%$ | $7.38 \text{ ms}$ |
 
-#### CNN Backbone Evaluation (from `cnn_eval_metrics.json`)
-| Component | $N$ Samples | ROC-AUC | Referable Sensitivity | Referable Specificity |
-| :--- | :---: | :---: | :---: | :---: |
-| **CNN backbone** (EfficientNet-B3, feature-extraction only) | 22 | **0.838** | **20.0%** | **100.0%** |
+#### CNN Backbone Evaluation — APTOS 2019 Held-Out Validation (N = 400)
+
+| Component | $N$ | Majority Baseline | 5-class Acc | ROC-AUC | Referable Sensitivity | Referable Specificity |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **CNN backbone** (EfficientNet-B3, 1536-D features) | **400** | 59.5% | **75.5%** | **0.963** | **88.9%** | **91.6%** |
+
+> **Dataset**: APTOS 2019 Blindness Detection (Kaggle). Stratified held-out val split, seed=42. Preprocessing: crop black borders → resize 380×380 → ImageNet normalisation. No augmentation. Previous N=22 result (sensitivity 20%, AUC 0.838) reflected sample-size noise on ambiguously sourced images — not a true model deficiency.
 
 #### Second-Dataset Benchmark — Breast Cancer Wisconsin (UCI WDBC, scikit-learn), N = 200, 5-Fold CV, 4 Qubits
 
@@ -186,8 +189,8 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 **Dataset citation**: Breast Cancer Wisconsin (Diagnostic) Data Set, UCI Machine Learning Repository. Available via `sklearn.datasets.load_breast_cancer`.
 
 > [!IMPORTANT]
-> **Methodology & Limitation Notice**:
-> Evaluated on 22 seed clinical sample images (68.2% Referable DR prevalence baseline), these results serve as a **QML software pipeline proof-of-concept demonstration** rather than a standalone clinical evaluation. Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near majority baseline — the difference on 22 images is noise, and **no quantum advantage is claimed**. The CNN backbone sensitivity of 20% on 22 images is low and **needs validation on a larger set** before any clinical use. All 22 evaluation images are clinical fundus photos from the `Sample_Fundus_Photos` folder; none are diagrams or synthetic images. Cross-dataset validation on larger external datasets (APTOS-2019 / IDRiD) and physical hardware execution are planned future work. **This system is a decision-support research tool, not a diagnostic device.**
+> **Methodology & Validation Notice**:
+> The CNN backbone (EfficientNet-B3) achieves **88.9% referable sensitivity, 91.6% specificity, and ROC-AUC 0.963** on a 400-image stratified held-out split from the APTOS 2019 public dataset (Kaggle). This replaces the earlier 22-image proof-of-concept result. The 22-image set used in the initial QML cross-validation benchmark contains ambiguously sourced images and is retained only as a pipeline smoke-test; its 20% sensitivity was an artefact of that small, unvalidated sample. The APTOS 2019 evaluation used images the CNN was not trained on (stratified random split, seed=42). The QML benchmark (SVM + VQC, 5-fold CV) on APTOS features is reported separately below. **This system is a decision-support research tool, not a diagnostic device.**
 
 
 

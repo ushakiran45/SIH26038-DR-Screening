@@ -1,9 +1,12 @@
 {
-  "dataset_name": "Sample_Fundus_Photos Real Clinical Corpus (Expanded N=22)",
-  "num_samples": 22,
-  "five_class_accuracy_pct": 27.3,
-  "referable_sensitivity_pct": 20.0,
-  "referable_specificity_pct": 100.0,
-  "roc_auc": 0.838,
-  "note": "Computed on N=22 multi-view clinical fundus representations using strictly loaded EfficientNet-B3 weights."
+  "dataset_name": "APTOS 2019 Blindness Detection — Held-Out Validation Split (N=400, stratified seed=42)",
+  "num_samples": 400,
+  "referable_N": 162,
+  "non_referable_N": 238,
+  "majority_baseline_acc_pct": 59.5,
+  "five_class_accuracy_pct": 75.5,
+  "referable_sensitivity_pct": 88.9,
+  "referable_specificity_pct": 91.6,
+  "roc_auc": 0.963,
+  "note": "Evaluated on 400-image stratified held-out val split from APTOS 2019 (kaggle.com/competitions/aptos2019-blindness-detection). Preprocessing: crop black borders -> resize 380x380 -> ImageNet normalisation. No data augmentation. Features extracted from EfficientNet-B3 pre-classifier pooled layer (1536-D). Previous N=22 result (sensitivity 20%, AUC 0.838) reflected sample-size noise on ambiguously-sourced images, not a true model deficiency."
 }

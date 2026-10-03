@@ -1,0 +1,14 @@
+{
+  "dataset": "APTOS 2019 (held-out val split, N=400, stratified seed=42)",
+  "N": 400,
+  "referable_N": 162,
+  "non_referable_N": 238,
+  "majority_baseline_acc_pct": 59.5,
+  "five_class_accuracy_pct": 75.5,
+  "cnn_sensitivity_argmax_pct": 88.9,
+  "cnn_specificity_argmax_pct": 91.6,
+  "cnn_sensitivity_threshold05_pct": 88.9,
+  "cnn_specificity_threshold05_pct": 91.6,
+  "roc_auc": 0.963,
+  "note": "Preprocessing: crop black borders -> resize 380x380 -> ImageNet normalisation. No Ben Graham applied (preprocess_fundus_image does not apply ben_graham_preprocess). argmax = argmax over 5 classes; threshold = P(class2+3+4) >= 0.5."
+}
