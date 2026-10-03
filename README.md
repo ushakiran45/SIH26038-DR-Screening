@@ -146,7 +146,7 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 ```
 
 > [!NOTE]
-> **Circuit Architecture Note**: The benchmark script (`benchmark_qml.py`) uses a `StronglyEntanglingLayers` VQC with a single ⟨Z₀⟩ output on a binary target. The dashboard circuit shown in Tab 7 represents the deployed 4-qubit Ry/Rz ring-CNOT design (`vqc_quantum_circuit` in `qml_pipeline.py`). Both share the same PCA angle-encoded input features.
+> **Circuit Architecture Note**: All system components (`qml_pipeline.py`, `benchmark_qml.py`, `aptos_qml_benchmark.py`) utilize the unified 4-qubit $R_y/R_z$ ring-CNOT PennyLane architecture (`vqc_quantum_circuit`). The generated circuit diagram ([static/vqc_circuit_diagram.png](static/vqc_circuit_diagram.png)) is generated directly from this live QNode.
 
 
 
@@ -159,17 +159,17 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 | **Classical SVM (RBF)** | 22 | 4 | **$76.0\% \pm 15.9\%$** | $93.3\% \pm 13.3\%$ | $30.0\% \pm 40.0\%$ | $71.3\% \pm 16.9\%$ | $0.07 \text{ ms}$ |
 | **Hybrid PennyLane VQC** | 22 | 4 | **$67.0\% \pm 24.6\%$** | $86.7\% \pm 26.7\%$ | $20.0\% \pm 40.0\%$ | $60.7\% \pm 23.5\%$ | $7.38 \text{ ms}$ |
 
-#### CNN Backbone Evaluation — APTOS 2019 Held-Out Validation (N = 400)
+#### CNN Backbone Evaluation — APTOS 2019 Validation Split (N = 400)
 
 | Component | $N$ | Majority Baseline | 5-class Acc | ROC-AUC | Referable Sensitivity | Referable Specificity |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **CNN backbone** (EfficientNet-B3, 1536-D features) | **400** | 59.5% | **75.5%** | **0.963** | **88.9%** | **91.6%** |
 
-> **Dataset**: APTOS 2019 Blindness Detection (Kaggle). Stratified held-out val split, seed=42. Preprocessing: crop black borders → resize 380×380 → ImageNet normalisation. No augmentation. Previous N=22 result (sensitivity 20%, AUC 0.838) reflected sample-size noise on ambiguously sourced images — not a true model deficiency.
+> **Dataset & Tuning Disclaimer**: APTOS 2019 Blindness Detection (Kaggle), 400-image sample split (seed=42). Preprocessing: crop black borders → resize 380×380 → ImageNet normalisation. *Note on backbone split*: Because `best_model.pt` is a pre-trained checkpoint, potential overlap between this 400-image sample and the original CNN pre-training data cannot be independently verified. *Note on VQC tuning*: The VQC decision threshold (0.35) and class weighting were hyperparameter-tuned on this sample, providing resubstitution/optimistic performance bounds.
 
 #### Hybrid SVM vs VQC on the same APTOS 2019 features (N = 400, 5-fold CV, 4 qubits)
 
-PCA to 4 components, angle encoding, class-weighted VQC (50 epochs, lr=0.05, decision threshold 0.35). Majority class is non-referable (238 / 400 = 59.5%). **SVM is slightly stronger and more stable. No quantum advantage is claimed, and VQC does not beat SVM.**
+PCA to 4 components, angle encoding, class-weighted VQC (50 epochs, lr=0.05, decision threshold 0.35 tuned on dataset). Majority class is non-referable (238 / 400 = 59.5%). **SVM is slightly stronger and more stable. No quantum advantage is claimed, and VQC does not beat SVM.**
 
 | Model / Baseline | $N$ | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |

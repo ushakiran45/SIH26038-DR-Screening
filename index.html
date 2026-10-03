@@ -656,7 +656,7 @@
                     <span class="badge badge-live">4 Qubits / 2 Layers (deployed Ry/Rz ring-CNOT)</span>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.75rem;">
-                    The dashboard circuit is the deployed 4-qubit Ry/Rz ring-CNOT design. The benchmark script uses a StronglyEntanglingLayers VQC with a single ⟨Z0⟩ output on a binary target.
+                    The web dashboard, prediction engine, and benchmark suite all utilize the identical 4-qubit Ry/Rz ring-CNOT PennyLane VQC architecture.
                 </p>
                 <div class="quantum-circuit-box">
                     <div class="circuit-meta">
@@ -665,7 +665,8 @@
                         <span><b>Encoding:</b> Angle Encoding (Ry)</span>
                         <span><b>Entanglement:</b> Ring CNOT</span>
                     </div>
-                    <pre class="quantum-ascii-diagram" id="quantum-ascii-circuit">
+                    <img src="static/vqc_circuit_diagram.png" alt="4-Qubit VQC Circuit Architecture" style="width:100%; max-width:680px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); margin-top:0.75rem; display:block;">
+                    <pre class="quantum-ascii-diagram" id="quantum-ascii-circuit" style="margin-top: 0.75rem;">
 q0: ───Ry(θ0)───[Ry(w0)]───[Rz(w1)]───────●───────────────[X]───⟨Z0⟩
 q1: ───Ry(θ1)───[Ry(w2)]───[Rz(w3)]───────┼───────●───────│───⟨Z1⟩
 q2: ───Ry(θ2)───[Ry(w4)]───[Rz(w5)]───────┼───────┼───────●───⟨Z2⟩
