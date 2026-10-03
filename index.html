@@ -74,7 +74,7 @@
             <div class="selector-group">
                 <span class="control-label">Select Clinical Dataset Image:</span>
                 <select id="sample-select" class="select-input">
-                    <option value="moderate_npdr" selected>Messidor-2 #412 — Level 2: Moderate NPDR (Referable DR)</option>
+                    <option value="moderate_npdr" selected>Sample image 1 — Level 2: Moderate NPDR (Referable DR)</option>
                     <option value="normal">APTOS 2019 #1042 — Level 0: No DR (Healthy Retina)</option>
                     <option value="mild_npdr">IDRiD #088 — Level 1: Mild NPDR (Sub-pixel MAs)</option>
                     <option value="severe_npdr">APTOS 2019 #3891 — Level 3: Severe NPDR (Multiple Hemorrhages)</option>
@@ -783,6 +783,7 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             <tr><td><b>DEL-08</b></td><td>5-Fold Cross-Validation Benchmark (N=22)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_metrics.json</td></tr>
                             <tr><td><b>DEL-09</b></td><td>Model Checkpoint Repository</td><td><span class="badge badge-live">✓ Done</span></td><td>best_model.pt, *.pkl, vqc_model.pt</td></tr>
                             <tr><td><b>DEL-10</b></td><td>Deployment &amp; GitHub Pages</td><td><span class="badge badge-live">✓ Done</span></td><td><a href="https://ushakiran45.github.io/SIH26139-Hybrid-QML/" style="color:#67e8f9;">https://ushakiran45.github.io/SIH26139-Hybrid-QML/</a></td></tr>
+                            <tr><td><b>DEL-11</b></td><td>Second-dataset benchmark (Breast Cancer, N=200): benchmark module is dataset-agnostic</td><td><span class="badge badge-live">✓ Done</span></td><td>benchmarks/ — SVM 93.0% ± 3.3%, VQC 75.5% ± 5.8%, majority baseline 64.5%</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-01</b></td><td>Cross-dataset benchmark (APTOS-2019 / IDRiD / Messidor-2)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — N&gt;200 independent images</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-02</b></td><td>Physical quantum hardware run (IBM Quantum / pennylane-qiskit)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — hardware gate noise &amp; queue latency</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-03</b></td><td>Qubit scaling (6-qubit, 8-qubit VQC)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — deeper entanglement layers</td></tr>

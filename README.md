@@ -48,9 +48,10 @@ The platform supports data ingestion, hybrid model training, prediction, explain
 | **DEL-08** | **5-Fold Cross-Validation Benchmark** | Empirical 5-fold cross-validation on seed dataset ($N=22$) with error bars and majority-class baseline | [qml_metrics.json](qml_metrics.json), [results_summary.csv](results_summary.csv) |
 | **DEL-09** | **Model Checkpoint Repository** | Saved weight files for CNN (`best_model.pt`), PCA (`pca_model.pkl`), Classical SVM (`svm_model.pkl`), and Quantum VQC (`vqc_model.pt`) | [best_model.pt](best_model.pt), `pca_model.pkl`, `svm_model.pkl`, `vqc_model.pt` |
 | **DEL-10** | **Deployment & Containerization** | Live GitHub Pages web deployment, Dockerfile container configuration, Procfile, requirements.txt, & Render.yaml cloud blueprints | [Dockerfile](Dockerfile), [render.yaml](render.yaml), GitHub Pages |
+| **DEL-11** | **Second-Dataset Benchmark (Breast Cancer, N=200)** | Dataset-agnostic benchmark module run on UCI WDBC (scikit-learn); 5-fold CV, 4 qubits; SVM 93.0% ± 3.3%, VQC 75.5% ± 5.8%, majority baseline 64.5%. VQC does not beat classical SVM (gap > std — honest result). Qubit sweeps in benchmarks/. | [benchmarks/](benchmarks/) |
 | **FUTURE-01** | **Cross-Dataset Benchmark (200+ Images)** | Planned evaluation on external out-of-distribution test sets (APTOS 2019 / IDRiD / Messidor-2) with N > 200 independent images | **Future Work (Planned)** |
 | **FUTURE-02** | **Physical Quantum Hardware Run** | Planned execution on physical quantum processors (e.g. IBM Quantum via `pennylane-qiskit`); hardware gate noise and NISQ queue latency not yet measured | **Future Work (Planned)** |
-| **FUTURE-03** | **Qubit Scaling (6-Qubit / 8-Qubit VQC)** | Evaluate deeper entanglement architectures at higher qubit counts against larger feature spaces ($N=50, 100, 200$ samples) | **Future Work (Planned)** |
+| **FUTURE-03** | **Qubit Scaling (6-Qubit / 8-Qubit VQC)** | Evaluate deeper entanglement architectures at higher qubit counts against larger feature spaces ($N=50, 100, 200$ samples) | [benchmarks/](benchmarks/) |
 | **FUTURE-04** | **Circuit-Level Explainability** | Quantum SHAP / circuit gradient attribution for VQC gate parameters (distinct from CNN Grad-CAM spatial attention) | **Future Work (Planned)** |
 
 ---
@@ -169,6 +170,20 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 | Component | $N$ Samples | ROC-AUC | Referable Sensitivity | Referable Specificity |
 | :--- | :---: | :---: | :---: | :---: |
 | **CNN backbone** (EfficientNet-B3, feature-extraction only) | 22 | **0.838** | **20.0%** | **100.0%** |
+
+#### Second-Dataset Benchmark — Breast Cancer Wisconsin (UCI WDBC, scikit-learn), N = 200, 5-Fold CV, 4 Qubits
+
+> **Important**: The web app is a retinal DR tool. This benchmark demonstrates that the benchmark *module* (`benchmark_qml.py`) is dataset-agnostic — it accepts any feature matrix and label array. The retinal app is the case study; this run provides a statistically meaningful comparison on a well-known public dataset.
+
+| Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Majority-class baseline** | 200 | N/A | **64.5%** | 100.0% | 0.0% | 78.4% |
+| **Classical SVM (RBF)** | 200 | 4 | **$93.0\% \pm 3.3\%$** | $83.0\% \pm 7.4\%$ | $98.5\% \pm 1.9\%$ | $92.8\% \pm 3.4\%$ |
+| **Hybrid PennyLane VQC** | 200 | 4 | **$75.5\% \pm 5.8\%$** | $37.0\% \pm 18.5\%$ | $96.9\% \pm 2.9\%$ | $71.3\% \pm 8.8\%$ |
+
+**Interpretation**: The VQC does **not** beat the classical SVM on this dataset and sample size. The accuracy gap (17.5 pp) is substantially larger than either model's standard deviation, so the result is statistically clear. This is an honest, expected outcome — a 20-epoch, 4-qubit VQC with 4 PCA features cannot match a well-tuned RBF SVM on tabular data. The benchmark demonstrates the comparative framework, not a quantum advantage claim. Qubit and sample sweeps (N=100, 50; 6-qubit, 8-qubit): see [benchmarks/](benchmarks/).
+
+**Dataset citation**: Breast Cancer Wisconsin (Diagnostic) Data Set, UCI Machine Learning Repository. Available via `sklearn.datasets.load_breast_cancer`.
 
 > [!IMPORTANT]
 > **Methodology & Limitation Notice**:
