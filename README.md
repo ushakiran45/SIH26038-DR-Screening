@@ -175,13 +175,13 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 
 > **Important**: The web app is a retinal DR tool. This benchmark demonstrates that the benchmark *module* (`benchmark_qml.py`) is dataset-agnostic — it accepts any feature matrix and label array. The retinal app is the case study; this run provides a statistically meaningful comparison on a well-known public dataset.
 
-| Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score |
+| Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Malignant Sensitivity | Benign Specificity | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Majority-class baseline** | 200 | N/A | **64.5%** | 100.0% | 0.0% | 78.4% |
+| **Majority-class baseline (always benign)** | 200 | N/A | **64.5%** *(sample is 129 benign / 71 malignant — not balanced)* | 0.0% | 100.0% | 78.4% |
 | **Classical SVM (RBF)** | 200 | 4 | **$93.0\% \pm 3.3\%$** | $83.0\% \pm 7.4\%$ | $98.5\% \pm 1.9\%$ | $92.8\% \pm 3.4\%$ |
 | **Hybrid PennyLane VQC** | 200 | 4 | **$75.5\% \pm 5.8\%$** | $37.0\% \pm 18.5\%$ | $96.9\% \pm 2.9\%$ | $71.3\% \pm 8.8\%$ |
 
-**Interpretation**: The VQC does **not** beat the classical SVM on this dataset and sample size. The accuracy gap (17.5 pp) is substantially larger than either model's standard deviation, so the result is statistically clear. This is an honest, expected outcome — a 20-epoch, 4-qubit VQC with 4 PCA features cannot match a well-tuned RBF SVM on tabular data. The benchmark demonstrates the comparative framework, not a quantum advantage claim. Qubit and sample sweeps (N=100, 50; 6-qubit, 8-qubit): see [benchmarks/](benchmarks/).
+**Interpretation**: The random sample (seed=42) of 200 from the 569-sample dataset preserves the natural 62.7% benign prevalence (129/200 benign, 71/200 malignant), so the majority baseline is "always predict benign" at 64.5% — not 50%. The VQC does **not** beat the classical SVM (93.0% vs 75.5%; gap = 17.5 pp, well above both stds). The VQC's malignant sensitivity is low (37.0% ± 18.5%) — it predicts benign too often. The SVM is both more accurate and more stable across folds. This is an honest, expected result. The benchmark demonstrates the comparative framework, not a quantum advantage claim. The benchmark *module* (`benchmark_qml.py`) is dataset-agnostic; the web app supports retinal images only. Qubit and sample sweeps (N=100, 50; 6-qubit): see [benchmarks/](benchmarks/).
 
 **Dataset citation**: Breast Cancer Wisconsin (Diagnostic) Data Set, UCI Machine Learning Repository. Available via `sklearn.datasets.load_breast_cancer`.
 
