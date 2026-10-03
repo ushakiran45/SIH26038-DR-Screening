@@ -38,10 +38,11 @@
 
     <!-- Module Navigation Tabs -->
     <div class="alert-box-notice" style="margin: 0.75rem 1.25rem 0;">
-        <strong>Working proof-of-concept hybrid pipeline on a small sample (N = 22).</strong>
-        Larger benchmark, hardware run and generalization testing are future work.
-        This is <strong>decision support, not diagnosis</strong> — it does not reliably detect diabetic retinopathy.
-        No quantum advantage is claimed; SVM vs VQC differences on 22 images are noise.
+        <strong>CNN backbone (EfficientNet-B3) on 400 held-out APTOS 2019 images:</strong>
+        88.9% referable sensitivity, 91.6% specificity, ROC-AUC 0.963 (majority baseline 59.5%).
+        Hybrid heads on the same features (5-fold CV): SVM 90.0% ± 1.8%, VQC 88.0% ± 3.8% — SVM is slightly stronger; no quantum advantage is claimed.
+        The interactive demo still uses a small seed set (N = 22) as a pipeline smoke-test.
+        This is <strong>decision support, not diagnosis</strong> — it is not a clinical diabetic retinopathy detector.
     </div>
 
     <nav class="nav-tabs">
@@ -276,7 +277,7 @@
                         <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Input Size:</strong> 380x380 RGB Matrix</p>
                         <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Preprocessing:</strong> Crop Black Border &rarr; Ben Graham Gaussian Blur Contrast ($\sigma_x=10$) &rarr; ImageNet Normalization</p>
                         <p style="margin-bottom:0.4rem;"><strong style="color:var(--text-main);">Feature Embedding:</strong> 1,536-Dimensional Feature Representation</p>
-                        <p><strong style="color:var(--text-main);">CNN Evaluation Dataset:</strong> <span id="cnn-dataset-name">Sample_Fundus_Photos Clinical Corpus</span></p>
+                        <p><strong style="color:var(--text-main);">CNN Evaluation Dataset:</strong> <span id="cnn-dataset-name">APTOS 2019 Blindness Detection — Held-Out Validation Split (N=400, stratified seed=42)</span></p>
                     </div>
                 </div>
             </div>
@@ -284,23 +285,24 @@
             <div class="grid-3">
                 <div class="metric-card">
                     <span class="metric-label">CNN backbone — Referable Sensitivity</span>
-                    <span class="metric-value" id="cnn-eval-sensitivity">20.0%</span>
-                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
+                    <span class="metric-value" id="cnn-eval-sensitivity">88.9%</span>
+                    <span class="metric-sub cnn-eval-n">N = 400 APTOS 2019 held-out (cnn_eval_metrics.json)</span>
                 </div>
                 <div class="metric-card">
                     <span class="metric-label">CNN backbone — Referable Specificity</span>
-                    <span class="metric-value" id="cnn-eval-specificity">100.0%</span>
-                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
+                    <span class="metric-value" id="cnn-eval-specificity">91.6%</span>
+                    <span class="metric-sub cnn-eval-n">N = 400 APTOS 2019 held-out (cnn_eval_metrics.json)</span>
                 </div>
                 <div class="metric-card">
                     <span class="metric-label">CNN backbone — ROC-AUC</span>
-                    <span class="metric-value" id="cnn-eval-auc">0.838</span>
-                    <span class="metric-sub">N = 22 (cnn_eval_metrics.json)</span>
+                    <span class="metric-value" id="cnn-eval-auc">0.963</span>
+                    <span class="metric-sub cnn-eval-n">N = 400 APTOS 2019 held-out (cnn_eval_metrics.json)</span>
                 </div>
             </div>
-            <div class="alert-box-notice" style="margin-top: 1rem;">
-                Backbone sensitivity on 22 images is low (20%) and needs validation on a larger set.
-                These CNN figures are the feature-extractor backbone only, not a clinical DR detector.
+            <div class="alert-box-notice" style="margin-top: 1rem;" id="cnn-eval-limitation">
+                CNN backbone on 400 held-out APTOS 2019 images: 88.9% referable sensitivity, 91.6% specificity, AUC 0.963 (majority baseline 59.5%).
+                These figures are the feature-extractor backbone only, not a clinical DR detector.
+                Decision support, not diagnosis. IDRiD / Messidor-2 cross-dataset testing remains future work.
             </div>
             </div>
         </div>
@@ -450,7 +452,7 @@
                     <span class="badge badge-sih">Reference Benchmarks</span>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-                    Published literature figures for common architectures (shown only as context). They are <strong>not this project's measured results</strong>. This repository is a working proof-of-concept on N = 22 images and does not claim reliable diabetic retinopathy detection or superiority over published models.
+                    Published literature figures for common architectures (shown only as context). They are <strong>not this project's measured results</strong> unless labelled as such. This repository reports a CNN backbone evaluation on APTOS 2019 (N = 400) plus a small-sample hybrid QML demo (N = 22). It does not claim a diagnostic device or quantum advantage.
                 </p>
                 <div id="benchmark-table-container"></div>
             </div>
@@ -692,6 +694,7 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                     <strong>N = 22 notice.</strong>
                     Working proof-of-concept hybrid pipeline on a small sample. Larger benchmark, hardware run and generalization testing are future work.
                     Majority-class (always referable) accuracy on this sample is 68.2%. SVM and VQC accuracies are comparable to that baseline — <strong>the difference on 22 images is noise; no quantum advantage is claimed, and VQC does not beat SVM.</strong>
+                    The defensible numbers are on APTOS 2019 (N = 400) in the table below.
                     <em>Decision support, not diagnosis.</em>
                     Seed folder limitation: several files in <code>Sample_Fundus_Photos</code> are diagrams, cartoons, a bar chart, or textbook illustrations — not all 22 are clinical fundus photographs.
                 </div>
@@ -743,13 +746,13 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             </tr>
                             <tr>
                                 <td><b>CNN backbone</b> (EfficientNet-B3, feature extractor)</td>
+                                <td>75.5% (5-class)</td>
+                                <td>88.9%</td>
+                                <td>91.6%</td>
                                 <td>—</td>
-                                <td>20.0%</td>
-                                <td>100%</td>
                                 <td>—</td>
                                 <td>—</td>
-                                <td>—</td>
-                                <td>AUC 0.838, N = 22</td>
+                                <td>AUC 0.963, N = 400 APTOS held-out</td>
                             </tr>
                         </tbody>
                     </table>
@@ -780,11 +783,11 @@ q3: ───Ry(θ3)───[Ry(w6)]───[Rz(w7)]───────[X]�
                             <tr><td><b>DEL-05</b></td><td>Classical SVM Baseline (RBF kernel)</td><td><span class="badge badge-live">✓ Done</span></td><td>qml_pipeline.py</td></tr>
                             <tr><td><b>DEL-06</b></td><td>Hybrid Training &amp; Prediction Workflow</td><td><span class="badge badge-live">✓ Done</span></td><td>server.py</td></tr>
                             <tr><td><b>DEL-07</b></td><td>Visual Explainability (Grad-CAM placeholder)</td><td><span class="badge badge-live">✓ Done</span></td><td>ai_ml_pipeline.py</td></tr>
-                            <tr><td><b>DEL-08</b></td><td>CNN + QML Benchmark (APTOS 2019, N=400 held-out val)</td><td><span class="badge badge-live">✓ Done</span></td><td>CNN: Sens 88.9%, Spec 91.6%, AUC 0.963 — benchmarks/aptos_cnn_metrics.json</td></tr>
+                            <tr><td><b>DEL-08</b></td><td>CNN + QML Benchmark (APTOS 2019, N=400 held-out val)</td><td><span class="badge badge-live">✓ Done</span></td><td>CNN: Sens 88.9%, Spec 91.6%, AUC 0.963. SVM 90.0% ± 1.8%, VQC 88.0% ± 3.8% (majority 59.5%). VQC does not beat SVM. benchmarks/aptos_results_summary.csv</td></tr>
                             <tr><td><b>DEL-09</b></td><td>Model Checkpoint Repository</td><td><span class="badge badge-live">✓ Done</span></td><td>best_model.pt, *.pkl, vqc_model.pt</td></tr>
                             <tr><td><b>DEL-10</b></td><td>Deployment &amp; GitHub Pages</td><td><span class="badge badge-live">✓ Done</span></td><td><a href="https://ushakiran45.github.io/SIH26139-Hybrid-QML/" style="color:#67e8f9;">https://ushakiran45.github.io/SIH26139-Hybrid-QML/</a></td></tr>
                             <tr><td><b>DEL-11</b></td><td>Second-dataset benchmark (Breast Cancer, N=200): benchmark module is dataset-agnostic; web app supports retinal images only</td><td><span class="badge badge-live">✓ Done</span></td><td>benchmarks/ — SVM 93.0% ± 3.3%, VQC 75.5% ± 5.8%, majority baseline 64.5% (always-benign; sample 129/71 benign/malignant). VQC does not beat SVM.</td></tr>
-                            <tr style="color: #ffb300;"><td><b>FUTURE-01</b></td><td>Cross-dataset benchmark (APTOS-2019 / IDRiD / Messidor-2)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — N&gt;200 independent images</td></tr>
+                            <tr style="color: #ffb300;"><td><b>FUTURE-01</b></td><td>Cross-dataset test (IDRiD / Messidor-2)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>APTOS N=400 CNN + hybrid heads are done</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-02</b></td><td>Physical quantum hardware run (IBM Quantum / pennylane-qiskit)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — hardware gate noise &amp; queue latency</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-03</b></td><td>Qubit scaling (6-qubit, 8-qubit VQC)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — deeper entanglement layers</td></tr>
                             <tr style="color: #ffb300;"><td><b>FUTURE-04</b></td><td>Circuit-level explainability (quantum gate attribution)</td><td><span class="badge" style="background:rgba(255,179,0,0.15);color:#ffb300;border:1px solid rgba(255,179,0,0.4);">Future Work</span></td><td>Planned — quantum SHAP / circuit gradient</td></tr>

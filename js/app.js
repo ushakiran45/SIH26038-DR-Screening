@@ -21,6 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (specEl && data.referable_specificity_pct !== undefined) specEl.textContent = data.referable_specificity_pct.toFixed(1) + '%';
                 if (aucEl && data.roc_auc !== undefined) aucEl.textContent = data.roc_auc.toFixed(3);
                 if (dsNameEl && data.dataset_name) dsNameEl.textContent = data.dataset_name;
+                const nLabel = (data.num_samples ? ('N = ' + data.num_samples + ' APTOS 2019 held-out (cnn_eval_metrics.json)') : null);
+                if (nLabel) document.querySelectorAll('.cnn-eval-n').forEach(el => { el.textContent = nLabel; });
+                const limEl = document.getElementById('cnn-eval-limitation');
+                if (limEl && data.referable_sensitivity_pct !== undefined) {
+                    limEl.textContent = 'CNN backbone on ' + (data.num_samples || 400) + ' held-out APTOS 2019 images: '
+                        + data.referable_sensitivity_pct.toFixed(1) + '% referable sensitivity, '
+                        + data.referable_specificity_pct.toFixed(1) + '% specificity, AUC '
+                        + data.roc_auc.toFixed(3) + ' (majority baseline '
+                        + data.majority_baseline_acc_pct.toFixed(1) + '%). These figures are the feature-extractor backbone only, not a clinical DR detector. Decision support, not diagnosis. IDRiD / Messidor-2 cross-dataset testing remains future work.';
+                }
             }
         })
         .catch(err => console.log('Notice loading cnn_eval_metrics.json:', err));

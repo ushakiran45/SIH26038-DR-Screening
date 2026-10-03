@@ -1,7 +1,7 @@
 /**
  * SIH26139 - Benchmark Comparison Dataset & Pipeline Validation Suite
- * Provides published metrics comparing the integrated MATLAB & EfficientNet-B3
- * Explainable AI pipeline against single-technique baselines across benchmark datasets.
+ * Provides published literature context plus this repository's measured CNN
+ * backbone metrics on APTOS 2019.
  */
 
 window.BenchmarkData = (function() {
@@ -28,11 +28,21 @@ window.BenchmarkData = (function() {
             status: 'LITERATURE'
         },
         {
+            dataset: 'This repository — APTOS 2019 held-out (N = 400)',
+            method: 'CNN backbone EfficientNet-B3 (measured here)',
+            referableSens: '88.9%',
+            referableSpec: '91.6%',
+            aucROC: '0.963',
+            maDetection: 'not claimed',
+            explainableScore: 'Decision support, not diagnosis',
+            status: 'POC'
+        },
+        {
             dataset: 'This repository (N = 22 seed set)',
-            method: 'CNN backbone + SVM / 4-qubit VQC (measured here)',
-            referableSens: 'CNN 20%; SVM/VQC see Tab 7',
-            referableSpec: 'CNN 100%; SVM/VQC see Tab 7',
-            aucROC: 'CNN 0.838',
+            method: 'SVM / 4-qubit VQC smoke-test (measured here)',
+            referableSens: 'See Tab 7 QML table',
+            referableSpec: 'See Tab 7 QML table',
+            aucROC: 'not the CNN result',
             maDetection: 'not claimed',
             explainableScore: 'Proof-of-concept only',
             status: 'POC'

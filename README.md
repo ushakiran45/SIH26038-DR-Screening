@@ -45,11 +45,11 @@ The platform supports data ingestion, hybrid model training, prediction, explain
 | **DEL-05** | **Classical ML Baseline Model** | Support Vector Machine (`SVC` with RBF kernel) trained on identical 4 PCA features | [qml_pipeline.py](qml_pipeline.py) (`ClassicalSVMClassifier`) |
 | **DEL-06** | **Hybrid Training & Prediction Workflow** | PyTorch + PennyLane hybrid Adam optimization & dual prediction inference pipeline | [server.py](server.py) (`/api/qml/predict`) |
 | **DEL-07** | **Visual Explainability Module** | Grad-CAM Class Activation Maps highlighting retinal lesion visual attention, with explicit attribution notice for CNN feature representation | [index.html](index.html), [ai_ml_pipeline.py](ai_ml_pipeline.py) |
-| **DEL-08** | **5-Fold Cross-Validation Benchmark** | Empirical 5-fold cross-validation on seed dataset ($N=22$) with error bars and majority-class baseline | [qml_metrics.json](qml_metrics.json), [results_summary.csv](results_summary.csv) |
+| **DEL-08** | **CNN + QML Benchmark (APTOS 2019, N=400)** | CNN: 88.9% referable sensitivity, 91.6% specificity, AUC 0.963. Hybrid heads on the same features (5-fold): SVM $90.0\% \pm 1.8\%$, VQC $88.0\% \pm 3.8\%$ vs 59.5% majority baseline. VQC does not beat SVM. | [cnn_eval_metrics.json](cnn_eval_metrics.json), [benchmarks/aptos_results_summary.csv](benchmarks/aptos_results_summary.csv) |
 | **DEL-09** | **Model Checkpoint Repository** | Saved weight files for CNN (`best_model.pt`), PCA (`pca_model.pkl`), Classical SVM (`svm_model.pkl`), and Quantum VQC (`vqc_model.pt`) | [best_model.pt](best_model.pt), `pca_model.pkl`, `svm_model.pkl`, `vqc_model.pt` |
 | **DEL-10** | **Deployment & Containerization** | Live GitHub Pages web deployment, Dockerfile container configuration, Procfile, requirements.txt, & Render.yaml cloud blueprints | [Dockerfile](Dockerfile), [render.yaml](render.yaml), GitHub Pages |
 | **DEL-11** | **Second-Dataset Benchmark (Breast Cancer, N=200)** | Dataset-agnostic benchmark module run on UCI WDBC (scikit-learn); 5-fold CV, 4 qubits; SVM 93.0% ± 3.3%, VQC 75.5% ± 5.8%, majority baseline 64.5%. VQC does not beat classical SVM (gap > std — honest result). Qubit sweeps in benchmarks/. | [benchmarks/](benchmarks/) |
-| **FUTURE-01** | **Cross-Dataset Benchmark (200+ Images)** | Planned evaluation on external out-of-distribution test sets (APTOS 2019 / IDRiD / Messidor-2) with N > 200 independent images | **Future Work (Planned)** |
+| **FUTURE-01** | **Cross-Dataset Test (IDRiD / Messidor-2)** | APTOS 2019 CNN + hybrid heads ($N=400$) are done. Remaining: other public DR datasets | **Future Work (Planned)** |
 | **FUTURE-02** | **Physical Quantum Hardware Run** | Planned execution on physical quantum processors (e.g. IBM Quantum via `pennylane-qiskit`); hardware gate noise and NISQ queue latency not yet measured | **Future Work (Planned)** |
 | **FUTURE-03** | **Qubit Scaling (6-Qubit / 8-Qubit VQC)** | Evaluate deeper entanglement architectures at higher qubit counts against larger feature spaces ($N=50, 100, 200$ samples) | [benchmarks/](benchmarks/) |
 | **FUTURE-04** | **Circuit-Level Explainability** | Quantum SHAP / circuit gradient attribution for VQC gate parameters (distinct from CNN Grad-CAM spatial attention) | **Future Work (Planned)** |
@@ -97,13 +97,6 @@ SIH/
 │   ├── grading_explainability.js # DR Severity Grading & Grad-CAM PDF Exporter
 │   ├── quality_analyzer.js     # Quality Assessment & Recapture Feedback
 │   └── simulink_simulator.js   # Telemedicine Resource Capacity Simulator
-├── matlab/
-│   ├── main_pipeline.m         # Master MATLAB Driver Script
-│   ├── dr_grading.m            # ICDR Grading Logic & Metrics
-│   ├── gradcam_explainability.m # MATLAB Grad-CAM Module
-│   ├── quality_assessment.m    # Tenengrad Sharpness & CLAHE
-│   ├── retinal_segmentation.m  # Multi-Structure Retinal Segmentation
-│   └── simulink_simulation.m   # Telemedicine Resource Capacity Model
 ├── best_model.pt               # PyTorch EfficientNet-B3 Weights Checkpoint
 ├── pca_model.pkl               # Saved 4-Component PCA Model
 ├── svm_model.pkl               # Saved Classical SVM Model Checkpoint
@@ -174,13 +167,25 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 
 > **Dataset**: APTOS 2019 Blindness Detection (Kaggle). Stratified held-out val split, seed=42. Preprocessing: crop black borders → resize 380×380 → ImageNet normalisation. No augmentation. Previous N=22 result (sensitivity 20%, AUC 0.838) reflected sample-size noise on ambiguously sourced images — not a true model deficiency.
 
+#### Hybrid SVM vs VQC on the same APTOS 2019 features (N = 400, 5-fold CV, 4 qubits)
+
+PCA to 4 components, angle encoding, class-weighted VQC (50 epochs, lr=0.05, decision threshold 0.35). Majority class is non-referable (238 / 400 = 59.5%). **SVM is slightly stronger and more stable. No quantum advantage is claimed, and VQC does not beat SVM.**
+
+| Model / Baseline | $N$ | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Referable Sensitivity | Specificity | F1-Score |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Majority-class baseline (always non-referable)** | 400 | N/A | **59.5%** | N/A (always-negative rule) | 100% | — |
+| **Classical SVM (RBF)** | 400 | 4 | **$90.0\% \pm 1.8\%$** | $93.8\% \pm 2.8\%$ | $87.4\% \pm 3.0\%$ | $90.1\% \pm 1.7\%$ |
+| **Hybrid VQC (class-weighted)** | 400 | 4 | **$88.0\% \pm 3.8\%$** | $96.3\% \pm 1.2\%$ | $82.3\% \pm 6.1\%$ | $88.1\% \pm 3.8\%$ |
+
+Source: [benchmarks/aptos_results_summary.csv](benchmarks/aptos_results_summary.csv).
+
 #### Second-Dataset Benchmark — Breast Cancer Wisconsin (UCI WDBC, scikit-learn), N = 200, 5-Fold CV, 4 Qubits
 
 > **Important**: The web app is a retinal DR tool. This benchmark demonstrates that the benchmark *module* (`benchmark_qml.py`) is dataset-agnostic — it accepts any feature matrix and label array. The retinal app is the case study; this run provides a statistically meaningful comparison on a well-known public dataset.
 
 | Model / Baseline | $N$ Samples | Qubits | Accuracy ($\text{Mean} \pm \text{Std}$) | Malignant Sensitivity | Benign Specificity | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Majority-class baseline (always benign)** | 200 | N/A | **64.5%** *(sample is 129 benign / 71 malignant — not balanced)* | 0.0% | 100.0% | 78.4% |
+| **Majority-class baseline (always benign)** | 200 | N/A | **64.5%** *(sample is 129 benign / 71 malignant — not balanced)* | N/A (always-benign rule) | 100.0% | 78.4% |
 | **Classical SVM (RBF)** | 200 | 4 | **$93.0\% \pm 3.3\%$** | $83.0\% \pm 7.4\%$ | $98.5\% \pm 1.9\%$ | $92.8\% \pm 3.4\%$ |
 | **Hybrid PennyLane VQC** | 200 | 4 | **$75.5\% \pm 5.8\%$** | $37.0\% \pm 18.5\%$ | $96.9\% \pm 2.9\%$ | $71.3\% \pm 8.8\%$ |
 
@@ -190,7 +195,7 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 
 > [!IMPORTANT]
 > **Methodology & Validation Notice**:
-> The CNN backbone (EfficientNet-B3) achieves **88.9% referable sensitivity, 91.6% specificity, and ROC-AUC 0.963** on a 400-image stratified held-out split from the APTOS 2019 public dataset (Kaggle). This replaces the earlier 22-image proof-of-concept result. The 22-image set used in the initial QML cross-validation benchmark contains ambiguously sourced images and is retained only as a pipeline smoke-test; its 20% sensitivity was an artefact of that small, unvalidated sample. The APTOS 2019 evaluation used images the CNN was not trained on (stratified random split, seed=42). The QML benchmark (SVM + VQC, 5-fold CV) on APTOS features is reported separately below. **This system is a decision-support research tool, not a diagnostic device.**
+> The CNN backbone (EfficientNet-B3) achieves **88.9% referable sensitivity, 91.6% specificity, and ROC-AUC 0.963** on a 400-image stratified held-out split from the APTOS 2019 public dataset (Kaggle). On the same 1536-D features compressed to 4 PCA components, 5-fold CV gives Classical SVM **90.0% ± 1.8%** and Hybrid VQC **88.0% ± 3.8%** (majority baseline 59.5%). SVM is slightly stronger; **no quantum advantage is claimed, and VQC does not beat SVM.** The 22-image set is retained only as a pipeline smoke-test. **This system is a decision-support research tool, not a diagnostic device.**
 
 
 
@@ -198,7 +203,7 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 
 ### 🔮 Future Work & Development Roadmap
 
-1. **Large-Scale Out-of-Distribution Validation**: Extract features from 200+ independent, unaugmented test images from APTOS 2019 validation split and IDRiD to establish out-of-distribution clinical generalization bounds.
+1. **Cross-dataset generalization**: APTOS 2019 CNN and hybrid heads ($N=400$) are complete. Remaining work is IDRiD and Messidor-2.
 2. **Physical Quantum Hardware Execution**: Deploy Variational Quantum Circuits onto physical quantum processors (e.g. IBM Quantum free tier via `pennylane-qiskit`) to measure hardware gate noise and NISQ queue latency.
 3. **Qubit & Feature Scaling Sweeps**: Evaluate 6-Qubit and 8-Qubit VQC architectures with deeper entanglement layers against high-dimensional feature spaces ($N=50, 100, 200$ samples).
 4. **Circuit-Level Explainability**: Develop quantum-native attribution (quantum SHAP / circuit gradient) for VQC gate parameters, distinct from CNN Grad-CAM spatial attention which explains CNN feature focus, not quantum gate decisions.
@@ -210,11 +215,11 @@ https://ushakiran45.github.io/SIH26139-Hybrid-QML/
 ### 🏆 Presentation Pitch & Q&A Defense Guide (SIH26139 | Egreen Quanta - MIC)
 
 > **Pitch Statement**:
-> *"For Problem Statement SIH26139 (Egreen Quanta - MIC), we developed a Hybrid Quantum Machine Learning Platform for Early Disease Detection. By compressing 1,536-dimensional EfficientNet-B3 CNN embeddings into 4 angle-encoded quantum features, we run a 4-qubit Variational Quantum Circuit (VQC) with Ring CNOT entanglement alongside a classical RBF SVM baseline. Evaluated on 22 seed clinical images, our current benchmark serves as a software architecture proof-of-concept demonstration, and we plan cross-dataset validation on APTOS-2019 and IDRiD."*
+> *"For Problem Statement SIH26139 (Egreen Quanta - MIC), we developed a Hybrid Quantum Machine Learning Platform for Early Disease Detection. EfficientNet-B3 evaluated on 400 held-out APTOS 2019 images: 88.9% referable sensitivity, 91.6% specificity, AUC 0.963. The VQC + SVM demo compresses the same 1,536-D features to 4 PCA components and angle-encodes them on 4 qubits. This is a working proof-of-concept hybrid pipeline. Larger QML benchmark, hardware run and generalization testing are future work. Decision support, not diagnosis. No quantum advantage is claimed."*
 
 #### Key Defense Questions & Honest Answers
 * **Q1: Does the VQC show a quantum advantage over classical SVM?**
-  * *Answer*: "Problem Statement SIH26139 asks for a hybrid platform to evaluate where quantum ML can be applied. We built the pipeline to benchmark a VQC and an SVM on identical features. On our current 22-image sample, Classical SVM ($77.0\% \pm 2.4\%$) and Hybrid VQC ($69.0\% \pm 7.3\%$) perform within margin of error of each other and near the majority baseline ($68.2\%$), so we make no quantum advantage claim. Our scaling and small-data benchmark suite is designed to test where an advantage could appear."
+  * *Answer*: "Problem Statement SIH26139 asks for a hybrid platform to evaluate where quantum ML can be applied. We built the pipeline to benchmark a VQC and an SVM on identical features. On the 22-image smoke-test, Classical SVM ($76.0\% \pm 15.9\%$) and Hybrid VQC ($67.0\% \pm 24.6\%$) are near the majority baseline ($68.2\%$); the difference is noise. On breast cancer ($N=200$) the SVM is clearly stronger (93.0% vs 75.5%). No quantum advantage is claimed, and we do not say VQC beats SVM."
 * **Q2: Has the pipeline been run on physical quantum hardware?**
   * *Answer*: "The codebase is hardware-ready through PennyLane's device interface (`qml.device`), but we have executed our benchmarks on the `default.qubit` simulator. Running on physical hardware (e.g. via `pennylane-qiskit` on IBM Quantum) introduces hardware gate noise and queue latency, which is planned for future work."
 * **Q3: How does the live web demo work on GitHub Pages vs local server?**
